@@ -17,14 +17,18 @@ export default async (req) => {
       status: s,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': s === 200 ? 'public, max-age=20' : 'no-store'
+        'Cache-Control': s === 200 ? 'public, max-age=10' : 'no-store'
       }
     });
 
   if (!(day >= 1 && day <= 5)) return json({ entries: [], shown: 0, total: 0 }, 400);
 
   try {
-    const store = getStore('room');
+    // Strong consistency on purpose. Blobs defaults to eventual, where updates and
+    // deletions can take up to 60 seconds to reach every edge. That is fine for adding
+    // an entry, but not for removing one: when you pull something down it has to be
+    // gone now, not eventually. One extra blob read is worth that.
+    const store = getStore({ name: 'room', consistency: 'strong' });
     const wall = (await store.get(`wall/d${day}`, { type: 'json' })) || [];
 
     // "You are one of N" counts everyone who showed up, including the ones still

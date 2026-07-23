@@ -2,6 +2,7 @@
 // POST /.netlify/functions/admin  { action, ... }
 
 import { getStore } from '@netlify/blobs';
+import { isPriority } from '../lib/priority.js';
 
 const ADMIN_KEY = process.env.ADMIN_KEY;
 const PAGE = 60;
@@ -143,17 +144,21 @@ export default async (req) => {
     }
 
     if (body.action === 'unpost') {
+      let moved = 0, failed = [];
       for (const id of body.ids || []) {
         const day = String(id).match(/pending\/d(\d)\//)?.[1];
-        if (!day) continue;
+        if (!day) { failed.push(id); continue; }
         let pulled = null;
-        await mutateWall(s, day, wall => {
+        const okWrite = await mutateWall(s, day, wall => {
           pulled = wall.find(e => e.id === id) || null;
           return wall.filter(e => e.id !== id);
         });
-        if (pulled) await s.setJSON(id, pulled);
+        // Only restore to the queue if it actually came off the wall, otherwise a
+        // failed write would leave the same entry in both places at once.
+        if (okWrite && pulled) { await s.setJSON(id, pulled); moved++; }
+        else failed.push(id);
       }
-      return json({ ok: true });
+      return json({ ok: failed.length === 0, moved, failed: failed.length });
     }
 
     if (body.action === 'edit') {
@@ -202,11 +207,16 @@ export default async (req) => {
         return json({ ok: false, message: ' 200 lines at a time, max.' }, 400);
 
       const now = Date.now();
-      const rows = texts.map((text, i) => ({
-        id: `pending/d${day}/0/${now + i}-${crypto.randomUUID().slice(0, 8)}`,
-        day, text, original: null, priority: false, seed: true,
-        created_at: new Date(now + i).toISOString()
-      }));
+      // Seeded entries run the same keyword check as real submissions, so the
+      // review queue behaves identically no matter how an entry got there.
+      const rows = texts.map((text, i) => {
+        const prio = isPriority(text);
+        return {
+          id: `pending/d${day}/${prio ? '1' : '0'}/${now + i}-${crypto.randomUUID().slice(0, 8)}`,
+          day, text, original: null, priority: prio, seed: true,
+          created_at: new Date(now + i).toISOString()
+        };
+      });
 
       if (body.approve) {
         const okWrite = await mutateWall(s, day, wall => [...rows, ...wall]);
