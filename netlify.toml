@@ -1,0 +1,47 @@
+[build]
+  command = "npm install"
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Pretty per-day URLs for the Flodesk emails.
+[[redirects]]
+  from = "/day/1"
+  to   = "/index.html?d=1"
+  status = 200
+[[redirects]]
+  from = "/day/2"
+  to   = "/index.html?d=2"
+  status = 200
+[[redirects]]
+  from = "/day/3"
+  to   = "/index.html?d=3"
+  status = 200
+[[redirects]]
+  from = "/day/4"
+  to   = "/index.html?d=4"
+  status = 200
+[[redirects]]
+  from = "/day/5"
+  to   = "/index.html?d=5"
+  status = 200
+
+[[redirects]]
+  from = "/review"
+  to   = "/admin.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"

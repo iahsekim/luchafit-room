@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Room / LuchaFit</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#1B1B1B;
+  --bone:#F2EFEA;
+  --gold:#B8872A;
+  --gold-lift:#D9A63C;
+  --ink-60:rgba(27,27,27,.60);
+  --ink-30:rgba(27,27,27,.28);
+  --rule:rgba(27,27,27,.14);
+  --display:'Barlow Condensed',Impact,sans-serif;
+  --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bone);color:var(--black);
+  font-family:var(--body);font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 22px 100px}
+
+/* ---------- scoreboard header ---------- */
+.board{
+  border-bottom:2px solid var(--black);
+  padding:22px 0 12px;margin-bottom:38px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+}
+.board .mark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-60);
+}
+.periods{display:flex;gap:5px}
+.period{
+  width:26px;height:26px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  border:1px solid var(--ink-30);color:var(--ink-30);
+}
+.period.done{border-color:var(--black);color:var(--black)}
+.period.now{background:var(--black);border-color:var(--black);color:var(--bone)}
+
+/* ---------- prompt ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+h1{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(46px,13vw,76px);line-height:.92;
+  letter-spacing:-.01em;text-transform:uppercase;margin-bottom:20px;
+}
+.lede{font-size:17px;line-height:1.6;color:var(--ink-60);max-width:46ch}
+
+.block{margin-top:40px;padding-top:26px;border-top:1px solid var(--rule)}
+.block-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-60);margin-bottom:12px;
+  display:flex;align-items:center;gap:9px;
+}
+.block-label b{color:var(--black);font-weight:500}
+.ask{
+  font-family:var(--display);font-weight:600;font-size:25px;
+  line-height:1.18;margin-bottom:8px;
+}
+.note{font-size:14px;color:var(--ink-60);margin-bottom:16px}
+
+textarea{
+  width:100%;font-family:var(--body);font-size:16px;line-height:1.6;
+  color:var(--black);background:transparent;
+  border:1px solid var(--ink-30);border-radius:0;
+  padding:14px 15px;resize:vertical;
+}
+textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+textarea::placeholder{color:var(--ink-30)}
+#priv{min-height:120px;background:rgba(27,27,27,.03);border-style:dashed}
+#pub{min-height:104px;background:#fff}
+
+.meter{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--ink-60);margin-top:9px;
+}
+.meter .over{color:#9B2C1F}
+
+button{
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:500;
+  background:var(--black);color:var(--bone);
+  border:none;padding:17px 24px;width:100%;margin-top:22px;
+  cursor:pointer;transition:background .15s ease;
+}
+button:hover:not(:disabled){background:var(--gold)}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+button:disabled{background:var(--ink-30);cursor:not-allowed}
+
+.err{
+  font-size:14px;color:#9B2C1F;margin-top:14px;
+  border-left:2px solid #9B2C1F;padding-left:12px;
+}
+
+/* ---------- wall ---------- */
+.count{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(40px,11vw,64px);line-height:1;text-transform:uppercase;
+}
+.count em{font-style:normal;color:var(--gold)}
+.yours{
+  border:2px solid var(--black);padding:20px;margin:26px 0 40px;
+  position:relative;background:#fff;
+}
+.yours:before{
+  content:attr(data-label);position:absolute;top:-9px;left:16px;
+  background:var(--bone);padding:0 7px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--gold);
+}
+.entry{
+  padding:18px 0;border-bottom:1px solid var(--rule);
+  display:flex;gap:15px;align-items:flex-start;
+  opacity:0;transform:translateY(7px);
+  animation:rise .42s cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes rise{to{opacity:1;transform:none}}
+.entry .n{
+  font-family:var(--mono);font-size:11px;color:var(--ink-30);
+  padding-top:4px;flex:0 0 34px;letter-spacing:.05em;
+}
+.entry p{font-size:16px;line-height:1.55}
+.more{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;background:none;color:var(--black);
+  border:1px solid var(--ink-30);margin-top:26px;
+}
+.more:hover{background:var(--black);color:var(--bone)}
+
+.cta{
+  margin-top:56px;border-top:2px solid var(--black);padding-top:26px;
+}
+.cta h2{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:34px;line-height:1;margin-bottom:12px;
+}
+.cta p{color:var(--ink-60);margin-bottom:18px}
+.cta a{
+  display:block;text-align:center;text-decoration:none;
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;background:var(--gold);color:#fff;padding:17px 24px;
+}
+.cta a:hover{background:var(--black)}
+
+.foot{
+  margin-top:44px;font-family:var(--mono);font-size:11px;
+  line-height:1.7;color:var(--ink-30);letter-spacing:.04em;
+}
+.hidden{display:none}
+.skel{height:15px;background:var(--rule);margin:22px 0;animation:pulse 1.3s infinite}
+@keyframes pulse{50%{opacity:.4}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .entry{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="board">
+    <div class="mark">LuchaFit &nbsp;/&nbsp; The Room</div>
+    <div class="periods" id="periods" aria-label="Challenge progress"></div>
+  </div>
+
+  <!-- PROMPT -->
+  <main id="view-prompt">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+    <p class="lede" id="lede"></p>
+
+    <section class="block">
+      <div class="block-label"><b>01</b> Think it through</div>
+      <p class="ask" id="askPriv"></p>
+      <p class="note">This stays on your device. It is never sent anywhere and nobody sees it.</p>
+      <textarea id="priv" placeholder="Write as much as you want."></textarea>
+    </section>
+
+    <section class="block">
+      <div class="block-label"><b>02</b> Put it on the wall</div>
+      <p class="ask" id="askPub"></p>
+      <p class="note" id="notePub"></p>
+      <textarea id="pub" maxlength="300" placeholder=""></textarea>
+      <div class="meter">
+        <span id="hint"></span>
+        <span id="chars">0 / 240</span>
+      </div>
+      <button id="send">Add mine to the wall</button>
+      <div class="err hidden" id="err"></div>
+    </section>
+
+    <p class="foot">
+      No names. No usernames. No email shown. We cannot tell who wrote what and
+      neither can anyone else.<br>
+      Every entry is read by a person before it goes on the wall.
+    </p>
+  </main>
+
+  <!-- WALL -->
+  <main id="view-wall" class="hidden">
+    <div class="eyebrow" id="wEyebrow"></div>
+    <p class="count" id="wCount"></p>
+    <p class="lede" id="wLede" style="margin-top:14px"></p>
+
+    <div class="yours hidden" id="yours" data-label="YOURS"></div>
+
+    <div id="entries"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+    <button class="more hidden" id="more">Show more</button>
+
+    <div class="cta" id="cta"></div>
+
+    <p class="foot" id="wFoot"></p>
+  </main>
+
+</div>
+
+<script>
+const DAYS = {
+1:{
+  eyebrow:'Day 01 / The Standard',
+  title:'Set the bar<br>before the<br>season does',
+  lede:'Nothing has happened yet. No record, no seed, no bad match to explain. This is the only week of the year where you get to decide what your season means before it means anything.',
+  askPriv:'What does the best version of you look like in the room on a random Tuesday in November?',
+  askPub:'Finish this: my standard this season is _____.',
+  notePub:'One sentence. Say it like you would say it out loud to someone who is going to hold you to it.',
+  hint:'Start with "My standard this season is..."',
+  ph:'My standard this season is...',
+  wLede:'These are the standards wrestlers set this week, before anyone stepped on a mat that counted.'
+},
+2:{
+  eyebrow:'Day 02 / The Gap',
+  title:'Better in<br>the room<br>than on<br>the mat',
+  lede:'Almost every wrestler has something that works in practice and disappears under the lights. That gap is not a talent problem. It is a trained skill, and naming it out loud is the first rep.',
+  askPriv:'Name one thing you do well in practice that goes missing in a match. When did you first notice it?',
+  askPub:'Finish this: in the room I _____. On the mat I need to _____.',
+  notePub:'Keep it technical. What you do, not how you feel about it.',
+  hint:'"In the room I... On the mat I need to..."',
+  ph:'In the room I... On the mat I need to...',
+  wLede:'Read these and count how many wrestlers named the exact gap you just named.'
+},
+3:{
+  eyebrow:'Day 03 / The Controllables',
+  title:'Cross out<br>everything<br>you cannot<br>control',
+  lede:'Referees. Brackets. The other guy. Your seed. The crowd. Your coach\u2019s mood. None of it moves when you push on it. What is left after you cross that list out is the whole job.',
+  askPriv:'List everything about a match you cannot control. Then cross the entire list out. Now write what is left.',
+  askPub:'Three things you control on match day.',
+  notePub:'Just the three. No explanation needed.',
+  hint:'Three, separated by commas',
+  ph:'1.\n2.\n3.',
+  wLede:'Three hundred wrestlers, roughly the same three answers. That is not a coincidence, that is the job.'
+},
+4:{
+  eyebrow:'Day 04 / Room Debt',
+  title:'Somebody<br>in your<br>room made<br>you better',
+  lede:'You did not get here alone. There is a person in your practice room whose work shows up in your matches, and they probably have no idea.',
+  askPriv:'Who in your room makes you better, and what specifically do they do? Would they know it if you never said it?',
+  askPub:'What does one teammate give you that you could not get anywhere else?',
+  notePub:'Do not use their name. Describe what they do. Then go tell them in person, which is the actual assignment today.',
+  hint:'No names. Just what they do.',
+  ph:'He never lets me get away with a lazy...',
+  wLede:'Every one of these is about somebody who does not know they are in it.'
+},
+5:{
+  eyebrow:'Day 05 / The Commitment',
+  title:'When it<br>gets hard,<br>here is<br>what I do',
+  lede:'Third period. Down two. Legs gone. That moment is coming this season and it is going to arrive faster than you can decide what to do about it. So decide now, while it is quiet.',
+  askPriv:'What will you do differently between the whistle and the handshake this season? Be specific enough that you would notice if you failed to do it.',
+  askPub:'Finish this: this season, when it gets hard, I _____.',
+  notePub:'Say the thing you want held against you in February.',
+  hint:'"This season, when it gets hard, I..."',
+  ph:'This season, when it gets hard, I...',
+  wLede:'Five days ago these were strangers. Read what the room committed to.'
+}
+};
+
+const LIMIT = 240;
+const params = new URLSearchParams(location.search);
+let day = parseInt(params.get('d'), 10);
+if (!DAYS[day]) day = 1;
+const D = DAYS[day];
+const KEY = 'theroom.d' + day;
+const PKEY = 'theroom.priv.d' + day;
+
+const $ = id => document.getElementById(id);
+
+// scoreboard
+$('periods').innerHTML = [1,2,3,4,5].map(n=>{
+  const cls = n === day ? 'now' : (localStorage.getItem('theroom.d'+n) ? 'done' : '');
+  return `<span class="period ${cls}">${n}</span>`;
+}).join('');
+
+// paint prompt
+$('eyebrow').textContent = D.eyebrow;
+$('title').innerHTML = D.title;
+$('lede').textContent = D.lede;
+$('askPriv').textContent = D.askPriv;
+$('askPub').textContent = D.askPub;
+$('notePub').textContent = D.notePub;
+$('hint').textContent = D.hint;
+$('pub').placeholder = D.ph;
+$('priv').value = localStorage.getItem(PKEY) || '';
+$('priv').addEventListener('input', e => localStorage.setItem(PKEY, e.target.value));
+
+// char meter
+const pub = $('pub'), chars = $('chars'), send = $('send');
+pub.addEventListener('input', () => {
+  const n = pub.value.trim().length;
+  chars.textContent = n + ' / ' + LIMIT;
+  chars.className = n > LIMIT ? 'over' : '';
+  send.disabled = n < 8 || n > LIMIT;
+});
+send.disabled = true;
+
+// already submitted? go straight in
+if (localStorage.getItem(KEY)) showWall(JSON.parse(localStorage.getItem(KEY)).text, false);
+
+send.addEventListener('click', async () => {
+  const text = pub.value.trim();
+  send.disabled = true; send.textContent = 'Checking it over';
+  $('err').classList.add('hidden');
+  try {
+    const r = await fetch('/.netlify/functions/submit', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ day, text })
+    });
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(j.message || 'Something went wrong on our end. Try again in a moment.');
+    localStorage.setItem(KEY, JSON.stringify({ text, at: Date.now() }));
+    showWall(text, true);
+  } catch (e) {
+    $('err').textContent = e.message;
+    $('err').classList.remove('hidden');
+    send.disabled = false; send.textContent = 'Add mine to the wall';
+  }
+});
+
+let offset = 0, PAGE = 25;
+async function showWall(mine, justSent){
+  $('view-prompt').classList.add('hidden');
+  $('view-wall').classList.remove('hidden');
+  window.scrollTo(0,0);
+  $('wEyebrow').textContent = D.eyebrow;
+  $('wLede').textContent = justSent
+    ? 'Yours is read before it goes up, so give it a few hours. In the meantime, here is the room.'
+    : D.wLede;
+  if (mine){
+    $('yours').textContent = mine;
+    $('yours').dataset.label = justSent ? 'YOURS / GOING UP SOON' : 'YOURS';
+    $('yours').classList.remove('hidden');
+  }
+  $('cta').innerHTML = day < 5
+    ? `<h2>Day ${day+1} lands in your inbox tomorrow</h2>
+       <p>Five days. Five prompts. One room.</p>`
+    : `<h2>That was five days</h2>
+       <p>The Unstuck Wrestler is the full version of what you just did. Nine modules on
+          closing the gap between the room and the mat, built by a seven time national team member.</p>
+       <a href="https://luchafit.com/unstuck">See The Unstuck Wrestler</a>`;
+  $('wFoot').textContent = 'Anonymous. Every entry is read by a person before it goes up.';
+  load();
+}
+
+async function load(){
+  try{
+    const r = await fetch(`/.netlify/functions/wall?day=${day}&offset=${offset}&limit=${PAGE}`);
+    const j = await r.json();
+    if (offset === 0){
+      $('entries').innerHTML = '';
+      $('wCount').innerHTML = j.total > 25
+        ? `You are one of <em>${j.total.toLocaleString()}</em> in the room today.`
+        : `You got here <em>early</em>.`;
+      if (!j.entries.length){
+        $('wLede').textContent = 'You are one of the first in today. Check back this afternoon and the wall will have filled in.';
+      }
+    }
+    j.entries.forEach((e,i) => {
+      const el = document.createElement('div');
+      el.className = 'entry';
+      el.style.animationDelay = (i * 34) + 'ms';
+      el.innerHTML = `<span class="n">${String(offset+i+1).padStart(3,'0')}</span><p></p>`;
+      el.querySelector('p').textContent = e.text;
+      $('entries').appendChild(el);
+    });
+    offset += j.entries.length;
+    $('more').classList.toggle('hidden', offset >= j.shown || j.entries.length === 0);
+  } catch(e){
+    $('entries').innerHTML = '<p class="note">The wall would not load. Refresh to try again.</p>';
+  }
+}
+$('more').addEventListener('click', load);
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review / The Room</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#1B1B1B;--bone:#F2EFEA;--gold:#B8872A;
+  --ink-60:rgba(27,27,27,.6);--ink-30:rgba(27,27,27,.28);--rule:rgba(27,27,27,.13);
+  --red:#9B2C1F;--green:#2F6B4F;
+  --display:'Barlow Condensed',sans-serif;--body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bone);color:var(--black);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 120px}
+button{font-family:var(--mono);cursor:pointer;border:1px solid var(--ink-30);background:transparent;color:var(--black)}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* gate */
+#gate{max-width:340px;margin:16vh auto;text-align:left}
+#gate h1{font-family:var(--display);font-size:52px;text-transform:uppercase;line-height:.95;margin-bottom:8px}
+#gate p{color:var(--ink-60);font-size:14px;margin-bottom:22px}
+#gate input{width:100%;font-family:var(--mono);font-size:15px;padding:13px 14px;border:1px solid var(--ink-30);background:#fff}
+#gate input:focus{outline:2px solid var(--gold);outline-offset:1px}
+#gate button{width:100%;margin-top:10px;padding:14px;background:var(--black);color:var(--bone);border-color:var(--black);
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+#gateErr{color:var(--red);font-size:13px;margin-top:10px}
+
+/* header */
+header{border-bottom:2px solid var(--black);padding:20px 0 12px;margin-bottom:20px;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+header h1{font-family:var(--display);font-size:30px;text-transform:uppercase;line-height:1}
+.stats{display:flex;gap:6px;font-family:var(--mono);font-size:11px}
+.stat{border:1px solid var(--ink-30);padding:5px 9px;text-align:center;min-width:52px}
+.stat b{display:block;font-size:16px;font-weight:500;line-height:1.2}
+.stat span{color:var(--ink-60);letter-spacing:.08em;font-size:9px}
+.stat.hot{border-color:var(--red);color:var(--red)}
+
+/* controls */
+.bar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:6px}
+.seg{display:flex}
+.seg button{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;margin-left:-1px}
+.seg button.on{background:var(--black);color:var(--bone);border-color:var(--black);position:relative;z-index:1}
+.grow{flex:1}
+.bulk{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:8px 13px;
+  border-color:var(--green);color:var(--green)}
+.bulk:hover{background:var(--green);color:#fff}
+
+/* rows */
+.row{display:flex;gap:14px;padding:16px 12px;border-bottom:1px solid var(--rule);align-items:flex-start;
+  border-left:3px solid transparent;margin-left:-15px}
+.row.focus{background:#fff;border-left-color:var(--gold)}
+.row.prio{background:rgba(155,44,31,.05)}
+.row.prio.focus{border-left-color:var(--red)}
+.meta{flex:0 0 66px;font-family:var(--mono);font-size:10px;color:var(--ink-60);line-height:1.7;letter-spacing:.05em}
+.meta .flag{color:var(--red);font-weight:500}
+.txt{flex:1;min-width:0}
+.txt p{white-space:pre-wrap;word-break:break-word}
+.txt textarea{width:100%;font-family:var(--body);font-size:15px;line-height:1.5;padding:9px 10px;
+  border:1px solid var(--gold);background:#fff;resize:vertical;min-height:74px}
+.txt textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.orig{font-family:var(--mono);font-size:11px;color:var(--ink-30);margin-top:7px}
+.acts{flex:0 0 auto;display:flex;gap:5px}
+.acts button{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:6px 9px}
+.ok{border-color:var(--green);color:var(--green)}
+.ok:hover{background:var(--green);color:#fff}
+.no{border-color:var(--red);color:var(--red)}
+.no:hover{background:var(--red);color:#fff}
+
+.empty{padding:70px 0;text-align:center;color:var(--ink-30);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.keys{position:fixed;bottom:0;left:0;right:0;background:var(--black);color:var(--bone);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 20px;text-align:center}
+.keys b{color:var(--gold);font-weight:500}
+.hidden{display:none}
+@media(max-width:620px){
+  .meta{flex-basis:50px}
+  .row{flex-wrap:wrap}
+  .acts{width:100%;padding-left:64px}
+  .keys{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>The Room<br>Review</h1>
+  <p>Nothing appears on the wall until you approve it here.</p>
+  <input id="key" type="password" placeholder="Admin key" autocomplete="current-password">
+  <button id="enter">Open the queue</button>
+  <div id="gateErr" class="hidden"></div>
+</div>
+
+<div class="wrap hidden" id="app">
+  <header>
+    <h1>Review queue</h1>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="bar">
+    <div class="seg" id="days"></div>
+    <div class="seg" id="tabs"></div>
+    <div class="grow"></div>
+    <button class="bulk hidden" id="bulk"></button>
+  </div>
+
+  <div id="rows"><div class="empty">Loading</div></div>
+</div>
+
+<div class="keys hidden" id="keys">
+  <b>J</b> / <b>K</b> move &nbsp;·&nbsp; <b>A</b> approve &nbsp;·&nbsp; <b>R</b> reject &nbsp;·&nbsp;
+  <b>E</b> edit &nbsp;·&nbsp; <b>⌘↵</b> save and approve &nbsp;·&nbsp; <b>Esc</b> cancel
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let KEY = sessionStorage.getItem('room.key') || '';
+let rows = [], focus = 0, status = 'pending', day = 0, editing = null;
+
+async function api(payload){
+  const r = await fetch('/.netlify/functions/admin', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-admin-key':KEY},
+    body: JSON.stringify(payload)
+  });
+  if (r.status === 401) throw new Error('unauthorized');
+  return r.json();
+}
+
+$('enter').addEventListener('click', tryKey);
+$('key').addEventListener('keydown', e => { if (e.key === 'Enter') tryKey(); });
+
+async function tryKey(){
+  KEY = $('key').value.trim();
+  if (!KEY) return;
+  try {
+    await api({ action:'stats' });
+    sessionStorage.setItem('room.key', KEY);
+    boot();
+  } catch(e){
+    $('gateErr').textContent = 'That key did not work.';
+    $('gateErr').classList.remove('hidden');
+  }
+}
+
+if (KEY) api({action:'stats'}).then(r => r.ok && boot()).catch(()=>{});
+
+function boot(){
+  $('gate').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  $('keys').classList.remove('hidden');
+  $('days').innerHTML = ['All',1,2,3,4,5]
+    .map((d,i) => `<button data-day="${i===0?0:d}" class="${(i===0?0:d)===day?'on':''}">${i===0?'All':'D'+d}</button>`).join('');
+  $('tabs').innerHTML = ['pending','approved','rejected']
+    .map(s => `<button data-status="${s}" class="${s===status?'on':''}">${s}</button>`).join('');
+  $('days').onclick = e => { const b=e.target.closest('button'); if(!b)return; day=+b.dataset.day; boot(); };
+  $('tabs').onclick = e => { const b=e.target.closest('button'); if(!b)return; status=b.dataset.status; boot(); };
+  $('bulk').onclick = approveAll;
+  loadStats(); load();
+}
+
+async function loadStats(){
+  const r = await api({ action:'stats' });
+  if (!r.ok) return;
+  const s = r.stats;
+  let html = '';
+  for (let d = 1; d <= 5; d++)
+    html += `<div class="stat"><b>${s.pending[d]}</b><span>DAY ${d}</span></div>`;
+  if (s.priority)
+    html += `<div class="stat hot"><b>${s.priority}</b><span>READ FIRST</span></div>`;
+  $('stats').innerHTML = html;
+}
+
+async function load(){
+  $('rows').innerHTML = '<div class="empty">Loading</div>';
+  const r = await api({ action:'list', status, day });
+  rows = r.rows || [];
+  focus = 0; editing = null;
+  render();
+}
+
+function render(){
+  if (!rows.length){
+    $('rows').innerHTML = `<div class="empty">Nothing ${status}</div>`;
+    $('bulk').classList.add('hidden');
+    return;
+  }
+  if (status === 'pending'){
+    $('bulk').textContent = 'Approve all ' + rows.length;
+    $('bulk').classList.remove('hidden');
+  } else $('bulk').classList.add('hidden');
+
+  $('rows').innerHTML = rows.map((e,i) => {
+    const when = new Date(e.created_at)
+      .toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    const body = editing === e.id
+      ? `<textarea id="ed">${esc(e.text)}</textarea>`
+      : `<p>${esc(e.text)}</p>` + (e.original ? `<div class="orig">edited from: ${esc(e.original)}</div>` : '');
+    const acts = status === 'pending'
+      ? `<button class="ok" data-do="approve" data-i="${i}">Approve</button>
+         <button data-do="edit" data-i="${i}">Edit</button>
+         <button class="no" data-do="reject" data-i="${i}">Reject</button>`
+      : `<button data-do="edit" data-i="${i}">Edit</button>
+         <button data-do="unpost" data-i="${i}">Back to queue</button>`;
+    return `<div class="row ${i===focus?'focus':''} ${e.priority?'prio':''}" data-i="${i}">
+      <div class="meta">D${e.day}<br>${when}${e.priority?'<br><span class="flag">READ</span>':''}</div>
+      <div class="txt">${body}</div>
+      <div class="acts">${acts}</div>
+    </div>`;
+  }).join('');
+
+  const ed = $('ed');
+  if (ed){ ed.focus(); ed.setSelectionRange(ed.value.length, ed.value.length); }
+  else document.querySelector('.row.focus')?.scrollIntoView({block:'nearest'});
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+$('rows').addEventListener('click', e => {
+  const b = e.target.closest('button[data-do]');
+  if (b){ focus = +b.dataset.i; return act(b.dataset.do); }
+  const row = e.target.closest('.row');
+  if (row && !editing){ focus = +row.dataset.i; render(); }
+});
+
+async function act(what){
+  const e = rows[focus];
+  if (!e) return;
+  if (what === 'edit'){ editing = editing === e.id ? null : e.id; return render(); }
+
+  if (editing === e.id){
+    const text = $('ed').value.trim();
+    await api({ action:'edit', id:e.id, text, approve: what === 'approve' });
+    if (what !== 'approve'){ e.text = text; editing = null; return render(); }
+  } else {
+    await api({ action: what, ids:[e.id] });
+  }
+  rows.splice(focus, 1);
+  if (focus >= rows.length) focus = Math.max(0, rows.length - 1);
+  editing = null;
+  render(); loadStats();
+}
+
+async function approveAll(){
+  if (!confirm('Approve all ' + rows.length + ' and put them on the wall?')) return;
+  await api({ action:'approve', ids: rows.map(r => r.id) });
+  load(); loadStats();
+}
+
+document.addEventListener('keydown', e => {
+  if ($('app').classList.contains('hidden')) return;
+  if (editing){
+    if (e.key === 'Escape'){ editing = null; render(); }
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); act('approve'); }
+    return;
+  }
+  if (e.target.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase();
+  if (k === 'j'){ focus = Math.min(rows.length-1, focus+1); render(); }
+  if (k === 'k'){ focus = Math.max(0, focus-1); render(); }
+  if (k === 'a' && status === 'pending') act('approve');
+  if (k === 'r' && status === 'pending') act('reject');
+  if (k === 'e') act('edit');
+});
+</script>
+</body>
+</html>
