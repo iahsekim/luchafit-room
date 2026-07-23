@@ -378,7 +378,9 @@ async function showWall(mine, justSent){
 async function load(){
   try{
     const r = await fetch(`/.netlify/functions/wall?day=${day}&offset=${offset}&limit=${PAGE}`);
+    if (!r.ok) throw new Error('wall returned ' + r.status);
     const j = await r.json();
+    if (!j || !Array.isArray(j.entries)) throw new Error('unexpected response shape');
     if (offset === 0){
       $('entries').innerHTML = '';
       $('wCount').innerHTML = j.total > 25
@@ -399,7 +401,11 @@ async function load(){
     offset += j.entries.length;
     $('more').classList.toggle('hidden', offset >= j.shown || j.entries.length === 0);
   } catch(e){
-    $('entries').innerHTML = '<p class="note">The wall would not load. Refresh to try again.</p>';
+    console.error('[the room] wall failed:', e);
+    $('entries').innerHTML =
+      '<p class="note">The wall would not load. Refresh to try again.<br>' +
+      '<span style="font-family:var(--mono);font-size:11px;opacity:.6">' +
+      String(e && e.message || e).replace(/[<>]/g,'') + '</span></p>';
   }
 }
 $('more').addEventListener('click', load);
