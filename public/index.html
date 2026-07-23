@@ -297,6 +297,12 @@ const D = DAYS[day];
 const KEY = 'theroom.d' + day;
 const PKEY = 'theroom.priv.d' + day;
 
+// Declared here, not further down. A returning visitor triggers showWall() -> load()
+// during the initial pass, and load() reads `offset`. Any `let` below that call site
+// is still in its temporal dead zone and throws.
+let offset = 0;
+const PAGE = 25;
+
 const $ = id => document.getElementById(id);
 
 // scoreboard
@@ -350,7 +356,6 @@ send.addEventListener('click', async () => {
   }
 });
 
-let offset = 0, PAGE = 25;
 async function showWall(mine, justSent){
   $('view-prompt').classList.add('hidden');
   $('view-wall').classList.remove('hidden');
