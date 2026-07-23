@@ -10,10 +10,15 @@ export default async (req) => {
   const offset = Math.max(0, parseInt(url.searchParams.get('offset') || '0', 10));
   const limit = Math.min(50, Math.max(1, parseInt(url.searchParams.get('limit') || '25', 10)));
 
+  // Only successful responses are cacheable. Caching an error meant a brief blip
+  // during a deploy got pinned at the CDN and kept serving a broken wall.
   const json = (b, s = 200) =>
     new Response(JSON.stringify(b), {
       status: s,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=20' }
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': s === 200 ? 'public, max-age=20' : 'no-store'
+      }
     });
 
   if (!(day >= 1 && day <= 5)) return json({ entries: [], shown: 0, total: 0 }, 400);
