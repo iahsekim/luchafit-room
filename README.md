@@ -53,6 +53,29 @@ the wrestler actually wrote underneath your version. Fix typos and trim freely, 
 that record is there so you can see when you have rewritten someone rather than tidied
 them. Rejected entries are archived, not deleted.
 
+### Adding entries by hand
+
+**Add entries** in the review console opens a paste box. One per line, pick a day, then:
+
+- **Add to queue** drops them in for review like any other submission
+- **Post straight to wall** publishes immediately, which is what you want for seeding
+
+Seeded entries carry a `seed` flag and show a gold **SEED** tag in the console. The public
+wall never shows it. Use this the day before launch so the first wrestler through the door
+sees a room instead of an empty page.
+
+Same thing from the terminal, if you would rather script it:
+
+```bash
+curl -s -X POST https://room.luchafit.com/.netlify/functions/admin \
+  -H 'Content-Type: application/json' \
+  -H "x-admin-key: $ADMIN_KEY" \
+  -d '{"action":"seed","day":1,"approve":true,"texts":[
+        "My standard this season is winning the third period.",
+        "My standard this season is never getting outworked in my own room."
+      ]}'
+```
+
 ### The READ FIRST lane
 
 Entries containing certain terms are written into a separate priority lane and sort to

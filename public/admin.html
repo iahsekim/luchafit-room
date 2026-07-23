@@ -74,6 +74,20 @@ header h1{font-family:var(--display);font-size:30px;text-transform:uppercase;lin
 .no{border-color:var(--red);color:var(--red)}
 .no:hover{background:var(--red);color:#fff}
 
+/* seed panel */
+.seed{border:1px solid var(--ink-30);padding:18px;margin-bottom:18px;background:#fff}
+.seed h3{font-family:var(--display);font-size:22px;text-transform:uppercase;margin-bottom:4px}
+.seed p.hint{font-size:13px;color:var(--ink-60);margin-bottom:14px}
+.seed textarea{width:100%;min-height:150px;font-family:var(--body);font-size:15px;line-height:1.5;
+  padding:11px 12px;border:1px solid var(--ink-30);resize:vertical}
+.seed textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.seed .foot{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.seed select{font-family:var(--mono);font-size:11px;padding:8px 10px;border:1px solid var(--ink-30);background:#fff}
+.seed .n{font-family:var(--mono);font-size:11px;color:var(--ink-60);letter-spacing:.08em;flex:1}
+.seed button{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px}
+.seed .go{background:var(--green);color:#fff;border-color:var(--green)}
+.seed .msg{font-family:var(--mono);font-size:11px;margin-top:10px;letter-spacing:.05em}
+.tag{color:var(--gold);font-weight:500}
 .empty{padding:70px 0;text-align:center;color:var(--ink-30);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 .keys{position:fixed;bottom:0;left:0;right:0;background:var(--black);color:var(--bone);
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 20px;text-align:center}
@@ -108,6 +122,26 @@ header h1{font-family:var(--display);font-size:30px;text-transform:uppercase;lin
     <div class="seg" id="tabs"></div>
     <div class="grow"></div>
     <button class="bulk hidden" id="bulk"></button>
+    <button id="seedToggle" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:8px 13px">Add entries</button>
+  </div>
+
+  <div class="seed hidden" id="seedPanel">
+    <h3>Add entries by hand</h3>
+    <p class="hint">One entry per line. Blank lines ignored. Anything under 8 characters is skipped.</p>
+    <textarea id="seedText" placeholder="My standard this season is showing up first and leaving last.
+My standard this season is winning the third period.
+My standard this season is never getting outworked in my own room."></textarea>
+    <div class="foot">
+      <select id="seedDay">
+        <option value="1">Day 1</option><option value="2">Day 2</option>
+        <option value="3">Day 3</option><option value="4">Day 4</option>
+        <option value="5">Day 5</option>
+      </select>
+      <span class="n" id="seedCount">0 lines</span>
+      <button id="seedQueue">Add to queue</button>
+      <button class="go" id="seedWall">Post straight to wall</button>
+    </div>
+    <div class="msg hidden" id="seedMsg"></div>
   </div>
 
   <div id="rows"><div class="empty">Loading</div></div>
@@ -129,8 +163,9 @@ async function api(payload){
     headers:{'Content-Type':'application/json','x-admin-key':KEY},
     body: JSON.stringify(payload)
   });
-  if (r.status === 401) throw new Error('unauthorized');
-  return r.json();
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.message || ('Request failed (' + r.status + ')'));
+  return j;
 }
 
 $('enter').addEventListener('click', tryKey);
@@ -144,7 +179,7 @@ async function tryKey(){
     sessionStorage.setItem('room.key', KEY);
     boot();
   } catch(e){
-    $('gateErr').textContent = 'That key did not work.';
+    $('gateErr').textContent = e.message || 'That key did not work.';
     $('gateErr').classList.remove('hidden');
   }
 }
@@ -209,7 +244,7 @@ function render(){
       : `<button data-do="edit" data-i="${i}">Edit</button>
          <button data-do="unpost" data-i="${i}">Back to queue</button>`;
     return `<div class="row ${i===focus?'focus':''} ${e.priority?'prio':''}" data-i="${i}">
-      <div class="meta">D${e.day}<br>${when}${e.priority?'<br><span class="flag">READ</span>':''}</div>
+      <div class="meta">D${e.day}<br>${when}${e.priority?'<br><span class="flag">READ</span>':''}${e.seed?'<br><span class="tag">SEED</span>':''}</div>
       <div class="txt">${body}</div>
       <div class="acts">${acts}</div>
     </div>`;
@@ -253,6 +288,42 @@ async function approveAll(){
   load(); loadStats();
 }
 
+// ---- seeding ----
+const seedLines = () => $('seedText').value.split('\n')
+  .map(l => l.trim().replace(/\s+/g,' ')).filter(l => l.length >= 8 && l.length <= 400);
+
+$('seedToggle').addEventListener('click', () => {
+  const panel = $('seedPanel');
+  panel.classList.toggle('hidden');
+  if (!panel.classList.contains('hidden')) { $('seedDay').value = day || 1; $('seedText').focus(); }
+});
+$('seedText').addEventListener('input', () => {
+  const n = seedLines().length;
+  $('seedCount').textContent = n + (n === 1 ? ' usable line' : ' usable lines');
+});
+
+async function seed(approve){
+  const texts = seedLines();
+  const msg = $('seedMsg');
+  msg.classList.remove('hidden');
+  if (!texts.length){ msg.style.color = 'var(--red)'; msg.textContent = 'Nothing usable to add.'; return; }
+  msg.style.color = 'var(--ink-60)';
+  msg.textContent = 'Adding ' + texts.length + '...';
+  try {
+    const r = await api({ action:'seed', day: +$('seedDay').value, texts, approve });
+    if (!r.ok) throw new Error(r.message || 'Could not add those');
+    msg.style.color = 'var(--green)';
+    msg.textContent = 'Added ' + r.added + (approve ? ' straight to the wall.' : ' to the queue.');
+    $('seedText').value = ''; $('seedCount').textContent = '0 lines';
+    load(); loadStats();
+  } catch(e){
+    msg.style.color = 'var(--red)';
+    msg.textContent = e.message;
+  }
+}
+$('seedQueue').addEventListener('click', () => seed(false));
+$('seedWall').addEventListener('click', () => seed(true));
+
 document.addEventListener('keydown', e => {
   if ($('app').classList.contains('hidden')) return;
   if (editing){
@@ -260,7 +331,7 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); act('approve'); }
     return;
   }
-  if (e.target.tagName === 'INPUT') return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
   const k = e.key.toLowerCase();
   if (k === 'j'){ focus = Math.min(rows.length-1, focus+1); render(); }
   if (k === 'k'){ focus = Math.max(0, focus-1); render(); }

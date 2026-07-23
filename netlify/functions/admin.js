@@ -64,7 +64,13 @@ export default async (req) => {
     });
 
   if (req.method !== 'POST') return json({ ok: false, message: 'Method not allowed' }, 405);
-  if (!keyOk(req.headers.get('x-admin-key'))) return json({ ok: false, message: 'Wrong key' }, 401);
+
+  // Distinguish "no key configured on this deploy" from "wrong key typed".
+  // Reveals nothing about the key itself, but saves an hour of guessing.
+  if (!ADMIN_KEY)
+    return json({ ok: false, message: 'ADMIN_KEY is not set on this deploy. Check env vars, then redeploy.' }, 503);
+
+  if (!keyOk(req.headers.get('x-admin-key'))) return json({ ok: false, message: 'That key did not work.' }, 401);
 
   let body;
   try { body = await req.json(); } catch { return json({ ok: false, message: 'Bad request' }, 400); }
@@ -179,6 +185,37 @@ export default async (req) => {
         wall.map(e => (e.id === id ? { ...e, text, original: e.original || e.text } : e))
       );
       return json({ ok: okWrite });
+    }
+
+    // Bulk insert. Used for seeding the wall before launch so the first wrestler
+    // through the door sees a room instead of a blank page.
+    if (body.action === 'seed') {
+      const day = parseInt(body.day, 10);
+      if (!(day >= 1 && day <= 5)) return json({ ok: false, message: 'Pick a day' }, 400);
+
+      const texts = (body.texts || [])
+        .map(t => String(t).trim().replace(/\s+/g, ' '))
+        .filter(t => t.length >= 8 && t.length <= 400);
+      if (!texts.length)
+        return json({ ok: false, message: 'No usable lines. Each needs 8 to 400 characters.' }, 400);
+      if (texts.length > 200)
+        return json({ ok: false, message: ' 200 lines at a time, max.' }, 400);
+
+      const now = Date.now();
+      const rows = texts.map((text, i) => ({
+        id: `pending/d${day}/0/${now + i}-${crypto.randomUUID().slice(0, 8)}`,
+        day, text, original: null, priority: false, seed: true,
+        created_at: new Date(now + i).toISOString()
+      }));
+
+      if (body.approve) {
+        const okWrite = await mutateWall(s, day, wall => [...rows, ...wall]);
+        if (!okWrite) return json({ ok: false, message: 'The wall was busy. Try again.' }, 409);
+      } else {
+        for (let i = 0; i < rows.length; i += 12)
+          await Promise.all(rows.slice(i, i + 12).map(r => s.setJSON(r.id, r, { onlyIfNew: true })));
+      }
+      return json({ ok: true, added: rows.length });
     }
 
     return json({ ok: false, message: 'Unknown action' }, 400);
