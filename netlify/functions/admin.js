@@ -7,6 +7,14 @@ import { isPriority } from '../lib/priority.js';
 const ADMIN_KEY = process.env.ADMIN_KEY;
 const PAGE = 60;
 
+// Constant-time compare so the key cannot be guessed a character at a time.
+function keyOk(given) {
+  if (!ADMIN_KEY || !given || given.length !== ADMIN_KEY.length) return false;
+  let diff = 0;
+  for (let i = 0; i < ADMIN_KEY.length; i++) diff |= ADMIN_KEY.charCodeAt(i) ^ given.charCodeAt(i);
+  return diff === 0;
+}
+
 // Edit tokens are never sent to the browser, not even the console's.
 const strip = ({ token, ...rest }) => rest;
 
