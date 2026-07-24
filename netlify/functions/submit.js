@@ -34,10 +34,16 @@ export default async (req) => {
   const ipHash = [...new Uint8Array(digest)].slice(0, 8)
     .map(b => b.toString(16).padStart(2, '0')).join('');
 
+  // Deliberately loose. A whole wrestling room shares one school IP, so a tight
+  // per-IP cap would block most of a team the moment the third of them posted.
+  // Stopping someone submitting twice is localStorage's job; this only exists to
+  // stop a script, and anything odd still lands in the review queue either way.
+  const PER_IP_PER_DAY = 150;
   const rateKey = `rate/${ipHash}/d${day}`;
   try {
     const seen = await s.get(rateKey, { type: 'json', consistency: 'strong' });
-    if (seen && seen.n >= 3) return json({ ok: false, message: 'You have already added yours for today.' }, 429);
+    if (seen && seen.n >= PER_IP_PER_DAY)
+      return json({ ok: false, message: 'Too many entries from this network today. Try again tomorrow.' }, 429);
     await s.setJSON(rateKey, { n: (seen?.n || 0) + 1 });
   } catch { /* best effort, never block a real submission on it */ }
 

@@ -171,6 +171,7 @@ main{padding-top:clamp(28px,3.4vw,44px);padding-bottom:clamp(72px,8vw,120px)}
       <span class="lbl">Days open</span>
       <div class="daytog" id="daytog"></div>
       <span class="note" id="openNote">Closed days show a holding screen instead of the prompt.</span>
+      <button class="pill" id="clearRates" title="Wipes per-network submission counters">Reset limits</button>
     </div>
 
     <div class="bar">
@@ -265,6 +266,14 @@ $('daytog').addEventListener('click', async e => {
       ? 'Open: ' + openDays.map(n => 'Day ' + n).join(', ')
       : 'Every day is closed. Nobody can post.';
   }catch(err){ $('openNote').textContent = err.message; }
+});
+
+$('clearRates').addEventListener('click', async () => {
+  $('openNote').textContent = 'Clearing';
+  try{
+    const r = await api({action:'clearRates'});
+    $('openNote').textContent = 'Cleared ' + r.cleared + ' network counters.';
+  }catch(e){ $('openNote').textContent = e.message; }
 });
 
 async function loadStats(){

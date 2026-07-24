@@ -190,6 +190,14 @@ export default async (req) => {
       return json({ ok: true, openDays: days });
     }
 
+    // Wipes the per-IP submission counters. Handy while testing from one machine.
+    if (body.action === 'clearRates') {
+      const { blobs } = await s.list({ prefix: 'rate/' });
+      for (let i = 0; i < blobs.length; i += 12)
+        await Promise.all(blobs.slice(i, i + 12).map(b => s.delete(b.key)));
+      return json({ ok: true, cleared: blobs.length });
+    }
+
     if (body.action === 'seed') {
       const day = parseInt(body.day, 10);
       if (!(day >= 1 && day <= 5)) return json({ ok: false, message: 'Pick a day' }, 400);
