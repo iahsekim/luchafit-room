@@ -144,26 +144,34 @@ know you are looking at a re-review rather than something new.
 The token lives in `localStorage`, so clearing browser data or switching devices means
 losing the ability to edit that entry. The entry itself is unaffected.
 
-## The two-part structure
+## The five days
 
-Each day asks for two different things:
+One public entry per day. No private box, nothing stored on the device except a copy
+of what they submitted and their edit token.
 
-1. **Public** — one line, anonymous, goes on the wall. This is the gate: post to read.
-2. **Private** — a longer reflection that never leaves the device. `localStorage` only,
-   never transmitted, nothing to moderate.
+| Day | Shape | Ceiling |
+|---|---|---|
+| 1 Non-negotiables | two blanks: what you will not compromise on, and when it gets tested | 240 |
+| 2 The Letter | a letter from the end of the season, written in past tense, plus a closing line | 1800 |
+| 3 The Controllables | three you control, three you do not | 760 |
+| 4 Room Debt | three things someone gives you that you could not get elsewhere | 560 |
+| 5 Five Whys | what fell short, five whys, then what changes | 1300 |
 
-The public prompt comes first and the private one sits below the wall, after they have
-read what everyone else wrote. That ordering is deliberate: the frictionless action
-should not sit behind the harder one, and the reflection lands better once the room has
-primed it.
+Days 3 and 5 are guided fields rather than one empty box. A blank textarea for "ask why
+five times" produces a paragraph that skips to the comfortable answer. Separate boxes
+force the chain, and the wall entries come back consistent enough to read at a glance.
 
-On day 5 the page assembles everything from all five days, public and private, into a
-recap directly above the Unstuck CTA. That recap is what makes the private box worth
-filling in. Since it reads `localStorage`, someone who switches devices mid-week sees
-only what that browser holds, so the copy never promises a complete week.
+Every day assembles into one plain-text entry, so review, editing, and the wall all work
+the same regardless of shape. Limits live in `netlify/lib/days.js` and are enforced on
+the client for feel and on the server because the client cannot be trusted.
+
+Day 5 also assembles all five of a person's own entries into a recap above the Unstuck
+CTA, read from `localStorage`. Someone who switches devices mid-week sees only what that
+browser holds, so the copy never promises a complete week.
 
 ## Deliberately not built
 
 - No accounts, no cookies beyond `localStorage`, no analytics on the entry text
 - Private reflections never leave the device
 - No likes or replies, which is what keeps it a wall instead of a comment section
+- No private-only journalling, since a box that saves nowhere and returns nothing is not journalling

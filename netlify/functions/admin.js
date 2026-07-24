@@ -19,7 +19,6 @@ function keyOk(given) {
 const strip = ({ token, ...rest }) => rest;
 
 // Fetch many blobs without opening hundreds of sockets at once.
-
 async function getMany(s, keys) {
   const out = [];
   for (let i = 0; i < keys.length; i += 12) {
@@ -46,12 +45,6 @@ async function pendingKeys(s, day) {
 }
 
 export default async (req) => {
-  const json = (b, s = 200) =>
-    new Response(JSON.stringify(b), {
-      status: s,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
-    });
-
   if (req.method !== 'POST') return json({ ok: false, message: 'Method not allowed' }, 405);
 
   // Distinguish "no key configured on this deploy" from "wrong key typed".
@@ -154,8 +147,8 @@ export default async (req) => {
     if (body.action === 'edit') {
       const id = String(body.id || '');
       const text = String(body.text || '').trim().replace(/\s+/g, ' ');
-      if (text.length < 8 || text.length > 400)
-        return json({ ok: false, message: 'Edit must be 8 to 400 characters' }, 400);
+      if (text.length < 8 || text.length > 2000)
+        return json({ ok: false, message: 'Edit must be 8 to 2000 characters' }, 400);
 
       const day = id.match(/d(\d)\//)?.[1];
       if (!day) return json({ ok: false, message: 'No such entry' }, 404);
@@ -190,7 +183,7 @@ export default async (req) => {
 
       const texts = (body.texts || [])
         .map(t => String(t).trim().replace(/\s+/g, ' '))
-        .filter(t => t.length >= 8 && t.length <= 400);
+        .filter(t => t.length >= 8 && t.length <= 2000);
       if (!texts.length)
         return json({ ok: false, message: 'No usable lines. Each needs 8 to 400 characters.' }, 400);
       if (texts.length > 200)

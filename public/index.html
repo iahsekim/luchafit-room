@@ -14,10 +14,8 @@
   --blue:#1E33D9; --blue-deep:#141F86; --tint:#E7EAFA;
   --orange:#FF4B1F; --orange-tint:#FFE7DF;
   --line:rgba(12,13,15,.13);
-  --disp:'Bricolage Grotesque',sans-serif;
-  --body:'Instrument Sans',sans-serif;
-  --serif:'Instrument Serif',serif;
-  --mono:'IBM Plex Mono',monospace;
+  --disp:'Bricolage Grotesque',sans-serif; --body:'Instrument Sans',sans-serif;
+  --serif:'Instrument Serif',serif; --mono:'IBM Plex Mono',monospace;
   --r:14px; --ease:cubic-bezier(.22,.8,.24,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -28,14 +26,13 @@ body{font-family:var(--body);background:var(--paper);color:var(--ink);font-size:
 button,textarea{font:inherit;color:inherit}
 button{background:none;border:none;cursor:pointer}
 button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
-em.serif{font-family:var(--serif);font-style:italic;letter-spacing:0;font-weight:400}
+em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
 .mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
-.mono.blue{color:var(--blue)} .mono.orange{color:var(--orange)}
-.wrap{max-width:760px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
+.mono.blue{color:var(--blue)}
+.wrap{max-width:720px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
 .hidden{display:none!important}
 
-/* header */
-header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.92);backdrop-filter:blur(12px);
+header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.93);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:62px;gap:14px}
 .wordmark{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;
@@ -47,25 +44,20 @@ header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.92);backdr
 .pip.done{border-color:var(--ink);color:var(--ink)}
 .pip.now{background:var(--blue);border-color:var(--blue);color:#fff}
 
-/* lead */
-main{padding:clamp(30px,5vw,54px) 0 100px}
-.lead{margin-bottom:clamp(20px,3vw,30px)}
+main{padding:clamp(28px,5vw,50px) 0 110px}
+.lead{margin-bottom:clamp(20px,3vw,28px)}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--orange);margin-bottom:14px}
-h1{font-family:var(--disp);font-weight:800;font-size:clamp(34px,6.4vw,58px);
-  letter-spacing:-.03em;line-height:.98}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(33px,6.2vw,56px);letter-spacing:-.03em;line-height:.98}
 h1 em.serif{color:var(--blue)}
 .sub{color:var(--ink-2);margin-top:14px;max-width:50ch;font-size:clamp(15px,1.6vw,17px)}
 
-/* cards */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:clamp(20px,3vw,30px);margin-bottom:clamp(14px,2vw,20px)}
-.card h2{font-family:var(--disp);font-weight:600;font-size:clamp(21px,2.6vw,27px);letter-spacing:-.02em;line-height:1.15}
-.ask{font-family:var(--disp);font-weight:600;font-size:clamp(19px,2.4vw,24px);
+  padding:clamp(20px,3vw,28px);margin-bottom:clamp(14px,2vw,18px)}
+.ask{font-family:var(--disp);font-weight:600;font-size:clamp(19px,2.4vw,23px);
   letter-spacing:-.015em;line-height:1.25;margin-bottom:8px}
-.note{font-size:14px;color:var(--ink-2);margin-bottom:16px}
+.note{font-size:14px;color:var(--ink-2);margin-bottom:18px}
 
-/* the anonymity band, deliberately loud */
 .anon{display:flex;gap:13px;align-items:flex-start;background:var(--tint);
   border-radius:10px;padding:14px 16px;margin-bottom:22px}
 .anon .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto;
@@ -75,19 +67,33 @@ h1 em.serif{color:var(--blue)}
   text-transform:uppercase;color:var(--blue-deep);font-weight:500;margin-bottom:3px}
 .anon span{font-size:13.5px;color:var(--blue-deep);line-height:1.5;display:block}
 
+details.eg{border:1px dashed var(--line);border-radius:10px;padding:12px 15px;margin-bottom:20px}
+details.eg summary{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--blue);cursor:pointer;list-style:none}
+details.eg summary::-webkit-details-marker{display:none}
+details.eg summary:before{content:'+ ';font-weight:600}
+details.eg[open] summary:before{content:'– '}
+details.eg p{font-size:14px;color:var(--ink-2);margin-top:10px;line-height:1.6;white-space:pre-wrap}
+
+.fgroup{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);margin:22px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+.fgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
+.f{margin-bottom:14px}
+.f .pre{font-family:var(--disp);font-weight:600;font-size:16px;margin-bottom:6px;display:block}
+.f .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);margin-bottom:6px;display:block}
 textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);
-  padding:14px 15px;resize:vertical;line-height:1.55;transition:border-color .25s}
-textarea:focus{border-color:var(--blue);background:var(--card)}
-textarea::placeholder{color:rgba(12,13,15,.32)}
-#pub,#editText{min-height:120px}
-#priv{min-height:150px;border-style:dashed}
+  padding:13px 14px;resize:vertical;line-height:1.55;font-size:16px;transition:border-color .2s}
+textarea:focus{border-color:var(--blue);background:var(--card);outline:none}
+textarea::placeholder{color:rgba(12,13,15,.3)}
+.f .cnt{font-family:var(--mono);font-size:10px;color:var(--ink-2);text-align:right;margin-top:4px}
+.f .cnt.over{color:var(--orange)}
 
 .meter{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  font-family:var(--mono);font-size:11px;color:var(--ink-2);margin:9px 0 18px}
+  font-family:var(--mono);font-size:11px;color:var(--ink-2);margin:16px 0 16px}
 .meter .over{color:var(--orange)}
-
-.pill{font-family:var(--mono);font-size:12px;letter-spacing:.02em;border:1.5px solid var(--ink);
-  border-radius:999px;padding:11px 20px;background:var(--card);transition:all .25s;display:inline-block}
+.pill{font-family:var(--mono);font-size:12px;border:1.5px solid var(--ink);border-radius:999px;
+  padding:11px 20px;background:var(--card);transition:all .2s;display:inline-block}
 .pill:hover{background:var(--ink);color:var(--paper)}
 .pill.solid{background:var(--blue);border-color:var(--blue);color:#fff}
 .pill.solid:hover{background:var(--ink);border-color:var(--ink)}
@@ -95,55 +101,48 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
 .pill:disabled{background:var(--line);border-color:transparent;color:var(--ink-2);cursor:not-allowed}
 .pill:disabled:hover{background:var(--line);color:var(--ink-2)}
 .pill.sm{padding:7px 14px;font-size:11px}
-
 .err{font-size:14px;color:var(--orange);margin-top:14px;border-left:2.5px solid var(--orange);padding-left:13px}
-.foot-note{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);line-height:1.8;margin-top:20px}
+.foot-note{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);line-height:1.8;margin-top:18px}
 
-/* your entry */
-.yours{border:1.5px solid var(--ink);position:relative}
+.yours{border:1.5px solid var(--ink)}
 .yours-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   border-radius:999px;padding:5px 11px;background:var(--tint);color:var(--blue-deep)}
 .tag.wait{background:var(--orange-tint);color:#B32800}
 .yours-head .sp{flex:1}
-#yoursText{font-size:17px;line-height:1.5}
+#yoursText{font-size:16px;line-height:1.6;white-space:pre-wrap}
 
-/* wall */
 .wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  margin:clamp(26px,4vw,38px) 0 14px;flex-wrap:wrap}
+  margin:clamp(26px,4vw,36px) 0 14px;flex-wrap:wrap}
 .wall-head h2{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em}
 .entry{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
   margin-bottom:9px;display:flex;gap:15px;align-items:flex-start;
   opacity:0;transform:translateY(10px);animation:rise .5s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
 .entry .n{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.3);flex:0 0 30px;padding-top:4px}
-.entry p{font-size:15.5px;line-height:1.5;flex:1;min-width:0;overflow-wrap:break-word}
+.entry .body{flex:1;min-width:0}
+.entry p{font-size:15.5px;line-height:1.6;overflow-wrap:break-word;white-space:pre-wrap}
+.entry p.clamp{display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.entry .rm{font-family:var(--mono);font-size:10.5px;color:var(--blue);margin-top:8px}
 .skel{height:58px;background:rgba(12,13,15,.06);border-radius:10px;margin-bottom:9px;animation:sk 1.3s infinite}
 @keyframes sk{50%{opacity:.45}}
 
-/* recap */
 .recap{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.recap h2{color:#fff}
+.recap h2{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.2vw,32px);letter-spacing:-.025em;color:#fff}
 .recap .mono{color:rgba(242,241,236,.5)}
 .rday{border-top:1px solid rgba(242,241,236,.16);padding:18px 0}
 .rday:last-child{padding-bottom:0}
 .rday .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--orange);margin-bottom:9px}
-.rday .pubq{font-family:var(--disp);font-weight:500;font-size:17px;line-height:1.35;color:#fff}
-.rday .privq{font-size:14.5px;color:rgba(242,241,236,.72);margin-top:9px;
-  border-left:2.5px solid var(--blue);padding-left:13px;white-space:pre-wrap}
-.rday .none{font-size:13.5px;color:rgba(242,241,236,.4)}
+.rday .t{font-size:15px;line-height:1.6;color:rgba(242,241,236,.9);white-space:pre-wrap}
 
-/* cta */
-.cta{background:var(--blue);border-radius:var(--r);padding:clamp(24px,3.4vw,34px);color:#fff;margin-top:22px}
-.cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3.6vw,36px);
+.cta{background:var(--blue);border-radius:var(--r);padding:clamp(24px,3.4vw,32px);color:#fff;margin-top:20px}
+.cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3.6vw,34px);
   letter-spacing:-.025em;line-height:1;color:#fff}
 .cta h2 em.serif{color:#FFB39E}
-.cta p{color:rgba(255,255,255,.8);margin:12px 0 20px;max-width:46ch}
-.cta a.pill{background:#fff;border-color:#fff;color:var(--blue);font-weight:500}
+.cta p{color:rgba(255,255,255,.82);margin:12px 0 20px;max-width:46ch}
+.cta a.pill{background:#fff;border-color:#fff;color:var(--blue)}
 .cta a.pill:hover{background:var(--ink);border-color:var(--ink);color:#fff}
-.saved{font-family:var(--mono);font-size:10.5px;color:var(--blue);opacity:0;transition:opacity .3s}
-.saved.on{opacity:1}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
   .entry{opacity:1;transform:none}}
@@ -160,7 +159,6 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
 
 <main class="wrap">
 
-  <!-- ============ POST ============ -->
   <section id="view-post">
     <div class="lead">
       <div class="eyebrow" id="eyebrow"></div>
@@ -173,25 +171,27 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
         <span class="dot"></span>
         <span>
           <b>Anonymous</b>
-          <span>No name, no username, no email. Nothing you write here is connected
-          to you, and there is no way for anyone to work out who wrote what.</span>
+          <span>No name, no username, no email. Nothing you write here is connected to you,
+          and there is no way for anyone to work out who wrote what.</span>
         </span>
       </div>
 
-      <p class="ask" id="askPub"></p>
-      <p class="note" id="notePub"></p>
-      <textarea id="pub" maxlength="300"></textarea>
-      <div class="meter"><span id="hint"></span><span id="chars">0 / 240</span></div>
+      <p class="ask" id="ask"></p>
+      <p class="note" id="note"></p>
+      <details class="eg hidden" id="eg"><summary>See an example</summary><p id="egText"></p></details>
+
+      <div id="fields"></div>
+
+      <div class="meter"><span id="hint"></span><span id="chars"></span></div>
       <button class="pill solid block" id="send">Add mine to the wall</button>
       <div class="err hidden" id="err"></div>
       <p class="foot-note">
         Every entry is read by a person before it goes on the wall.<br>
-        You can change or delete yours afterwards.
+        You can change yours afterwards.
       </p>
     </div>
   </section>
 
-  <!-- ============ WALL ============ -->
   <section id="view-wall" class="hidden">
     <div class="lead">
       <div class="eyebrow" id="wEyebrow"></div>
@@ -207,10 +207,9 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
         <button class="pill sm" id="editBtn">Edit</button>
       </div>
       <p id="yoursText"></p>
-
       <div class="hidden" id="editBox" style="margin-top:16px">
-        <textarea id="editText" maxlength="300"></textarea>
-        <div class="meter"><span id="editHint">Edits go back for a read before they reappear</span><span id="editChars">0 / 240</span></div>
+        <textarea id="editText" rows="8"></textarea>
+        <div class="meter"><span>Edits go back for a read before they reappear</span><span id="editChars"></span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="pill solid" id="saveEdit">Save changes</button>
           <button class="pill" id="cancelEdit">Cancel</button>
@@ -219,29 +218,12 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
       </div>
     </div>
 
-    <div class="wall-head">
-      <h2>The room</h2>
-      <span class="mono" id="wallMeta"></span>
-    </div>
-
+    <div class="wall-head"><h2>The room</h2><span class="mono" id="wallMeta"></span></div>
     <div id="entries"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
     <button class="pill hidden" id="more" style="margin-top:6px">Show more</button>
 
-    <!-- private reflection, deliberately after the wall -->
-    <div class="card" id="privCard" style="margin-top:clamp(26px,4vw,38px)">
-      <div class="mono blue" style="margin-bottom:10px">OPTIONAL &nbsp;/&nbsp; STAYS ON THIS DEVICE</div>
-      <h2 style="margin-bottom:12px">Now the harder question</h2>
-      <p class="ask" id="askPriv"></p>
-      <p class="note">This one is just for you. It is never sent anywhere, we never see it,
-        and it does not go on the wall. On day 5 we will show you everything you wrote.</p>
-      <textarea id="priv" placeholder="Write as much as you want."></textarea>
-      <div class="meter"><span class="saved" id="privSaved">Saved on this device</span><span></span></div>
-    </div>
-
     <div class="card recap hidden" id="recap"></div>
-
     <div class="cta" id="cta"></div>
-
     <p class="foot-note" id="wFoot"></p>
   </section>
 
@@ -249,63 +231,100 @@ textarea::placeholder{color:rgba(12,13,15,.32)}
 
 <script>
 const DAYS = {
-1:{eyebrow:'Day 01 / The Standard',
-  title:'Set the bar<br>before the<br><em class="serif">season</em> does',
+1:{
+  eyebrow:'Day 01 / Non-negotiables',
+  title:'Name the line<br>you will not<br><em class="serif">cross</em>',
   lede:'Nothing has happened yet. No record, no seed, no bad match to explain. This is the only week of the year where you get to decide what your season means before it means anything.',
-  askPub:'Finish this: my standard this season is _____.',
-  notePub:'One sentence. Say it like you would say it out loud to someone who is going to hold you to it.',
-  hint:'Start with "My standard this season is..."',
-  ph:'My standard this season is...',
-  askPriv:'What does the best version of you look like in the room on a random Tuesday in November?',
-  wLede:'These are the standards wrestlers set this week, before anyone stepped on a mat that counted.'},
-2:{eyebrow:'Day 02 / The Gap',
-  title:'Better in<br>the room than<br>on the <em class="serif">mat</em>',
-  lede:'Almost every wrestler has something that works in practice and disappears under the lights. That gap is not a talent problem. It is a trained skill, and naming it out loud is the first rep.',
-  askPub:'Finish this: in the room I _____. On the mat I need to _____.',
-  notePub:'Keep it technical. What you do, not how you feel about it.',
-  hint:'"In the room I... On the mat I need to..."',
-  ph:'In the room I... On the mat I need to...',
-  askPriv:'Name one thing you do well in practice that goes missing in a match. When did you first notice it?',
-  wLede:'Read these and count how many wrestlers named the exact gap you just named.'},
-3:{eyebrow:'Day 03 / The Controllables',
+  ask:'Finish both halves.',
+  note:'The second blank is the one that matters. Anyone can name a value. Name the exact moment it is going to get tested.',
+  limit:240,
+  fields:[
+    {k:'a', pre:'I will not compromise on', ph:'my warmup', max:90, rows:2},
+    {k:'b', pre:'even when', ph:'we are running late and everyone else is skipping it', max:130, rows:2}
+  ],
+  build:v => `I will not compromise on ${v.a}, even when ${v.b}.`,
+  wLede:'These are the lines wrestlers drew this week, before anyone stepped on a mat that counted.'
+},
+2:{
+  eyebrow:'Day 02 / The Letter',
+  title:'Write back<br>from the end<br>of the <em class="serif">season</em>',
+  lede:'It is March. The season is over and it went the way you needed it to. Your future self is writing to you today to tell you how it went.',
+  ask:'Write it as if it already happened.',
+  note:'Start with the thing you struggle with, then describe beating it in past tense, like you are remembering it. One or two paragraphs.',
+  example:'Today was so good. I had everything written out before I got to the room and I actually did it. Practice was brutal and there was a point in the third live match where I wanted to stop, and I just did not. I stopped negotiating with myself about it. That was the whole difference this year.',
+  limit:1800,
+  fields:[
+    {k:'letter', label:'Your letter', ph:'Today was so good...', max:1550, rows:10},
+    {k:'lesson', pre:'Finish with one line', ph:'I cannot wait for this season.', max:200, rows:2}
+  ],
+  build:v => `${v.letter}\n\n${v.lesson}`,
+  wLede:'Letters wrestlers wrote to themselves from the end of a season that has not happened yet.'
+},
+3:{
+  eyebrow:'Day 03 / The Controllables',
   title:'Cross out<br>everything you<br>cannot <em class="serif">control</em>',
-  lede:'Referees. Brackets. The other guy. Your seed. The crowd. Your coach\u2019s mood. None of it moves when you push on it. What is left after you cross that list out is the whole job.',
-  askPub:'Three things you control on match day.',
-  notePub:'Just the three. No explanation needed.',
-  hint:'Three, separated by commas',
-  ph:'1.\n2.\n3.',
-  askPriv:'List everything about a match you cannot control. Then cross the entire list out. Now write what is left.',
-  wLede:'Hundreds of wrestlers, roughly the same three answers. That is not a coincidence, that is the job.'},
-4:{eyebrow:'Day 04 / Room Debt',
-  title:'Somebody in<br>your room<br>made you <em class="serif">better</em>',
-  lede:'You did not get here alone. There is a person in your practice room whose work shows up in your matches, and they probably have no idea.',
-  askPub:'What does one teammate give you that you could not get anywhere else?',
-  notePub:'Do not use their name. Describe what they do. Then go tell them in person, which is the actual assignment today.',
-  hint:'No names. Just what they do.',
-  ph:'He never lets me get away with a lazy...',
-  askPriv:'Who in your room makes you better, and what specifically do they do? Would they know it if you never said it?',
-  wLede:'Every one of these is about somebody who does not know they are in it.'},
-5:{eyebrow:'Day 05 / The Commitment',
-  title:'When it gets<br>hard, here is<br>what I <em class="serif">do</em>',
-  lede:'Third period. Down two. Legs gone. That moment is coming this season and it is going to arrive faster than you can decide what to do about it. So decide now, while it is quiet.',
-  askPub:'Finish this: this season, when it gets hard, I _____.',
-  notePub:'Say the thing you want held against you in February.',
-  hint:'"This season, when it gets hard, I..."',
-  ph:'This season, when it gets hard, I...',
-  askPriv:'What will you do differently between the whistle and the handshake this season? Be specific enough that you would notice if you failed to do it.',
-  wLede:'Five days ago these were strangers. Read what the room committed to.'}
+  lede:'Referees. Brackets. The other guy. Your seed. The crowd. None of it moves when you push on it. What is left after you cross that list out is the whole job.',
+  ask:'Three of each, for competition day.',
+  note:'Be specific. "My attitude" is too big to hold onto at 7am in a cold gym.',
+  example:'Control: my warmup routine, how I respond to a bad call, what I eat the night before. Cannot: the referee, my bracket, who my opponent is.',
+  limit:760,
+  fields:[
+    {group:'In my control', k:'c1', ph:'my warmup routine', max:100, rows:2},
+    {k:'c2', ph:'how I respond to a bad call', max:100, rows:2},
+    {k:'c3', ph:'what time I go to bed the night before', max:100, rows:2},
+    {group:'Not in my control', k:'x1', ph:'the referee', max:100, rows:2},
+    {k:'x2', ph:'my bracket and who I draw', max:100, rows:2},
+    {k:'x3', ph:'how loud the other team is', max:100, rows:2}
+  ],
+  build:v => `IN MY CONTROL\n${v.c1}\n${v.c2}\n${v.c3}\n\nNOT IN MY CONTROL\n${v.x1}\n${v.x2}\n${v.x3}`,
+  wLede:'Hundreds of wrestlers, and the same short list keeps coming back. That is not a coincidence, that is the job.'
+},
+4:{
+  eyebrow:'Day 04 / Room Debt',
+  title:'Somebody<br>gave you<br><em class="serif">something</em>',
+  lede:'You did not get here alone. A coach, a parent, a teammate. There are people whose work shows up in your matches, and most of them have no idea.',
+  ask:'Three things you get from someone that you could not get anywhere else.',
+  note:'No names. Describe what they do. Then go tell them in person, which is the actual assignment today.',
+  example:'A partner who never lets me take a lazy rep. A coach who fixes my setups when nobody else notices. A mom who drives four hours every weekend and never once complains about it.',
+  limit:560,
+  fields:[
+    {k:'a', ph:'a partner who never lets me take a lazy rep', max:170, rows:2},
+    {k:'b', ph:'a coach who fixes my setups when nobody else notices', max:170, rows:2},
+    {k:'c', ph:'someone who is there when a match goes badly', max:170, rows:2}
+  ],
+  build:v => `1. ${v.a}\n2. ${v.b}\n3. ${v.c}`,
+  wLede:'Every one of these is about somebody who does not know they are in it.'
+},
+5:{
+  eyebrow:'Day 05 / Five Whys',
+  title:'Ask why<br>five <em class="serif">times</em>',
+  lede:'Something last season did not go how you wanted. The first reason you reach for is almost never the real one. Five whys is how you get underneath it.',
+  ask:'Start with what fell short. Then keep asking why.',
+  note:'Answer each why against the answer above it, not against the original problem. It gets uncomfortable around the third one. That is the point.',
+  example:'I did not score as much as I should have. → I was scared to shoot. → I got beat badly after a bad shot. → I do not know how to set up a shot. → Nobody taught me. → I never asked.',
+  limit:1300,
+  fields:[
+    {group:'What fell short', k:'p', ph:'I did not score as much as I should have.', max:190, rows:2},
+    {group:'Now five times', k:'w1', pre:'Why?', ph:'Because I was scared to shoot.', max:160, rows:2},
+    {k:'w2', pre:'Why?', ph:'Because I got beat badly after a bad shot and I did not want it to happen again.', max:160, rows:2},
+    {k:'w3', pre:'Why?', ph:'Because I do not know how to set up a shot.', max:160, rows:2},
+    {k:'w4', pre:'Why?', ph:'Because nobody taught me.', max:160, rows:2},
+    {k:'w5', pre:'Why?', ph:'Because I never asked.', max:160, rows:2},
+    {group:'Lesson learned', k:'lesson', pre:'What changes this season', ph:'I will be more proactive about asking questions and taking ownership.', max:230, rows:3}
+  ],
+  build:v => `${v.p}\n\n1. ${v.w1}\n2. ${v.w2}\n3. ${v.w3}\n4. ${v.w4}\n5. ${v.w5}\n\nThis season: ${v.lesson}`,
+  wLede:'Five days ago these were strangers. This is what the room found when it kept asking.'
+}
 };
 
-const LIMIT = 240;
 const params = new URLSearchParams(location.search);
 let day = parseInt(params.get('d'), 10);
 if (!DAYS[day]) day = 1;
 const D = DAYS[day];
 const KEY = 'theroom.d' + day;
-const PKEY = 'theroom.priv.d' + day;
 
-// Declared here, above anything that can call load(). A returning visitor triggers
-// showWall() during the first pass, and a `let` below that call site is still in
+// Declared above anything that can call load(). A returning visitor triggers
+// showWall() on the first pass, and a `let` below that call site is still in
 // its temporal dead zone.
 let offset = 0;
 const PAGE = 25;
@@ -320,27 +339,53 @@ $('pips').innerHTML = [1,2,3,4,5].map(n => {
   return `<span class="pip ${cls}">${n}</span>`;
 }).join('');
 
-// ---------- post ----------
 $('eyebrow').textContent = D.eyebrow;
 $('title').innerHTML = D.title;
 $('lede').textContent = D.lede;
-$('askPub').textContent = D.askPub;
-$('notePub').textContent = D.notePub;
-$('hint').textContent = D.hint;
-$('pub').placeholder = D.ph;
-$('askPriv').textContent = D.askPriv;
+$('ask').textContent = D.ask;
+$('note').textContent = D.note;
+if (D.example){ $('egText').textContent = D.example; $('eg').classList.remove('hidden'); }
 
-function meter(box, out, btn){
-  const n = box.value.trim().length;
-  out.textContent = n + ' / ' + LIMIT;
-  out.className = n > LIMIT ? 'over' : '';
-  btn.disabled = n < 8 || n > LIMIT;
+// ---------- build the day's fields ----------
+$('fields').innerHTML = D.fields.map(f => `
+  ${f.group ? `<div class="fgroup">${esc(f.group)}</div>` : ''}
+  <div class="f">
+    ${f.pre ? `<span class="pre">${esc(f.pre)}</span>` : ''}
+    ${f.label ? `<span class="lbl">${esc(f.label)}</span>` : ''}
+    <textarea id="f_${f.k}" rows="${f.rows||2}" maxlength="${f.max + 40}"
+      placeholder="${esc(f.ph)}"></textarea>
+    <div class="cnt" id="c_${f.k}">0 / ${f.max}</div>
+  </div>`).join('');
+
+const val = k => ($('f_' + k).value || '').trim();
+const assemble = () => {
+  const v = {};
+  D.fields.forEach(f => v[f.k] = val(f.k));
+  return D.build(v);
+};
+const complete = () => D.fields.every(f => val(f.k).length >= 2 && val(f.k).length <= f.max);
+
+function refresh(){
+  let anyOver = false;
+  D.fields.forEach(f => {
+    const n = val(f.k).length;
+    const c = $('c_' + f.k);
+    c.textContent = n + ' / ' + f.max;
+    c.className = 'cnt' + (n > f.max ? ' over' : '');
+    if (n > f.max) anyOver = true;
+  });
+  const total = assemble().length;
+  $('chars').textContent = total + ' / ' + D.limit;
+  $('chars').className = total > D.limit ? 'over' : '';
+  const done = complete() && total <= D.limit && !anyOver;
+  $('hint').textContent = done ? 'Ready' : 'Fill in every box';
+  $('send').disabled = !done;
 }
-$('pub').addEventListener('input', () => meter($('pub'), $('chars'), $('send')));
-$('send').disabled = true;
+D.fields.forEach(f => $('f_' + f.k).addEventListener('input', refresh));
+refresh();
 
 $('send').addEventListener('click', async () => {
-  const text = $('pub').value.trim();
+  const text = assemble();
   $('send').disabled = true; $('send').textContent = 'Adding it';
   $('err').classList.add('hidden');
   try {
@@ -360,31 +405,23 @@ $('send').addEventListener('click', async () => {
   }
 });
 
-// ---------- private reflection ----------
-$('priv').value = localStorage.getItem(PKEY) || '';
-let privTimer;
-$('priv').addEventListener('input', e => {
-  localStorage.setItem(PKEY, e.target.value);
-  $('privSaved').classList.add('on');
-  clearTimeout(privTimer);
-  privTimer = setTimeout(() => $('privSaved').classList.remove('on'), 1600);
-});
-
-// ---------- edit ----------
+// ---------- editing ----------
 $('editBtn').addEventListener('click', () => {
   const open = !$('editBox').classList.contains('hidden');
   $('editBox').classList.toggle('hidden', open);
   $('editBtn').textContent = open ? 'Edit' : 'Close';
-  if (!open){
-    $('editText').value = saved.text;
-    meter($('editText'), $('editChars'), $('saveEdit'));
-    $('editText').focus();
-  }
+  if (!open){ $('editText').value = saved.text; editMeter(); $('editText').focus(); }
 });
 $('cancelEdit').addEventListener('click', () => {
   $('editBox').classList.add('hidden'); $('editBtn').textContent = 'Edit';
 });
-$('editText').addEventListener('input', () => meter($('editText'), $('editChars'), $('saveEdit')));
+function editMeter(){
+  const n = $('editText').value.trim().length;
+  $('editChars').textContent = n + ' / ' + D.limit;
+  $('editChars').className = n > D.limit ? 'over' : '';
+  $('saveEdit').disabled = n < 8 || n > D.limit;
+}
+$('editText').addEventListener('input', editMeter);
 
 $('saveEdit').addEventListener('click', async () => {
   const text = $('editText').value.trim();
@@ -404,8 +441,7 @@ $('saveEdit').addEventListener('click', async () => {
     setState('pending');
     offset = 0; load();
   } catch(e){
-    $('editErr').textContent = e.message;
-    $('editErr').classList.remove('hidden');
+    $('editErr').textContent = e.message; $('editErr').classList.remove('hidden');
   } finally {
     $('saveEdit').disabled = false; $('saveEdit').textContent = 'Save changes';
   }
@@ -433,11 +469,6 @@ function showWall(justSent){
   $('yoursCard').classList.remove('hidden');
   setState(justSent ? 'pending' : 'live');
   $('wFoot').textContent = 'No names anywhere on this page. Every entry is read by a person before it goes up.';
-  buildCta();
-  load();
-}
-
-function buildCta(){
   $('cta').innerHTML = day < 5
     ? `<h2>Day ${day+1} lands in<br>your inbox <em class="serif">tomorrow</em></h2>
        <p>Five days. Five prompts. One room.</p>`
@@ -446,26 +477,24 @@ function buildCta(){
           closing the gap between the room and the mat, built by a seven time national team member.</p>
        <a class="pill" href="https://luchafit.com/unstuck">See The Unstuck Wrestler</a>`;
   if (day === 5) buildRecap();
+  load();
 }
 
 function buildRecap(){
   const rows = [];
   for (let d = 1; d <= 5; d++){
-    let pub = null;
-    try { pub = JSON.parse(localStorage.getItem('theroom.d'+d) || 'null'); } catch {}
-    const priv = localStorage.getItem('theroom.priv.d'+d) || '';
-    if (!pub && !priv) continue;
+    let e = null;
+    try { e = JSON.parse(localStorage.getItem('theroom.d'+d) || 'null'); } catch {}
+    if (!e || !e.text) continue;
     rows.push(`<div class="rday">
-      <div class="lbl">${DAYS[d].eyebrow}</div>
-      ${pub ? `<div class="pubq">${esc(pub.text)}</div>` : '<div class="none">Nothing posted this day.</div>'}
-      ${priv ? `<div class="privq">${esc(priv)}</div>` : ''}
+      <div class="lbl">${esc(DAYS[d].eyebrow)}</div>
+      <div class="t">${esc(e.text)}</div>
     </div>`);
   }
   if (rows.length < 2) return;
   $('recap').innerHTML =
-    `<div class="mono" style="margin-bottom:10px">YOUR WEEK &nbsp;/&nbsp; ONLY ON THIS DEVICE</div>
-     <h2 style="margin-bottom:6px">Everything you wrote</h2>
-     <p class="mono" style="margin-bottom:6px">Nobody has seen the indented parts but you.</p>
+    `<div class="mono" style="margin-bottom:10px">YOUR WEEK &nbsp;/&nbsp; PUT TOGETHER ON THIS DEVICE</div>
+     <h2 style="margin-bottom:14px">Everything you wrote</h2>
      ${rows.join('')}`;
   $('recap').classList.remove('hidden');
 }
@@ -477,7 +506,6 @@ async function load(){
     if (!r.ok) throw new Error('wall returned ' + r.status);
     const j = await r.json();
     if (!j || !Array.isArray(j.entries)) throw new Error('unexpected response shape');
-
     if (j.mine) setState(j.mine === 'live' ? 'live' : 'pending');
 
     if (offset === 0){
@@ -494,8 +522,17 @@ async function load(){
       const el = document.createElement('div');
       el.className = 'entry';
       el.style.animationDelay = (i * 32) + 'ms';
-      el.innerHTML = `<span class="n">${String(offset+i+1).padStart(3,'0')}</span><p></p>`;
+      const long = e.text.length > 260 || (e.text.match(/\n/g) || []).length > 6;
+      el.innerHTML = `<span class="n">${String(offset+i+1).padStart(3,'0')}</span>
+        <div class="body"><p class="${long?'clamp':''}"></p>${long?'<button class="rm">Read more</button>':''}</div>`;
       el.querySelector('p').textContent = e.text;
+      if (long){
+        const btn = el.querySelector('.rm'), p = el.querySelector('p');
+        btn.addEventListener('click', () => {
+          const on = p.classList.toggle('clamp');
+          btn.textContent = on ? 'Read more' : 'Show less';
+        });
+      }
       $('entries').appendChild(el);
     });
     offset += j.entries.length;

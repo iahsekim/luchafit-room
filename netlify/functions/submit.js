@@ -7,8 +7,7 @@
 
 import { room, json } from '../lib/store.js';
 import { isPriority } from '../lib/priority.js';
-
-const LIMIT = 240;
+import { limitFor, HARD_MAX } from '../lib/days.js';
 
 export default async (req) => {
   if (req.method !== 'POST') return json({ ok: false, message: 'Method not allowed' }, 405);
@@ -17,9 +16,10 @@ export default async (req) => {
   try { body = await req.json(); } catch { return json({ ok: false, message: 'Bad request' }, 400); }
 
   const day = parseInt(body.day, 10);
-  const text = String(body.text || '').trim().replace(/\s+/g, ' ');
+  const text = String(body.text || '').trim().replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
 
   if (!(day >= 1 && day <= 5)) return json({ ok: false, message: 'Unknown day' }, 400);
+  const LIMIT = Math.min(limitFor(day), HARD_MAX);
   if (text.length < 8) return json({ ok: false, message: 'Write a little more before you post.' }, 400);
   if (text.length > LIMIT) return json({ ok: false, message: 'Keep it under ' + LIMIT + ' characters.' }, 400);
 

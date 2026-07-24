@@ -7,8 +7,7 @@
 
 import { room, mutateWall, json } from '../lib/store.js';
 import { isPriority } from '../lib/priority.js';
-
-const LIMIT = 240;
+import { limitFor, HARD_MAX } from '../lib/days.js';
 
 export default async (req) => {
   if (req.method !== 'POST') return json({ ok: false, message: 'Method not allowed' }, 405);
@@ -18,12 +17,13 @@ export default async (req) => {
 
   const id = String(body.id || '');
   const token = String(body.token || '');
-  const text = String(body.text || '').trim().replace(/\s+/g, ' ');
+  const text = String(body.text || '').trim().replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
 
   const m = id.match(/^pending\/d([1-5])\/[01]\/\d+-[a-f0-9]+$/);
   if (!m || !token) return json({ ok: false, message: 'We could not find that entry.' }, 400);
   const day = m[1];
 
+  const LIMIT = Math.min(limitFor(Number(day)), HARD_MAX);
   if (text.length < 8) return json({ ok: false, message: 'Write a little more before you save.' }, 400);
   if (text.length > LIMIT) return json({ ok: false, message: 'Keep it under ' + LIMIT + ' characters.' }, 400);
 
