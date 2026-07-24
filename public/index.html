@@ -29,7 +29,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
 .mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
 .mono.blue{color:var(--blue)}
-.wrap{max-width:760px;margin:0 auto;padding:0 clamp(16px,3vw,48px)}
+.wrap{max-width:760px;margin:0 auto;padding-left:clamp(16px,3vw,48px);padding-right:clamp(16px,3vw,48px)}
 .hidden{display:none!important}
 
 
@@ -43,21 +43,22 @@ em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
 header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.93);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;
-  min-height:70px;padding:14px 0;gap:14px}
+  min-height:70px;padding-top:15px;padding-bottom:15px;gap:14px}
 .wordmark{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;
   display:flex;align-items:baseline;gap:7px}
 .wordmark sup{font-family:var(--mono);font-size:9px;color:var(--orange);letter-spacing:.1em;font-weight:400}
-.pips{display:flex;gap:5px}
+.pips{display:flex;gap:3px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:4px}
 .pip{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
-  font-family:var(--mono);font-size:10.5px;border:1.5px solid var(--line);color:var(--ink-2);
-  background:var(--card);text-decoration:none;transition:all .18s}
-.pip.done{border-color:var(--ink);color:var(--ink)}
-a.pip.done:hover{background:var(--ink);color:var(--paper)}
-.pip.now{background:var(--blue);border-color:var(--blue);color:#fff}
-.pip.locked{opacity:.42}
+  font-family:var(--mono);font-size:11px;border:none;color:var(--ink-2);
+  background:transparent;text-decoration:none;transition:all .16s}
+a.pip{color:var(--ink);cursor:pointer}
+a.pip:hover{background:var(--tint);color:var(--blue-deep)}
+.pip.now{background:var(--blue);color:#fff}
+.pip.locked{color:rgba(12,13,15,.22);cursor:default}
 
-main{padding:clamp(56px,7vw,110px) 0 clamp(80px,8vw,140px)}
-.lead{margin-bottom:clamp(28px,3.4vw,48px)}
+main{padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(72px,8vw,120px)}
+.lead{margin-bottom:clamp(22px,2.6vw,34px)}
 .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--orange);margin-bottom:clamp(16px,2vw,24px)}
 h1{font-family:var(--disp);font-weight:800;font-size:44px;
@@ -69,14 +70,14 @@ h1 em.serif{color:var(--blue)}
   font-size:clamp(17px,1.5vw,21px);line-height:1.55}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:clamp(22px,3vw,44px);margin-bottom:clamp(16px,2vw,24px)}
+  padding:clamp(22px,2.6vw,34px);margin-bottom:clamp(14px,1.6vw,20px)}
 .ask{font-family:var(--disp);font-weight:600;font-size:clamp(20px,2vw,27px);
   letter-spacing:-.02em;line-height:1.22;margin-bottom:12px}
 .note{font-size:clamp(15px,1.2vw,17px);color:var(--ink-2);line-height:1.6;
-  margin-bottom:clamp(24px,3vw,36px)}
+  margin-bottom:clamp(20px,2.2vw,28px)}
 
 .anon{display:flex;gap:14px;align-items:flex-start;background:var(--tint);
-  border-radius:12px;padding:clamp(16px,1.8vw,22px);margin-bottom:clamp(28px,3.4vw,44px)}
+  border-radius:12px;padding:clamp(15px,1.6vw,20px);margin-bottom:clamp(22px,2.4vw,30px)}
 .anon .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto;
   margin-top:6px}
 .anon b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
@@ -96,7 +97,7 @@ details.eg p{font-size:14.5px;color:var(--ink-2);margin-top:11px;line-height:1.6
   color:var(--ink);margin:clamp(30px,3.4vw,44px) 0 16px;padding-top:clamp(22px,2.6vw,32px);
   border-top:1px solid var(--line)}
 .fgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.f{margin-bottom:clamp(20px,2.4vw,30px)}
+.f{margin-bottom:clamp(16px,1.8vw,22px)}
 .f .pre{font-family:var(--disp);font-weight:600;font-size:16.5px;margin-bottom:8px;display:block}
 .f .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-2);margin-bottom:8px;display:block}
@@ -128,7 +129,7 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
 .locked-note{font-family:var(--mono);font-size:12px;color:var(--ink-2);line-height:1.9}
 .locked-note a{color:var(--blue)}
 #boot{padding:60px 0;text-align:center;font-family:var(--mono);font-size:11.5px;color:rgba(12,13,15,.3)}
-.yours{border:2px solid var(--ink);margin-bottom:clamp(40px,5vw,72px)}
+.yours{border:2px solid var(--ink);margin-bottom:clamp(22px,2.6vw,34px)}
 .yours-head{display:flex;align-items:center;gap:9px;margin-bottom:20px;flex-wrap:wrap}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   border-radius:999px;padding:5px 11px;background:var(--tint);color:var(--blue-deep)}
@@ -137,7 +138,7 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
 #yoursText{font-size:clamp(17px,1.5vw,21px);line-height:1.55;white-space:pre-wrap}
 
 .entry{background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:clamp(18px,1.8vw,26px);margin-bottom:12px;display:flex;gap:18px;align-items:flex-start;
+  padding:clamp(16px,1.6vw,22px);margin-bottom:9px;display:flex;gap:18px;align-items:flex-start;
   opacity:0;transform:translateY(10px);animation:rise .5s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
 .entry .n{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.3);flex:0 0 30px;padding-top:4px}
@@ -157,8 +158,8 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
   color:var(--orange);margin-bottom:9px}
 .rday .t{font-size:15px;line-height:1.6;color:rgba(242,241,236,.9);white-space:pre-wrap}
 
-.cta{background:var(--blue);border-radius:var(--r);padding:clamp(28px,4vw,64px);color:#fff;
-  margin-top:clamp(56px,7vw,100px)}
+.cta{background:var(--blue);border-radius:var(--r);padding:clamp(26px,3.2vw,44px);color:#fff;
+  margin-top:clamp(28px,3.4vw,44px)}
 .cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.2vw,31px);
   letter-spacing:-.025em;line-height:1.02;color:#fff;text-wrap:balance}
 .cta h2 em.serif{color:#FFB39E}
@@ -394,14 +395,17 @@ window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+// A day is reachable once it is open, or once they have posted to it. Landing on
+// an open day they have not done yet shows that day's prompt, so post-to-read
+// still holds for every individual wall.
+let openDays = [];
 function renderPips(){
   $('pips').innerHTML = [1,2,3,4,5].map(n => {
     if (n === day) return `<span class="pip now" aria-current="page">${n}</span>`;
-    // Clickable only where they have already posted. Anything else would let
-    // someone read a wall without adding to it, or peek at a later prompt.
-    if (localStorage.getItem('theroom.d'+n))
-      return `<a class="pip done" href="?d=${n}" title="Day ${n}">${n}</a>`;
-    return `<span class="pip locked" title="Not yet">${n}</span>`;
+    const reachable = openDays.includes(n) || localStorage.getItem('theroom.d'+n);
+    return reachable
+      ? `<a class="pip" href="?d=${n}" title="Day ${n}">${n}</a>`
+      : `<span class="pip locked" title="Day ${n} is not open yet">${n}</span>`;
   }).join('');
 }
 renderPips();
@@ -543,7 +547,11 @@ async function boot(){
   let open = true;
   try {
     const r = await fetch(`/.netlify/functions/wall?day=${day}&limit=1`);
-    if (r.ok){ const j = await r.json(); if (j && j.open === false) open = false; }
+    if (r.ok){
+      const j = await r.json();
+      if (j && j.open === false) open = false;
+      if (j && Array.isArray(j.openDays)){ openDays = j.openDays; renderPips(); }
+    }
   } catch { /* if we cannot tell, do not lock people out */ }
   $('boot').classList.add('hidden');
   open ? showPost() : showLocked();
@@ -616,6 +624,7 @@ async function load(){
     const j = await r.json();
     if (!j || !Array.isArray(j.entries)) throw new Error('unexpected response shape');
     if (j.mine) setState(j.mine === 'live' ? 'live' : 'pending');
+    if (Array.isArray(j.openDays)){ openDays = j.openDays; renderPips(); }
 
     if (offset === 0){
       $('entries').innerHTML = '';
