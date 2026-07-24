@@ -1,33 +1,16 @@
 // POST /.netlify/functions/submit  { day, text }
-// One blob per entry, unique key, onlyIfNew. Concurrent submissions cannot
-// collide because no two writers ever touch the same key.
+// One blob per entry, unique key, onlyIfNew. Concurrent submissions cannot collide
+// because no two writers ever touch the same key.
+//
+// Returns an edit token. It is random, stored only in the submitter's browser, and
+// tied to nothing about them. A capability, not an identity, so anonymity holds.
 
-import { getStore } from '@netlify/blobs';
+import { room, json } from '../lib/store.js';
+import { isPriority } from '../lib/priority.js';
 
 const LIMIT = 240;
 
-// These do NOT reject anything. They only put the entry in the priority lane so it
-// sorts to the top of your review queue. The wrestler sees no difference.
-const PRIORITY_TERMS = [
-  'kill myself','kill my self','suicide','suicidal','end it all','want to die',
-  'hurt myself','cut myself','cutting myself','self harm','worthless','hate myself',
-  'no point','give up on everything',
-  'starve','starving','not eating','stopped eating','throw up','throwing up',
-  'purge','purged','laxative','diuretic','water weight','sauna suit','spit weight',
-  'cut weight','weight cut','pull weight','anorexi','bulimi',
-  'hits me','hit me','grabbed me','touched me','abuse','abusive','hazing','hazed',
-  'scared of my coach','screams at me','concussion','hiding my injury'
-];
-
-const isPriority = t => {
-  const s = t.toLowerCase();
-  return PRIORITY_TERMS.some(w => s.includes(w));
-};
-
 export default async (req) => {
-  const json = (b, s = 200) =>
-    new Response(JSON.stringify(b), { status: s, headers: { 'Content-Type': 'application/json' } });
-
   if (req.method !== 'POST') return json({ ok: false, message: 'Method not allowed' }, 405);
 
   let body;
@@ -40,7 +23,7 @@ export default async (req) => {
   if (text.length < 8) return json({ ok: false, message: 'Write a little more before you post.' }, 400);
   if (text.length > LIMIT) return json({ ok: false, message: 'Keep it under ' + LIMIT + ' characters.' }, 400);
 
-  const store = getStore('room');
+  const s = room();
 
   // Coarse IP bucket for rate limiting. Hashed, raw IP never stored.
   const ip = req.headers.get('x-nf-client-connection-ip') || 'unknown';
@@ -53,23 +36,24 @@ export default async (req) => {
 
   const rateKey = `rate/${ipHash}/d${day}`;
   try {
-    const seen = await store.get(rateKey, { type: 'json', consistency: 'strong' });
+    const seen = await s.get(rateKey, { type: 'json', consistency: 'strong' });
     if (seen && seen.n >= 3) return json({ ok: false, message: 'You have already added yours for today.' }, 429);
-    await store.setJSON(rateKey, { n: (seen?.n || 0) + 1 });
-  } catch { /* rate limiting is best effort, never block a real submission on it */ }
+    await s.setJSON(rateKey, { n: (seen?.n || 0) + 1 });
+  } catch { /* best effort, never block a real submission on it */ }
 
   // pending/d{day}/{1|0}/{timestamp}-{random}
-  // The priority flag lives in the key so the review queue can count and sort
-  // priority entries from a single list call, without reading any blob contents.
+  // The priority flag lives in the key so the queue can count and sort urgent
+  // entries from one list call, without reading any blob contents.
   const lane = isPriority(text) ? '1' : '0';
-  const key = `pending/d${day}/${lane}/${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
+  const id = `pending/d${day}/${lane}/${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
+  const token = crypto.randomUUID().replace(/-/g, '');
 
-  const { modified } = await store.setJSON(
-    key,
-    { day, text, priority: lane === '1', created_at: new Date().toISOString() },
+  const { modified } = await s.setJSON(
+    id,
+    { day, text, priority: lane === '1', token, created_at: new Date().toISOString() },
     { onlyIfNew: true }
   );
   if (!modified) return json({ ok: false, message: 'Could not save that. Try again in a moment.' }, 500);
 
-  return json({ ok: true });
+  return json({ ok: true, id, token });
 };

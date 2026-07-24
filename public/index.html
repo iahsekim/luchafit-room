@@ -7,286 +7,293 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#1B1B1B;
-  --bone:#F2EFEA;
-  --gold:#B8872A;
-  --gold-lift:#D9A63C;
-  --ink-60:rgba(27,27,27,.60);
-  --ink-30:rgba(27,27,27,.28);
-  --rule:rgba(27,27,27,.14);
-  --display:'Barlow Condensed',Impact,sans-serif;
-  --body:'Instrument Sans',system-ui,sans-serif;
-  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --paper:#F2F1EC; --card:#FFFFFF; --ink:#0C0D0F; --ink-2:#5B5C63;
+  --blue:#1E33D9; --blue-deep:#141F86; --tint:#E7EAFA;
+  --orange:#FF4B1F; --orange-tint:#FFE7DF;
+  --line:rgba(12,13,15,.13);
+  --disp:'Bricolage Grotesque',sans-serif;
+  --body:'Instrument Sans',sans-serif;
+  --serif:'Instrument Serif',serif;
+  --mono:'IBM Plex Mono',monospace;
+  --r:14px; --ease:cubic-bezier(.22,.8,.24,1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{
-  background:var(--bone);color:var(--black);
-  font-family:var(--body);font-size:16px;line-height:1.55;
+*{margin:0;padding:0;box-sizing:border-box}
+::selection{background:var(--blue);color:#fff}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;
   -webkit-font-smoothing:antialiased;
-  min-height:100vh;
-}
-.wrap{max-width:640px;margin:0 auto;padding:0 22px 100px}
+  background-image:radial-gradient(rgba(12,13,15,.055) 1px,transparent 1px);background-size:26px 26px}
+button,textarea{font:inherit;color:inherit}
+button{background:none;border:none;cursor:pointer}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
+em.serif{font-family:var(--serif);font-style:italic;letter-spacing:0;font-weight:400}
+.mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
+.mono.blue{color:var(--blue)} .mono.orange{color:var(--orange)}
+.wrap{max-width:760px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
+.hidden{display:none!important}
 
-/* ---------- scoreboard header ---------- */
-.board{
-  border-bottom:2px solid var(--black);
-  padding:22px 0 12px;margin-bottom:38px;
-  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
-}
-.board .mark{
-  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--ink-60);
-}
-.periods{display:flex;gap:5px}
-.period{
-  width:26px;height:26px;display:grid;place-items:center;
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  border:1px solid var(--ink-30);color:var(--ink-30);
-}
-.period.done{border-color:var(--black);color:var(--black)}
-.period.now{background:var(--black);border-color:var(--black);color:var(--bone)}
+/* header */
+header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:62px;gap:14px}
+.wordmark{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;
+  display:flex;align-items:baseline;gap:7px}
+.wordmark sup{font-family:var(--mono);font-size:9px;color:var(--orange);letter-spacing:.1em;font-weight:400}
+.pips{display:flex;gap:5px}
+.pip{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-size:10.5px;border:1.5px solid var(--line);color:var(--ink-2);background:var(--card)}
+.pip.done{border-color:var(--ink);color:var(--ink)}
+.pip.now{background:var(--blue);border-color:var(--blue);color:#fff}
 
-/* ---------- prompt ---------- */
-.eyebrow{
-  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
-}
-h1{
-  font-family:var(--display);font-weight:700;
-  font-size:clamp(46px,13vw,76px);line-height:.92;
-  letter-spacing:-.01em;text-transform:uppercase;margin-bottom:20px;
-}
-.lede{font-size:17px;line-height:1.6;color:var(--ink-60);max-width:46ch}
+/* lead */
+main{padding:clamp(30px,5vw,54px) 0 100px}
+.lead{margin-bottom:clamp(20px,3vw,30px)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:14px}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(34px,6.4vw,58px);
+  letter-spacing:-.03em;line-height:.98}
+h1 em.serif{color:var(--blue)}
+.sub{color:var(--ink-2);margin-top:14px;max-width:50ch;font-size:clamp(15px,1.6vw,17px)}
 
-.block{margin-top:40px;padding-top:26px;border-top:1px solid var(--rule)}
-.block-label{
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-60);margin-bottom:12px;
-  display:flex;align-items:center;gap:9px;
-}
-.block-label b{color:var(--black);font-weight:500}
-.ask{
-  font-family:var(--display);font-weight:600;font-size:25px;
-  line-height:1.18;margin-bottom:8px;
-}
-.note{font-size:14px;color:var(--ink-60);margin-bottom:16px}
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:clamp(20px,3vw,30px);margin-bottom:clamp(14px,2vw,20px)}
+.card h2{font-family:var(--disp);font-weight:600;font-size:clamp(21px,2.6vw,27px);letter-spacing:-.02em;line-height:1.15}
+.ask{font-family:var(--disp);font-weight:600;font-size:clamp(19px,2.4vw,24px);
+  letter-spacing:-.015em;line-height:1.25;margin-bottom:8px}
+.note{font-size:14px;color:var(--ink-2);margin-bottom:16px}
 
-textarea{
-  width:100%;font-family:var(--body);font-size:16px;line-height:1.6;
-  color:var(--black);background:transparent;
-  border:1px solid var(--ink-30);border-radius:0;
-  padding:14px 15px;resize:vertical;
-}
-textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
-textarea::placeholder{color:var(--ink-30)}
-#priv{min-height:120px;background:rgba(27,27,27,.03);border-style:dashed}
-#pub{min-height:104px;background:#fff}
+/* the anonymity band, deliberately loud */
+.anon{display:flex;gap:13px;align-items:flex-start;background:var(--tint);
+  border-radius:10px;padding:14px 16px;margin-bottom:22px}
+.anon .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto;
+  margin-top:6px;animation:pulse 2s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.anon b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--blue-deep);font-weight:500;margin-bottom:3px}
+.anon span{font-size:13.5px;color:var(--blue-deep);line-height:1.5;display:block}
 
-.meter{
-  display:flex;justify-content:space-between;align-items:center;
-  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
-  color:var(--ink-60);margin-top:9px;
-}
-.meter .over{color:#9B2C1F}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);
+  padding:14px 15px;resize:vertical;line-height:1.55;transition:border-color .25s}
+textarea:focus{border-color:var(--blue);background:var(--card)}
+textarea::placeholder{color:rgba(12,13,15,.32)}
+#pub,#editText{min-height:120px}
+#priv{min-height:150px;border-style:dashed}
 
-button{
-  font-family:var(--mono);font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;font-weight:500;
-  background:var(--black);color:var(--bone);
-  border:none;padding:17px 24px;width:100%;margin-top:22px;
-  cursor:pointer;transition:background .15s ease;
-}
-button:hover:not(:disabled){background:var(--gold)}
-button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-button:disabled{background:var(--ink-30);cursor:not-allowed}
+.meter{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-2);margin:9px 0 18px}
+.meter .over{color:var(--orange)}
 
-.err{
-  font-size:14px;color:#9B2C1F;margin-top:14px;
-  border-left:2px solid #9B2C1F;padding-left:12px;
-}
+.pill{font-family:var(--mono);font-size:12px;letter-spacing:.02em;border:1.5px solid var(--ink);
+  border-radius:999px;padding:11px 20px;background:var(--card);transition:all .25s;display:inline-block}
+.pill:hover{background:var(--ink);color:var(--paper)}
+.pill.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill.solid:hover{background:var(--ink);border-color:var(--ink)}
+.pill.block{display:block;width:100%;text-align:center;padding:15px 20px;font-size:12.5px}
+.pill:disabled{background:var(--line);border-color:transparent;color:var(--ink-2);cursor:not-allowed}
+.pill:disabled:hover{background:var(--line);color:var(--ink-2)}
+.pill.sm{padding:7px 14px;font-size:11px}
 
-/* ---------- wall ---------- */
-.count{
-  font-family:var(--display);font-weight:700;
-  font-size:clamp(40px,11vw,64px);line-height:1;text-transform:uppercase;
-}
-.count em{font-style:normal;color:var(--gold)}
-.yours{
-  border:2px solid var(--black);padding:20px;margin:26px 0 40px;
-  position:relative;background:#fff;
-}
-.yours:before{
-  content:attr(data-label);position:absolute;top:-9px;left:16px;
-  background:var(--bone);padding:0 7px;
-  font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--gold);
-}
-.entry{
-  padding:18px 0;border-bottom:1px solid var(--rule);
-  display:flex;gap:15px;align-items:flex-start;
-  opacity:0;transform:translateY(7px);
-  animation:rise .42s cubic-bezier(.2,.7,.3,1) forwards;
-}
+.err{font-size:14px;color:var(--orange);margin-top:14px;border-left:2.5px solid var(--orange);padding-left:13px}
+.foot-note{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);line-height:1.8;margin-top:20px}
+
+/* your entry */
+.yours{border:1.5px solid var(--ink);position:relative}
+.yours-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:999px;padding:5px 11px;background:var(--tint);color:var(--blue-deep)}
+.tag.wait{background:var(--orange-tint);color:#B32800}
+.yours-head .sp{flex:1}
+#yoursText{font-size:17px;line-height:1.5}
+
+/* wall */
+.wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  margin:clamp(26px,4vw,38px) 0 14px;flex-wrap:wrap}
+.wall-head h2{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em}
+.entry{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+  margin-bottom:9px;display:flex;gap:15px;align-items:flex-start;
+  opacity:0;transform:translateY(10px);animation:rise .5s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
-.entry .n{
-  font-family:var(--mono);font-size:11px;color:var(--ink-30);
-  padding-top:4px;flex:0 0 34px;letter-spacing:.05em;
-}
-.entry p{font-size:16px;line-height:1.55}
-.more{
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;background:none;color:var(--black);
-  border:1px solid var(--ink-30);margin-top:26px;
-}
-.more:hover{background:var(--black);color:var(--bone)}
+.entry .n{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.3);flex:0 0 30px;padding-top:4px}
+.entry p{font-size:15.5px;line-height:1.5;flex:1;min-width:0;overflow-wrap:break-word}
+.skel{height:58px;background:rgba(12,13,15,.06);border-radius:10px;margin-bottom:9px;animation:sk 1.3s infinite}
+@keyframes sk{50%{opacity:.45}}
 
-.cta{
-  margin-top:56px;border-top:2px solid var(--black);padding-top:26px;
-}
-.cta h2{
-  font-family:var(--display);font-weight:700;text-transform:uppercase;
-  font-size:34px;line-height:1;margin-bottom:12px;
-}
-.cta p{color:var(--ink-60);margin-bottom:18px}
-.cta a{
-  display:block;text-align:center;text-decoration:none;
-  font-family:var(--mono);font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;background:var(--gold);color:#fff;padding:17px 24px;
-}
-.cta a:hover{background:var(--black)}
+/* recap */
+.recap{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.recap h2{color:#fff}
+.recap .mono{color:rgba(242,241,236,.5)}
+.rday{border-top:1px solid rgba(242,241,236,.16);padding:18px 0}
+.rday:last-child{padding-bottom:0}
+.rday .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:9px}
+.rday .pubq{font-family:var(--disp);font-weight:500;font-size:17px;line-height:1.35;color:#fff}
+.rday .privq{font-size:14.5px;color:rgba(242,241,236,.72);margin-top:9px;
+  border-left:2.5px solid var(--blue);padding-left:13px;white-space:pre-wrap}
+.rday .none{font-size:13.5px;color:rgba(242,241,236,.4)}
 
-.foot{
-  margin-top:44px;font-family:var(--mono);font-size:11px;
-  line-height:1.7;color:var(--ink-30);letter-spacing:.04em;
-}
-.hidden{display:none}
-.skel{height:15px;background:var(--rule);margin:22px 0;animation:pulse 1.3s infinite}
-@keyframes pulse{50%{opacity:.4}}
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .entry{opacity:1;transform:none}
-}
+/* cta */
+.cta{background:var(--blue);border-radius:var(--r);padding:clamp(24px,3.4vw,34px);color:#fff;margin-top:22px}
+.cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3.6vw,36px);
+  letter-spacing:-.025em;line-height:1;color:#fff}
+.cta h2 em.serif{color:#FFB39E}
+.cta p{color:rgba(255,255,255,.8);margin:12px 0 20px;max-width:46ch}
+.cta a.pill{background:#fff;border-color:#fff;color:var(--blue);font-weight:500}
+.cta a.pill:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.saved{font-family:var(--mono);font-size:10.5px;color:var(--blue);opacity:0;transition:opacity .3s}
+.saved.on{opacity:1}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .entry{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="board">
-    <div class="mark">LuchaFit &nbsp;/&nbsp; The Room</div>
-    <div class="periods" id="periods" aria-label="Challenge progress"></div>
+<header>
+  <div class="wrap nav">
+    <div class="wordmark">LUCHAFIT<sup>THE ROOM</sup></div>
+    <div class="pips" id="pips" aria-label="Progress"></div>
   </div>
+</header>
 
-  <!-- PROMPT -->
-  <main id="view-prompt">
-    <div class="eyebrow" id="eyebrow"></div>
-    <h1 id="title"></h1>
-    <p class="lede" id="lede"></p>
+<main class="wrap">
 
-    <section class="block">
-      <div class="block-label"><b>01</b> Think it through</div>
-      <p class="ask" id="askPriv"></p>
-      <p class="note">This stays on your device. It is never sent anywhere and nobody sees it.</p>
-      <textarea id="priv" placeholder="Write as much as you want."></textarea>
-    </section>
+  <!-- ============ POST ============ -->
+  <section id="view-post">
+    <div class="lead">
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 id="title"></h1>
+      <p class="sub" id="lede"></p>
+    </div>
 
-    <section class="block">
-      <div class="block-label"><b>02</b> Put it on the wall</div>
+    <div class="card">
+      <div class="anon">
+        <span class="dot"></span>
+        <span>
+          <b>Anonymous</b>
+          <span>No name, no username, no email. Nothing you write here is connected
+          to you, and there is no way for anyone to work out who wrote what.</span>
+        </span>
+      </div>
+
       <p class="ask" id="askPub"></p>
       <p class="note" id="notePub"></p>
-      <textarea id="pub" maxlength="300" placeholder=""></textarea>
-      <div class="meter">
-        <span id="hint"></span>
-        <span id="chars">0 / 240</span>
-      </div>
-      <button id="send">Add mine to the wall</button>
+      <textarea id="pub" maxlength="300"></textarea>
+      <div class="meter"><span id="hint"></span><span id="chars">0 / 240</span></div>
+      <button class="pill solid block" id="send">Add mine to the wall</button>
       <div class="err hidden" id="err"></div>
-    </section>
+      <p class="foot-note">
+        Every entry is read by a person before it goes on the wall.<br>
+        You can change or delete yours afterwards.
+      </p>
+    </div>
+  </section>
 
-    <p class="foot">
-      No names. No usernames. No email shown. We cannot tell who wrote what and
-      neither can anyone else.<br>
-      Every entry is read by a person before it goes on the wall.
-    </p>
-  </main>
+  <!-- ============ WALL ============ -->
+  <section id="view-wall" class="hidden">
+    <div class="lead">
+      <div class="eyebrow" id="wEyebrow"></div>
+      <h1 id="wCount"></h1>
+      <p class="sub" id="wLede"></p>
+    </div>
 
-  <!-- WALL -->
-  <main id="view-wall" class="hidden">
-    <div class="eyebrow" id="wEyebrow"></div>
-    <p class="count" id="wCount"></p>
-    <p class="lede" id="wLede" style="margin-top:14px"></p>
+    <div class="card yours hidden" id="yoursCard">
+      <div class="yours-head">
+        <span class="tag">Yours</span>
+        <span class="tag wait hidden" id="yoursState"></span>
+        <span class="sp"></span>
+        <button class="pill sm" id="editBtn">Edit</button>
+      </div>
+      <p id="yoursText"></p>
 
-    <div class="yours hidden" id="yours" data-label="YOURS"></div>
+      <div class="hidden" id="editBox" style="margin-top:16px">
+        <textarea id="editText" maxlength="300"></textarea>
+        <div class="meter"><span id="editHint">Edits go back for a read before they reappear</span><span id="editChars">0 / 240</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="pill solid" id="saveEdit">Save changes</button>
+          <button class="pill" id="cancelEdit">Cancel</button>
+        </div>
+        <div class="err hidden" id="editErr"></div>
+      </div>
+    </div>
+
+    <div class="wall-head">
+      <h2>The room</h2>
+      <span class="mono" id="wallMeta"></span>
+    </div>
 
     <div id="entries"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
-    <button class="more hidden" id="more">Show more</button>
+    <button class="pill hidden" id="more" style="margin-top:6px">Show more</button>
+
+    <!-- private reflection, deliberately after the wall -->
+    <div class="card" id="privCard" style="margin-top:clamp(26px,4vw,38px)">
+      <div class="mono blue" style="margin-bottom:10px">OPTIONAL &nbsp;/&nbsp; STAYS ON THIS DEVICE</div>
+      <h2 style="margin-bottom:12px">Now the harder question</h2>
+      <p class="ask" id="askPriv"></p>
+      <p class="note">This one is just for you. It is never sent anywhere, we never see it,
+        and it does not go on the wall. On day 5 we will show you everything you wrote.</p>
+      <textarea id="priv" placeholder="Write as much as you want."></textarea>
+      <div class="meter"><span class="saved" id="privSaved">Saved on this device</span><span></span></div>
+    </div>
+
+    <div class="card recap hidden" id="recap"></div>
 
     <div class="cta" id="cta"></div>
 
-    <p class="foot" id="wFoot"></p>
-  </main>
+    <p class="foot-note" id="wFoot"></p>
+  </section>
 
-</div>
+</main>
 
 <script>
 const DAYS = {
-1:{
-  eyebrow:'Day 01 / The Standard',
-  title:'Set the bar<br>before the<br>season does',
+1:{eyebrow:'Day 01 / The Standard',
+  title:'Set the bar<br>before the<br><em class="serif">season</em> does',
   lede:'Nothing has happened yet. No record, no seed, no bad match to explain. This is the only week of the year where you get to decide what your season means before it means anything.',
-  askPriv:'What does the best version of you look like in the room on a random Tuesday in November?',
   askPub:'Finish this: my standard this season is _____.',
   notePub:'One sentence. Say it like you would say it out loud to someone who is going to hold you to it.',
   hint:'Start with "My standard this season is..."',
   ph:'My standard this season is...',
-  wLede:'These are the standards wrestlers set this week, before anyone stepped on a mat that counted.'
-},
-2:{
-  eyebrow:'Day 02 / The Gap',
-  title:'Better in<br>the room<br>than on<br>the mat',
+  askPriv:'What does the best version of you look like in the room on a random Tuesday in November?',
+  wLede:'These are the standards wrestlers set this week, before anyone stepped on a mat that counted.'},
+2:{eyebrow:'Day 02 / The Gap',
+  title:'Better in<br>the room than<br>on the <em class="serif">mat</em>',
   lede:'Almost every wrestler has something that works in practice and disappears under the lights. That gap is not a talent problem. It is a trained skill, and naming it out loud is the first rep.',
-  askPriv:'Name one thing you do well in practice that goes missing in a match. When did you first notice it?',
   askPub:'Finish this: in the room I _____. On the mat I need to _____.',
   notePub:'Keep it technical. What you do, not how you feel about it.',
   hint:'"In the room I... On the mat I need to..."',
   ph:'In the room I... On the mat I need to...',
-  wLede:'Read these and count how many wrestlers named the exact gap you just named.'
-},
-3:{
-  eyebrow:'Day 03 / The Controllables',
-  title:'Cross out<br>everything<br>you cannot<br>control',
+  askPriv:'Name one thing you do well in practice that goes missing in a match. When did you first notice it?',
+  wLede:'Read these and count how many wrestlers named the exact gap you just named.'},
+3:{eyebrow:'Day 03 / The Controllables',
+  title:'Cross out<br>everything you<br>cannot <em class="serif">control</em>',
   lede:'Referees. Brackets. The other guy. Your seed. The crowd. Your coach\u2019s mood. None of it moves when you push on it. What is left after you cross that list out is the whole job.',
-  askPriv:'List everything about a match you cannot control. Then cross the entire list out. Now write what is left.',
   askPub:'Three things you control on match day.',
   notePub:'Just the three. No explanation needed.',
   hint:'Three, separated by commas',
   ph:'1.\n2.\n3.',
-  wLede:'Three hundred wrestlers, roughly the same three answers. That is not a coincidence, that is the job.'
-},
-4:{
-  eyebrow:'Day 04 / Room Debt',
-  title:'Somebody<br>in your<br>room made<br>you better',
+  askPriv:'List everything about a match you cannot control. Then cross the entire list out. Now write what is left.',
+  wLede:'Hundreds of wrestlers, roughly the same three answers. That is not a coincidence, that is the job.'},
+4:{eyebrow:'Day 04 / Room Debt',
+  title:'Somebody in<br>your room<br>made you <em class="serif">better</em>',
   lede:'You did not get here alone. There is a person in your practice room whose work shows up in your matches, and they probably have no idea.',
-  askPriv:'Who in your room makes you better, and what specifically do they do? Would they know it if you never said it?',
   askPub:'What does one teammate give you that you could not get anywhere else?',
   notePub:'Do not use their name. Describe what they do. Then go tell them in person, which is the actual assignment today.',
   hint:'No names. Just what they do.',
   ph:'He never lets me get away with a lazy...',
-  wLede:'Every one of these is about somebody who does not know they are in it.'
-},
-5:{
-  eyebrow:'Day 05 / The Commitment',
-  title:'When it<br>gets hard,<br>here is<br>what I do',
+  askPriv:'Who in your room makes you better, and what specifically do they do? Would they know it if you never said it?',
+  wLede:'Every one of these is about somebody who does not know they are in it.'},
+5:{eyebrow:'Day 05 / The Commitment',
+  title:'When it gets<br>hard, here is<br>what I <em class="serif">do</em>',
   lede:'Third period. Down two. Legs gone. That moment is coming this season and it is going to arrive faster than you can decide what to do about it. So decide now, while it is quiet.',
-  askPriv:'What will you do differently between the whistle and the handshake this season? Be specific enough that you would notice if you failed to do it.',
   askPub:'Finish this: this season, when it gets hard, I _____.',
   notePub:'Say the thing you want held against you in February.',
   hint:'"This season, when it gets hard, I..."',
   ph:'This season, when it gets hard, I...',
-  wLede:'Five days ago these were strangers. Read what the room committed to.'
-}
+  askPriv:'What will you do differently between the whistle and the handshake this season? Be specific enough that you would notice if you failed to do it.',
+  wLede:'Five days ago these were strangers. Read what the room committed to.'}
 };
 
 const LIMIT = 240;
@@ -297,48 +304,44 @@ const D = DAYS[day];
 const KEY = 'theroom.d' + day;
 const PKEY = 'theroom.priv.d' + day;
 
-// Declared here, not further down. A returning visitor triggers showWall() -> load()
-// during the initial pass, and load() reads `offset`. Any `let` below that call site
-// is still in its temporal dead zone and throws.
+// Declared here, above anything that can call load(). A returning visitor triggers
+// showWall() during the first pass, and a `let` below that call site is still in
+// its temporal dead zone.
 let offset = 0;
 const PAGE = 25;
+let saved = null;
+try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { saved = null; }
 
 const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// scoreboard
-$('periods').innerHTML = [1,2,3,4,5].map(n=>{
+$('pips').innerHTML = [1,2,3,4,5].map(n => {
   const cls = n === day ? 'now' : (localStorage.getItem('theroom.d'+n) ? 'done' : '');
-  return `<span class="period ${cls}">${n}</span>`;
+  return `<span class="pip ${cls}">${n}</span>`;
 }).join('');
 
-// paint prompt
+// ---------- post ----------
 $('eyebrow').textContent = D.eyebrow;
 $('title').innerHTML = D.title;
 $('lede').textContent = D.lede;
-$('askPriv').textContent = D.askPriv;
 $('askPub').textContent = D.askPub;
 $('notePub').textContent = D.notePub;
 $('hint').textContent = D.hint;
 $('pub').placeholder = D.ph;
-$('priv').value = localStorage.getItem(PKEY) || '';
-$('priv').addEventListener('input', e => localStorage.setItem(PKEY, e.target.value));
+$('askPriv').textContent = D.askPriv;
 
-// char meter
-const pub = $('pub'), chars = $('chars'), send = $('send');
-pub.addEventListener('input', () => {
-  const n = pub.value.trim().length;
-  chars.textContent = n + ' / ' + LIMIT;
-  chars.className = n > LIMIT ? 'over' : '';
-  send.disabled = n < 8 || n > LIMIT;
-});
-send.disabled = true;
+function meter(box, out, btn){
+  const n = box.value.trim().length;
+  out.textContent = n + ' / ' + LIMIT;
+  out.className = n > LIMIT ? 'over' : '';
+  btn.disabled = n < 8 || n > LIMIT;
+}
+$('pub').addEventListener('input', () => meter($('pub'), $('chars'), $('send')));
+$('send').disabled = true;
 
-// already submitted? go straight in
-if (localStorage.getItem(KEY)) showWall(JSON.parse(localStorage.getItem(KEY)).text, false);
-
-send.addEventListener('click', async () => {
-  const text = pub.value.trim();
-  send.disabled = true; send.textContent = 'Checking it over';
+$('send').addEventListener('click', async () => {
+  const text = $('pub').value.trim();
+  $('send').disabled = true; $('send').textContent = 'Adding it';
   $('err').classList.add('hidden');
   try {
     const r = await fetch('/.netlify/functions/submit', {
@@ -347,58 +350,150 @@ send.addEventListener('click', async () => {
     });
     const j = await r.json();
     if (!r.ok || !j.ok) throw new Error(j.message || 'Something went wrong on our end. Try again in a moment.');
-    localStorage.setItem(KEY, JSON.stringify({ text, at: Date.now() }));
-    showWall(text, true);
-  } catch (e) {
+    saved = { text, id: j.id, token: j.token, at: Date.now() };
+    localStorage.setItem(KEY, JSON.stringify(saved));
+    showWall(true);
+  } catch(e) {
     $('err').textContent = e.message;
     $('err').classList.remove('hidden');
-    send.disabled = false; send.textContent = 'Add mine to the wall';
+    $('send').disabled = false; $('send').textContent = 'Add mine to the wall';
   }
 });
 
-async function showWall(mine, justSent){
-  $('view-prompt').classList.add('hidden');
+// ---------- private reflection ----------
+$('priv').value = localStorage.getItem(PKEY) || '';
+let privTimer;
+$('priv').addEventListener('input', e => {
+  localStorage.setItem(PKEY, e.target.value);
+  $('privSaved').classList.add('on');
+  clearTimeout(privTimer);
+  privTimer = setTimeout(() => $('privSaved').classList.remove('on'), 1600);
+});
+
+// ---------- edit ----------
+$('editBtn').addEventListener('click', () => {
+  const open = !$('editBox').classList.contains('hidden');
+  $('editBox').classList.toggle('hidden', open);
+  $('editBtn').textContent = open ? 'Edit' : 'Close';
+  if (!open){
+    $('editText').value = saved.text;
+    meter($('editText'), $('editChars'), $('saveEdit'));
+    $('editText').focus();
+  }
+});
+$('cancelEdit').addEventListener('click', () => {
+  $('editBox').classList.add('hidden'); $('editBtn').textContent = 'Edit';
+});
+$('editText').addEventListener('input', () => meter($('editText'), $('editChars'), $('saveEdit')));
+
+$('saveEdit').addEventListener('click', async () => {
+  const text = $('editText').value.trim();
+  $('saveEdit').disabled = true; $('saveEdit').textContent = 'Saving';
+  $('editErr').classList.add('hidden');
+  try {
+    const r = await fetch('/.netlify/functions/revise', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ id: saved.id, token: saved.token, text })
+    });
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(j.message || 'Could not save that change.');
+    saved.text = text;
+    localStorage.setItem(KEY, JSON.stringify(saved));
+    $('yoursText').textContent = text;
+    $('editBox').classList.add('hidden'); $('editBtn').textContent = 'Edit';
+    setState('pending');
+    offset = 0; load();
+  } catch(e){
+    $('editErr').textContent = e.message;
+    $('editErr').classList.remove('hidden');
+  } finally {
+    $('saveEdit').disabled = false; $('saveEdit').textContent = 'Save changes';
+  }
+});
+
+function setState(s){
+  const el = $('yoursState');
+  if (s === 'live'){ el.classList.add('hidden'); return; }
+  el.classList.remove('hidden');
+  el.textContent = 'Going up soon';
+}
+
+// ---------- wall ----------
+if (saved) showWall(false);
+
+function showWall(justSent){
+  $('view-post').classList.add('hidden');
   $('view-wall').classList.remove('hidden');
   window.scrollTo(0,0);
   $('wEyebrow').textContent = D.eyebrow;
   $('wLede').textContent = justSent
     ? 'Yours is read before it goes up, so give it a few hours. In the meantime, here is the room.'
     : D.wLede;
-  if (mine){
-    $('yours').textContent = mine;
-    $('yours').dataset.label = justSent ? 'YOURS / GOING UP SOON' : 'YOURS';
-    $('yours').classList.remove('hidden');
-  }
+  $('yoursText').textContent = saved.text;
+  $('yoursCard').classList.remove('hidden');
+  setState(justSent ? 'pending' : 'live');
+  $('wFoot').textContent = 'No names anywhere on this page. Every entry is read by a person before it goes up.';
+  buildCta();
+  load();
+}
+
+function buildCta(){
   $('cta').innerHTML = day < 5
-    ? `<h2>Day ${day+1} lands in your inbox tomorrow</h2>
+    ? `<h2>Day ${day+1} lands in<br>your inbox <em class="serif">tomorrow</em></h2>
        <p>Five days. Five prompts. One room.</p>`
-    : `<h2>That was five days</h2>
+    : `<h2>That was <em class="serif">five days</em></h2>
        <p>The Unstuck Wrestler is the full version of what you just did. Nine modules on
           closing the gap between the room and the mat, built by a seven time national team member.</p>
-       <a href="https://luchafit.com/unstuck">See The Unstuck Wrestler</a>`;
-  $('wFoot').textContent = 'Anonymous. Every entry is read by a person before it goes up.';
-  load();
+       <a class="pill" href="https://luchafit.com/unstuck">See The Unstuck Wrestler</a>`;
+  if (day === 5) buildRecap();
+}
+
+function buildRecap(){
+  const rows = [];
+  for (let d = 1; d <= 5; d++){
+    let pub = null;
+    try { pub = JSON.parse(localStorage.getItem('theroom.d'+d) || 'null'); } catch {}
+    const priv = localStorage.getItem('theroom.priv.d'+d) || '';
+    if (!pub && !priv) continue;
+    rows.push(`<div class="rday">
+      <div class="lbl">${DAYS[d].eyebrow}</div>
+      ${pub ? `<div class="pubq">${esc(pub.text)}</div>` : '<div class="none">Nothing posted this day.</div>'}
+      ${priv ? `<div class="privq">${esc(priv)}</div>` : ''}
+    </div>`);
+  }
+  if (rows.length < 2) return;
+  $('recap').innerHTML =
+    `<div class="mono" style="margin-bottom:10px">YOUR WEEK &nbsp;/&nbsp; ONLY ON THIS DEVICE</div>
+     <h2 style="margin-bottom:6px">Everything you wrote</h2>
+     <p class="mono" style="margin-bottom:6px">Nobody has seen the indented parts but you.</p>
+     ${rows.join('')}`;
+  $('recap').classList.remove('hidden');
 }
 
 async function load(){
   try{
-    const r = await fetch(`/.netlify/functions/wall?day=${day}&offset=${offset}&limit=${PAGE}`);
+    const q = `day=${day}&offset=${offset}&limit=${PAGE}` + (saved?.id ? `&id=${encodeURIComponent(saved.id)}` : '');
+    const r = await fetch('/.netlify/functions/wall?' + q);
     if (!r.ok) throw new Error('wall returned ' + r.status);
     const j = await r.json();
     if (!j || !Array.isArray(j.entries)) throw new Error('unexpected response shape');
+
+    if (j.mine) setState(j.mine === 'live' ? 'live' : 'pending');
+
     if (offset === 0){
       $('entries').innerHTML = '';
       $('wCount').innerHTML = j.total > 25
-        ? `You are one of <em>${j.total.toLocaleString()}</em> in the room today.`
-        : `You got here <em>early</em>.`;
-      if (!j.entries.length){
+        ? `You are one of <em class="serif">${j.total.toLocaleString()}</em> in the room today.`
+        : `You got here <em class="serif">early</em>.`;
+      $('wallMeta').textContent = j.shown ? j.shown.toLocaleString() + ' up so far' : '';
+      if (!j.entries.length)
         $('wLede').textContent = 'You are one of the first in today. Check back this afternoon and the wall will have filled in.';
-      }
     }
+
     j.entries.forEach((e,i) => {
       const el = document.createElement('div');
       el.className = 'entry';
-      el.style.animationDelay = (i * 34) + 'ms';
+      el.style.animationDelay = (i * 32) + 'ms';
       el.innerHTML = `<span class="n">${String(offset+i+1).padStart(3,'0')}</span><p></p>`;
       el.querySelector('p').textContent = e.text;
       $('entries').appendChild(el);
@@ -409,8 +504,7 @@ async function load(){
     console.error('[the room] wall failed:', e);
     $('entries').innerHTML =
       '<p class="note">The wall would not load. Refresh to try again.<br>' +
-      '<span style="font-family:var(--mono);font-size:11px;opacity:.6">' +
-      String(e && e.message || e).replace(/[<>]/g,'') + '</span></p>';
+      '<span class="mono">' + esc(String(e && e.message || e)) + '</span></p>';
   }
 }
 $('more').addEventListener('click', load);

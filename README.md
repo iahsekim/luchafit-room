@@ -78,11 +78,23 @@ curl -s -X POST https://room.luchafit.com/.netlify/functions/admin \
 
 ### The READ FIRST lane
 
-Entries containing certain terms are written into a separate priority lane and sort to
-the top of your queue with a red badge. This rejects nothing and the wrestler never sees
-a difference. It only decides what you read first. The term list is at the top of
-`netlify/functions/submit.js` and covers self harm, disordered eating, unsafe weight
-cutting, abuse, hazing, and hidden injuries.
+Entries containing certain terms go into a separate priority lane and sort to the top of
+your queue with a red badge. **This rejects nothing** and the wrestler never sees a
+difference. It only decides what you read first. Manually seeded entries run the same
+check, so the queue behaves the same no matter how an entry got there.
+
+The list lives in `netlify/lib/priority.js` and covers self harm, disordered eating,
+unsafe weight cutting, abuse, hazing, and hidden injuries. It works two ways: multi-word
+phrases match anywhere in the text, and a short list of high-risk single words matches on
+word boundaries, so `die` does not fire on `diet` and `fat` does not fire on `fatigue`.
+
+Tune it freely. A false positive costs you three seconds of reading; a miss costs
+something else. The one thing to avoid is flagging so much that the lane stops being a
+signal.
+
+**It is a keyword list, not comprehension.** It cannot read tone or context and it will
+miss anything phrased in a way nobody thought to list. The real safety net is that you
+read every entry before it goes up. This only sets the order.
 
 Somewhere in a five day run across 11,700 subscribers, one of these is going to be real.
 Decide now what you do when it is. You cannot reply to the wrestler, since there is no
@@ -95,6 +107,7 @@ the next day's email.
 |---|---|
 | `pending/d{day}/{1 or 0}/{ts}-{rand}` | one blob per unreviewed entry, priority lane in the key |
 | `wall/d{day}` | the approved wall, one blob, newest first |
+| entry `token` | random edit capability, server side only, never returned to any browser |
 | `rejected/d{day}/{id}` | what you turned away |
 | `rate/{ipHash}/d{day}` | submission count per IP bucket |
 
@@ -116,9 +129,41 @@ queue is a `list` call that never reads a single blob body.
 function. Comfortable to roughly 5,000 entries per day. Past that it wants sharding into
 pages, which is a twenty minute change you will probably never need.
 
+## Editing
+
+Anyone can change their own entry from the wall screen. There are no accounts, so
+ownership is proved with a random token the server issues on submit and the browser
+keeps. It is a capability, not an identity, and it is never sent to the review console.
+
+**Every edit returns the entry to your queue and takes it off the wall until you
+re-approve it.** This is not a nicety. Without it, someone could post something
+harmless, wait for approval, then swap in anything they liked and have it appear
+unreviewed on a page full of kids. Edited entries carry a green **EDITED** tag so you
+know you are looking at a re-review rather than something new.
+
+The token lives in `localStorage`, so clearing browser data or switching devices means
+losing the ability to edit that entry. The entry itself is unaffected.
+
+## The two-part structure
+
+Each day asks for two different things:
+
+1. **Public** — one line, anonymous, goes on the wall. This is the gate: post to read.
+2. **Private** — a longer reflection that never leaves the device. `localStorage` only,
+   never transmitted, nothing to moderate.
+
+The public prompt comes first and the private one sits below the wall, after they have
+read what everyone else wrote. That ordering is deliberate: the frictionless action
+should not sit behind the harder one, and the reflection lands better once the room has
+primed it.
+
+On day 5 the page assembles everything from all five days, public and private, into a
+recap directly above the Unstuck CTA. That recap is what makes the private box worth
+filling in. Since it reads `localStorage`, someone who switches devices mid-week sees
+only what that browser holds, so the copy never promises a complete week.
+
 ## Deliberately not built
 
 - No accounts, no cookies beyond `localStorage`, no analytics on the entry text
 - Private reflections never leave the device
-- No editing or deleting by the wrestler, since there is no identity to authenticate against
 - No likes or replies, which is what keeps it a wall instead of a comment section
