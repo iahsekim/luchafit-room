@@ -29,7 +29,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
 .mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
 .mono.blue{color:var(--blue)}
-.wrap{max-width:720px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
+.wrap{max-width:760px;margin:0 auto;padding:0 clamp(16px,3vw,48px)}
 .hidden{display:none!important}
 
 
@@ -43,42 +43,48 @@ em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
 header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.93);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;
-  min-height:66px;padding:12px 0;gap:14px}
+  min-height:70px;padding:14px 0;gap:14px}
 .wordmark{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;
   display:flex;align-items:baseline;gap:7px}
 .wordmark sup{font-family:var(--mono);font-size:9px;color:var(--orange);letter-spacing:.1em;font-weight:400}
 .pips{display:flex;gap:5px}
-.pip{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
-  font-family:var(--mono);font-size:10.5px;border:1.5px solid var(--line);color:var(--ink-2);background:var(--card)}
+.pip{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-size:10.5px;border:1.5px solid var(--line);color:var(--ink-2);
+  background:var(--card);text-decoration:none;transition:all .18s}
 .pip.done{border-color:var(--ink);color:var(--ink)}
+a.pip.done:hover{background:var(--ink);color:var(--paper)}
 .pip.now{background:var(--blue);border-color:var(--blue);color:#fff}
+.pip.locked{opacity:.42}
 
-main{padding:clamp(44px,6vw,72px) 0 110px}
-.lead{margin-bottom:clamp(26px,3.4vw,34px)}
+main{padding:clamp(56px,7vw,110px) 0 clamp(80px,8vw,140px)}
+.lead{margin-bottom:clamp(28px,3.4vw,48px)}
 .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--orange);margin-bottom:15px}
+  color:var(--orange);margin-bottom:clamp(16px,2vw,24px)}
 h1{font-family:var(--disp);font-weight:800;font-size:44px;
   letter-spacing:-.034em;line-height:1.02;white-space:nowrap}
 h1.wrapped{white-space:normal;line-height:.96;text-wrap:balance}
 h1 > span{display:inline-block}
 h1 em.serif{color:var(--blue)}
-.sub{color:var(--ink-2);margin-top:18px;max-width:none;font-size:17px;line-height:1.62}
+.sub{color:var(--ink-2);margin-top:clamp(16px,2vw,24px);max-width:none;
+  font-size:clamp(17px,1.5vw,21px);line-height:1.55}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:clamp(22px,3.2vw,32px);margin-bottom:18px}
-.ask{font-family:var(--disp);font-weight:600;font-size:21px;
-  letter-spacing:-.015em;line-height:1.28;margin-bottom:9px}
-.note{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:22px}
+  padding:clamp(22px,3vw,44px);margin-bottom:clamp(16px,2vw,24px)}
+.ask{font-family:var(--disp);font-weight:600;font-size:clamp(20px,2vw,27px);
+  letter-spacing:-.02em;line-height:1.22;margin-bottom:12px}
+.note{font-size:clamp(15px,1.2vw,17px);color:var(--ink-2);line-height:1.6;
+  margin-bottom:clamp(24px,3vw,36px)}
 
-.anon{display:flex;gap:13px;align-items:flex-start;background:var(--tint);
-  border-radius:11px;padding:16px 18px;margin-bottom:26px}
+.anon{display:flex;gap:14px;align-items:flex-start;background:var(--tint);
+  border-radius:12px;padding:clamp(16px,1.8vw,22px);margin-bottom:clamp(28px,3.4vw,44px)}
 .anon .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto;
   margin-top:6px}
 .anon b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--blue-deep);font-weight:500;margin-bottom:3px}
-.anon span{font-size:14.5px;color:var(--blue-deep);line-height:1.55;display:block}
+.anon span{font-size:clamp(14px,1.15vw,16px);color:var(--blue-deep);line-height:1.55;display:block}
 
-details.eg{border:1px dashed var(--line);border-radius:10px;padding:14px 16px;margin-bottom:24px}
+details.eg{border:1px dashed var(--line);border-radius:11px;padding:clamp(14px,1.4vw,20px);
+  margin-bottom:clamp(24px,3vw,36px)}
 details.eg summary{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--blue);cursor:pointer;list-style:none}
 details.eg summary::-webkit-details-marker{display:none}
@@ -87,22 +93,24 @@ details.eg[open] summary:before{content:'– '}
 details.eg p{font-size:14.5px;color:var(--ink-2);margin-top:11px;line-height:1.62;white-space:pre-wrap}
 
 .fgroup{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink);margin:26px 0 14px;padding-top:20px;border-top:1px solid var(--line)}
+  color:var(--ink);margin:clamp(30px,3.4vw,44px) 0 16px;padding-top:clamp(22px,2.6vw,32px);
+  border-top:1px solid var(--line)}
 .fgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.f{margin-bottom:18px}
+.f{margin-bottom:clamp(20px,2.4vw,30px)}
 .f .pre{font-family:var(--disp);font-weight:600;font-size:16.5px;margin-bottom:8px;display:block}
 .f .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-2);margin-bottom:8px;display:block}
 textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);
-  padding:13px 15px;resize:none;overflow:hidden;line-height:1.6;font-size:16px;
-  min-height:50px;transition:border-color .2s}
+  padding:14px 16px;resize:none;overflow:hidden;line-height:1.6;
+  font-size:clamp(15px,1.2vw,17px);min-height:52px;transition:border-color .2s}
 textarea:focus{border-color:var(--blue);background:var(--card);outline:none}
 textarea::placeholder{color:rgba(12,13,15,.3)}
 .f .cnt{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.34);text-align:right;margin-top:5px}
 .f .cnt.over{color:var(--orange)}
 
 .meter{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  font-family:var(--mono);font-size:11.5px;color:var(--ink-2);margin:22px 0 18px}
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-2);
+  margin:clamp(24px,2.6vw,32px) 0 clamp(18px,2vw,24px)}
 .meter .over{color:var(--orange)}
 .pill{font-family:var(--mono);font-size:12px;border:1.5px solid var(--ink);border-radius:999px;
   padding:11px 20px;background:var(--card);transition:all .2s;display:inline-block}
@@ -114,26 +122,27 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
 .pill:disabled:hover{background:var(--line);color:var(--ink-2)}
 .pill.sm{padding:7px 14px;font-size:11px}
 .err{font-size:14px;color:var(--orange);margin-top:14px;border-left:2.5px solid var(--orange);padding-left:13px}
-.foot-note{font-family:var(--mono);font-size:11px;color:rgba(12,13,15,.44);line-height:1.85;margin-top:22px}
+.foot-note{font-family:var(--mono);font-size:11px;color:rgba(12,13,15,.44);line-height:1.85;
+  margin-top:clamp(24px,2.6vw,32px)}
 
-.yours{border:1.5px solid var(--ink)}
-.yours-head{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.locked-note{font-family:var(--mono);font-size:12px;color:var(--ink-2);line-height:1.9}
+.locked-note a{color:var(--blue)}
+#boot{padding:60px 0;text-align:center;font-family:var(--mono);font-size:11.5px;color:rgba(12,13,15,.3)}
+.yours{border:2px solid var(--ink);margin-bottom:clamp(40px,5vw,72px)}
+.yours-head{display:flex;align-items:center;gap:9px;margin-bottom:20px;flex-wrap:wrap}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   border-radius:999px;padding:5px 11px;background:var(--tint);color:var(--blue-deep)}
 .tag.wait{background:var(--orange-tint);color:#B32800}
 .yours-head .sp{flex:1}
-#yoursText{font-size:16.5px;line-height:1.62;white-space:pre-wrap}
+#yoursText{font-size:clamp(17px,1.5vw,21px);line-height:1.55;white-space:pre-wrap}
 
-.wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  margin:clamp(32px,4.2vw,44px) 0 16px;flex-wrap:wrap}
-.wall-head h2{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em}
-.entry{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:18px 20px;
-  margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;
+.entry{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:clamp(18px,1.8vw,26px);margin-bottom:12px;display:flex;gap:18px;align-items:flex-start;
   opacity:0;transform:translateY(10px);animation:rise .5s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
 .entry .n{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.3);flex:0 0 30px;padding-top:4px}
 .entry .body{flex:1;min-width:0}
-.entry p{font-size:16px;line-height:1.62;overflow-wrap:break-word;white-space:pre-wrap}
+.entry p{font-size:clamp(15px,1.2vw,17px);line-height:1.62;overflow-wrap:break-word;white-space:pre-wrap}
 .entry p.clamp{display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
 .entry .rm{font-family:var(--mono);font-size:10.5px;color:var(--blue);margin-top:8px}
 .skel{height:58px;background:rgba(12,13,15,.06);border-radius:10px;margin-bottom:9px;animation:sk 1.3s infinite}
@@ -148,11 +157,13 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
   color:var(--orange);margin-bottom:9px}
 .rday .t{font-size:15px;line-height:1.6;color:rgba(242,241,236,.9);white-space:pre-wrap}
 
-.cta{background:var(--blue);border-radius:var(--r);padding:clamp(26px,3.4vw,36px);color:#fff;margin-top:24px}
+.cta{background:var(--blue);border-radius:var(--r);padding:clamp(28px,4vw,64px);color:#fff;
+  margin-top:clamp(56px,7vw,100px)}
 .cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.2vw,31px);
   letter-spacing:-.025em;line-height:1.02;color:#fff;text-wrap:balance}
 .cta h2 em.serif{color:#FFB39E}
-.cta p{color:rgba(255,255,255,.82);margin:14px 0 24px;max-width:46ch;font-size:16.5px;line-height:1.6}
+.cta p{color:rgba(255,255,255,.82);margin:16px 0 28px;max-width:46ch;
+  font-size:clamp(16px,1.4vw,19px);line-height:1.6}
 .cta p:last-child{margin-bottom:0}
 .cta a.pill{background:#fff;border-color:#fff;color:var(--blue)}
 .cta a.pill:hover{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -172,7 +183,9 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
 
 <main class="wrap">
 
-  <section id="view-post">
+  <div id="boot">Loading</div>
+
+  <section id="view-post" class="hidden">
     <div class="lead">
       <div class="eyebrow" id="eyebrow"></div>
       <h1 id="title"><span id="titleIn"></span></h1>
@@ -205,10 +218,20 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
     </div>
   </section>
 
+  <section id="view-locked" class="hidden">
+    <div class="lead">
+      <div class="eyebrow" id="lEyebrow"></div>
+      <h1><span id="lTitleIn">Not open <em class="serif">yet</em></span></h1>
+      <p class="sub">This day opens when it lands in your inbox. Nothing to see here until then.</p>
+    </div>
+    <div class="card">
+      <p class="locked-note" id="lBack"></p>
+    </div>
+  </section>
+
   <section id="view-wall" class="hidden">
     <div class="lead">
       <div class="eyebrow" id="wEyebrow"></div>
-      <h1 id="wCount"><span id="wCountIn"></span></h1>
       <p class="sub" id="wLede"></p>
     </div>
 
@@ -231,7 +254,6 @@ textarea::placeholder{color:rgba(12,13,15,.3)}
       </div>
     </div>
 
-    <div class="wall-head"><h2>The room</h2><span class="mono" id="wallMeta"></span></div>
     <div id="entries"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
     <button class="pill hidden" id="more" style="margin-top:6px">Show more</button>
 
@@ -364,7 +386,7 @@ function fitTitle(h, inner){
 }
 function fitAll(){
   fitTitle($('title'), $('titleIn'));
-  fitTitle($('wCount'), $('wCountIn'));
+  const l = $('view-locked'); if (l) fitTitle(l.querySelector('h1'), $('lTitleIn'));
 }
 let fitT;
 window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(fitAll, 120); });
@@ -372,14 +394,20 @@ window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-$('pips').innerHTML = [1,2,3,4,5].map(n => {
-  const cls = n === day ? 'now' : (localStorage.getItem('theroom.d'+n) ? 'done' : '');
-  return `<span class="pip ${cls}">${n}</span>`;
-}).join('');
+function renderPips(){
+  $('pips').innerHTML = [1,2,3,4,5].map(n => {
+    if (n === day) return `<span class="pip now" aria-current="page">${n}</span>`;
+    // Clickable only where they have already posted. Anything else would let
+    // someone read a wall without adding to it, or peek at a later prompt.
+    if (localStorage.getItem('theroom.d'+n))
+      return `<a class="pip done" href="?d=${n}" title="Day ${n}">${n}</a>`;
+    return `<span class="pip locked" title="Not yet">${n}</span>`;
+  }).join('');
+}
+renderPips();
 
 $('eyebrow').textContent = D.eyebrow;
 $('titleIn').innerHTML = D.title;
-fitTitle($('title'), $('titleIn'));
 $('lede').textContent = D.lede;
 $('ask').textContent = D.ask;
 $('note').textContent = D.note;
@@ -506,11 +534,40 @@ function setState(s){
   el.textContent = 'Going up soon';
 }
 
-// ---------- wall ----------
-if (saved) showWall(false);
+// ---------- boot ----------
+// The prompt is never rendered until the server confirms the day is open, so
+// nobody can jump ahead of the emails by editing the URL.
+boot();
+async function boot(){
+  if (saved){ $('boot').classList.add('hidden'); showWall(false); return; }
+  let open = true;
+  try {
+    const r = await fetch(`/.netlify/functions/wall?day=${day}&limit=1`);
+    if (r.ok){ const j = await r.json(); if (j && j.open === false) open = false; }
+  } catch { /* if we cannot tell, do not lock people out */ }
+  $('boot').classList.add('hidden');
+  open ? showPost() : showLocked();
+}
+
+function showPost(){
+  $('view-post').classList.remove('hidden');
+  fitTitle($('title'), $('titleIn'));   // needs a visible box to measure
+}
+
+function showLocked(){
+  $('view-locked').classList.remove('hidden');
+  $('lEyebrow').textContent = D.eyebrow.split('/')[0].trim();
+  const done = [1,2,3,4,5].filter(n => localStorage.getItem('theroom.d'+n));
+  $('lBack').innerHTML = done.length
+    ? 'Days you have already done: ' + done.map(n => `<a href="?d=${n}">Day ${n}</a>`).join(' &nbsp;·&nbsp; ')
+    : 'Your first prompt arrives by email.';
+  fitTitle($('view-locked').querySelector('h1'), $('lTitleIn'));
+}
 
 function showWall(justSent){
+  $('boot').classList.add('hidden');
   $('view-post').classList.add('hidden');
+  $('view-locked').classList.add('hidden');
   $('view-wall').classList.remove('hidden');
   window.scrollTo(0,0);
   $('wEyebrow').textContent = D.eyebrow;
@@ -562,13 +619,6 @@ async function load(){
 
     if (offset === 0){
       $('entries').innerHTML = '';
-      // The fallback never mentions being early or the wall being thin. It just
-      // confirms they are in, which is true at two entries and at two thousand.
-      $('wCountIn').innerHTML = j.total >= 3
-        ? `<em class="serif">${j.total.toLocaleString()}</em> in the room today.`
-        : `You are <em class="serif">in</em>.`;
-      fitTitle($('wCount'), $('wCountIn'));
-      $('wallMeta').textContent = j.shown ? j.shown.toLocaleString() + ' up so far' : '';
       if (!j.entries.length)
         $('wLede').textContent = 'Nothing is up on the wall yet. Check back later today and it will have filled in.';
     }

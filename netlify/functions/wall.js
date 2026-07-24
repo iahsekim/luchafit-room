@@ -35,10 +35,22 @@ export default async (req) => {
            : 'gone';
     }
 
+    // A day is open once anything has been approved on it. Metadata only, so this
+    // is five cheap existence checks rather than five blob reads. The prompt for a
+    // closed day is never shown, which stops anyone browsing ahead of the emails.
+    const openDays = [];
+    for (let d = 1; d <= 5; d++) {
+      if (d === day) { if (wall.length) openDays.push(d); continue; }
+      const meta = await s.getMetadata(`wall/d${d}`).catch(() => null);
+      if (meta) openDays.push(d);
+    }
+
     return json({
       entries: wall.slice(offset, offset + limit).map(e => ({ text: e.text })),
       shown: wall.length,
       total: wall.length + pending,
+      open: wall.length > 0,
+      openDays,
       mine
     }, 200, 'no-store');
   } catch (e) {
