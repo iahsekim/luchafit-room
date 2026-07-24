@@ -1,599 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Room / LuchaFit</title>
-<meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Unstuck Wrestler — Mental Performance Assessment</title>
+
+<!-- ============================================================
+     CONFIG — set these two values, that's it.
+     ============================================================ -->
+<script>
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxML9nl2cUidIOlFx_07GZbemGu2WUUfCV3e-VE9mZRSpXuzr_A5W6hZfPu7VvaLC4Jwg/exec";
+  const WAITLIST_URL = "https://luchafit.com";
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --paper:#F2F1EC; --card:#FFFFFF; --ink:#0C0D0F; --ink-2:#5B5C63;
-  --blue:#1E33D9; --blue-deep:#141F86; --tint:#E7EAFA;
-  --orange:#FF4B1F; --orange-tint:#FFE7DF;
-  --line:rgba(12,13,15,.13);
-  --disp:'Bricolage Grotesque',sans-serif; --body:'Instrument Sans',sans-serif;
-  --serif:'Instrument Serif',serif; --mono:'IBM Plex Mono',monospace;
-  --r:14px; --ease:cubic-bezier(.22,.8,.24,1);
+  --black:#1B1B1B; --ink:#262626; --bone:#F2EFEA; --bone-2:#E9E4DA;
+  --gold:#B8872A; --gold-bright:#D9A93B;
+  --line:rgba(27,27,27,.14);
+  --shadow:0 18px 40px -18px rgba(27,27,27,.45);
+  --react:#B5522E; --intent:#B8872A; --flow:#3E7C59;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-::selection{background:var(--blue);color:#fff}
-body{font-family:var(--body);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  background-image:radial-gradient(rgba(12,13,15,.055) 1px,transparent 1px);background-size:26px 26px}
-button,textarea{font:inherit;color:inherit}
-button{background:none;border:none;cursor:pointer}
-button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
-em.serif{font-family:var(--serif);font-style:italic;font-weight:400}
-.mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2)}
-.mono.blue{color:var(--blue)}
-.wrap{max-width:720px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
-.hidden{display:none!important}
+html,body{height:100%}
+body{font-family:"DM Sans",sans-serif;background:var(--bone);color:var(--ink);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;min-height:100dvh;max-width:560px;margin:0 auto;
+  padding:clamp(20px,5vw,40px) clamp(18px,5vw,32px) 60px;display:flex;flex-direction:column}
 
-header{position:sticky;top:0;z-index:100;background:rgba(242,241,236,.93);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:62px;gap:14px}
-.wordmark{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;
-  display:flex;align-items:baseline;gap:7px}
-.wordmark sup{font-family:var(--mono);font-size:9px;color:var(--orange);letter-spacing:.1em;font-weight:400}
-.pips{display:flex;gap:5px}
-.pip{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
-  font-family:var(--mono);font-size:10.5px;border:1.5px solid var(--line);color:var(--ink-2);background:var(--card)}
-.pip.done{border-color:var(--ink);color:var(--ink)}
-.pip.now{background:var(--blue);border-color:var(--blue);color:#fff}
+.kicker{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;font-size:13px;color:var(--gold)}
+.display{font-family:"Bebas Neue",sans-serif;line-height:.92;letter-spacing:.01em;
+  text-transform:uppercase;color:var(--black)}
+h1.display{font-size:clamp(52px,15vw,82px)}
+h2.display{font-size:clamp(34px,9vw,52px)}
+.lede{font-size:clamp(16px,4.2vw,18px);line-height:1.55;color:#4a463f;font-weight:400}
 
-main{padding:clamp(24px,3.6vw,38px) 0 90px}
-.lead{margin-bottom:clamp(18px,2.4vw,24px)}
-.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--orange);margin-bottom:11px}
-h1{font-family:var(--disp);font-weight:800;font-size:44px;
-  letter-spacing:-.034em;line-height:1.02;white-space:nowrap}
-h1.wrapped{white-space:normal;line-height:.96;text-wrap:balance}
-h1 > span{display:inline-block}
-h1 em.serif{color:var(--blue)}
-.sub{color:var(--ink-2);margin-top:13px;max-width:none;font-size:15.5px;line-height:1.55}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;font-size:18px;background:var(--black);color:var(--bone);
+  border:none;border-radius:2px;cursor:pointer;padding:18px 26px;width:100%;
+  transition:transform .15s ease,background .2s ease;box-shadow:var(--shadow);text-decoration:none}
+.btn:hover{background:#000;transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn.gold{background:var(--gold);color:#fff}
+.btn.gold:hover{background:var(--gold-bright)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:clamp(18px,2.4vw,24px);margin-bottom:14px}
-.ask{font-family:var(--disp);font-weight:600;font-size:19px;
-  letter-spacing:-.015em;line-height:1.25;margin-bottom:6px}
-.note{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-bottom:16px}
+.screen{display:none;flex:1;flex-direction:column;justify-content:center}
+.screen.active{display:flex;animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.fade{animation:fade .4s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 
-.anon{display:flex;gap:11px;align-items:flex-start;background:var(--tint);
-  border-radius:10px;padding:12px 14px;margin-bottom:18px}
-.anon .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto;
-  margin-top:6px}
-.anon b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--blue-deep);font-weight:500;margin-bottom:3px}
-.anon span{font-size:13px;color:var(--blue-deep);line-height:1.45;display:block}
+/* intro */
+.intro-tag{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.intro-tag .rule{height:2px;flex:1;background:var(--black)}
+.intro h1{margin:6px 0 18px}
+.intro h1 .acc{color:var(--gold)}
+.honesty{background:#fff;border-left:4px solid var(--gold);border-radius:0 4px 4px 0;
+  padding:16px 18px;margin:22px 0 6px;font-size:14.5px;line-height:1.55;color:#4a463f}
+.honesty b{color:var(--black)}
+.meta{display:flex;gap:24px;margin-top:26px;font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:14px;color:#6a655c}
+.meta b{display:block;font-family:"Bebas Neue",sans-serif;font-size:30px;color:var(--black);
+  letter-spacing:.02em;line-height:1}
+.intro .btn{margin-top:30px}
+.byline{margin-top:18px;font-size:13.5px;color:#807a70}
+.byline b{color:var(--gold)}
 
-details.eg{border:1px dashed var(--line);border-radius:10px;padding:11px 14px;margin-bottom:18px}
-details.eg summary{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--blue);cursor:pointer;list-style:none}
-details.eg summary::-webkit-details-marker{display:none}
-details.eg summary:before{content:'+ ';font-weight:600}
-details.eg[open] summary:before{content:'– '}
-details.eg p{font-size:13.5px;color:var(--ink-2);margin-top:9px;line-height:1.55;white-space:pre-wrap}
+/* progress */
+.progress{position:sticky;top:0;padding:6px 0 22px;background:linear-gradient(var(--bone) 70%,transparent)}
+.progress .count{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;font-size:12px;color:#807a70;margin-bottom:8px;display:flex;justify-content:space-between}
+.bar{height:6px;background:var(--bone-2);border-radius:99px;overflow:hidden}
+.bar > i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;
+  transition:width .45s cubic-bezier(.2,.7,.2,1)}
 
-.fgroup{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink);margin:18px 0 9px;padding-top:14px;border-top:1px solid var(--line)}
-.fgroup:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.f{margin-bottom:11px}
-.f .pre{font-family:var(--disp);font-weight:600;font-size:15px;margin-bottom:5px;display:block}
-.f .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-2);margin-bottom:5px;display:block}
-textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;background:var(--paper);
-  padding:10px 12px;resize:none;overflow:hidden;line-height:1.5;font-size:15.5px;
-  min-height:42px;transition:border-color .2s}
-textarea:focus{border-color:var(--blue);background:var(--card);outline:none}
-textarea::placeholder{color:rgba(12,13,15,.3)}
-.f .cnt{font-family:var(--mono);font-size:9.5px;color:rgba(12,13,15,.32);text-align:right;margin-top:3px}
-.f .cnt.over{color:var(--orange)}
+/* question */
+.q-section{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:8px}
+.q-text{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  line-height:1.02;font-size:clamp(25px,6.6vw,34px);color:var(--black);margin-bottom:26px}
 
-.meter{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  font-family:var(--mono);font-size:10.5px;color:var(--ink-2);margin:16px 0 14px}
-.meter .over{color:var(--orange)}
-.pill{font-family:var(--mono);font-size:12px;border:1.5px solid var(--ink);border-radius:999px;
-  padding:11px 20px;background:var(--card);transition:all .2s;display:inline-block}
-.pill:hover{background:var(--ink);color:var(--paper)}
-.pill.solid{background:var(--blue);border-color:var(--blue);color:#fff}
-.pill.solid:hover{background:var(--ink);border-color:var(--ink)}
-.pill.block{display:block;width:100%;text-align:center;padding:14px 20px;font-size:12px}
-.pill:disabled{background:var(--line);border-color:transparent;color:var(--ink-2);cursor:not-allowed}
-.pill:disabled:hover{background:var(--line);color:var(--ink-2)}
-.pill.sm{padding:7px 14px;font-size:11px}
-.err{font-size:14px;color:var(--orange);margin-top:14px;border-left:2.5px solid var(--orange);padding-left:13px}
-.foot-note{font-family:var(--mono);font-size:10px;color:rgba(12,13,15,.4);line-height:1.7;margin-top:16px}
+/* 1-10 scale */
+.scale-anchors{display:flex;justify-content:space-between;font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:#807a70;margin-bottom:10px}
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.dot{aspect-ratio:1;border:2px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;color:#9a948a;
+  display:flex;align-items:center;justify-content:center;transition:all .12s ease;padding:0;min-height:34px}
+.dot:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.dot.sel{background:var(--gold);border-color:var(--gold);color:#fff}
 
-.yours{border:1.5px solid var(--ink)}
-.yours-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  border-radius:999px;padding:5px 11px;background:var(--tint);color:var(--blue-deep)}
-.tag.wait{background:var(--orange-tint);color:#B32800}
-.yours-head .sp{flex:1}
-#yoursText{font-size:15.5px;line-height:1.55;white-space:pre-wrap}
+/* multiple choice */
+.options{display:flex;flex-direction:column;gap:12px}
+.opt{position:relative;text-align:left;cursor:pointer;background:#fff;border:2px solid var(--line);
+  border-radius:4px;padding:17px 18px 17px 22px;font-size:16px;line-height:1.4;color:var(--ink);
+  transition:border-color .15s,transform .12s,box-shadow .15s}
+.opt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gold);
+  transform:scaleY(0);transition:transform .18s ease;border-radius:4px 0 0 4px}
+.opt:hover{border-color:rgba(184,135,42,.55);transform:translateX(2px)}
+.opt:hover::before,.opt.sel::before{transform:scaleY(1)}
+.opt.sel{border-color:var(--gold);box-shadow:0 10px 22px -14px rgba(184,135,42,.7);background:#FFFDF8}
 
-.wall-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  margin:clamp(24px,3.2vw,32px) 0 12px;flex-wrap:wrap}
-.wall-head h2{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em}
-.entry{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
-  margin-bottom:8px;display:flex;gap:13px;align-items:flex-start;
-  opacity:0;transform:translateY(10px);animation:rise .5s var(--ease) forwards}
-@keyframes rise{to{opacity:1;transform:none}}
-.entry .n{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.3);flex:0 0 30px;padding-top:4px}
-.entry .body{flex:1;min-width:0}
-.entry p{font-size:15px;line-height:1.55;overflow-wrap:break-word;white-space:pre-wrap}
-.entry p.clamp{display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
-.entry .rm{font-family:var(--mono);font-size:10.5px;color:var(--blue);margin-top:8px}
-.skel{height:58px;background:rgba(12,13,15,.06);border-radius:10px;margin-bottom:9px;animation:sk 1.3s infinite}
-@keyframes sk{50%{opacity:.45}}
+/* gate */
+.gate .lock{font-family:"Bebas Neue",sans-serif;font-size:22px;color:var(--gold);letter-spacing:.08em;margin-bottom:8px}
+.gate h2{margin-bottom:14px}
+.field{margin-top:16px}
+.field label{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:#6a655c;margin-bottom:7px}
+.field label .opt-tag{color:#a8a297;font-weight:600}
+.field input,.field select{width:100%;font-family:"DM Sans",sans-serif;font-size:16px;color:var(--ink);
+  background:#fff;border:2px solid var(--line);border-radius:4px;padding:15px 16px;transition:border-color .15s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold)}
+.gate .btn{margin-top:24px}
+.fineprint{margin-top:14px;font-size:12.5px;color:#8a857b;line-height:1.5;text-align:center}
+.err{color:#9a2b2b;font-size:13px;margin-top:8px;min-height:1em}
 
-.recap{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.recap h2{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.2vw,32px);letter-spacing:-.025em;color:#fff}
-.recap .mono{color:rgba(242,241,236,.5)}
-.rday{border-top:1px solid rgba(242,241,236,.16);padding:18px 0}
-.rday:last-child{padding-bottom:0}
-.rday .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--orange);margin-bottom:9px}
-.rday .t{font-size:15px;line-height:1.6;color:rgba(242,241,236,.9);white-space:pre-wrap}
+/* result */
+.result .badge{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:#807a70;margin-bottom:8px}
+.tier-card{background:var(--black);color:var(--bone);border-radius:8px;overflow:hidden;
+  box-shadow:var(--shadow);margin:4px 0 22px}
+.tier-card .top{padding:30px 26px 26px;position:relative}
+.tier-card .top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px}
+.tier-card.t-react .top::after{background:var(--react)}
+.tier-card.t-intent .top::after{background:linear-gradient(90deg,var(--gold),var(--gold-bright))}
+.tier-card.t-flow .top::after{background:var(--flow)}
+.tier-card .youare{font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;font-size:13px;margin-bottom:6px}
+.tier-card.t-react .youare{color:#e89a7d}
+.tier-card.t-intent .youare{color:var(--gold-bright)}
+.tier-card.t-flow .youare{color:#7fc89f}
+.tier-card .tier-name{font-family:"Bebas Neue",sans-serif;font-size:clamp(42px,12vw,62px);
+  line-height:.9;letter-spacing:.01em;color:#fff}
+.tier-card .score-pill{display:inline-flex;align-items:baseline;gap:6px;margin-top:14px;
+  background:rgba(242,239,234,.08);border-radius:99px;padding:7px 16px}
+.tier-card .score-pill b{font-family:"Bebas Neue",sans-serif;font-size:28px;line-height:1;color:#fff}
+.tier-card .score-pill span{font-family:"Barlow Condensed",sans-serif;font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:#b8b2a6}
+.tier-card .body{padding:22px 26px 28px;border-top:1px solid rgba(242,239,234,.12)}
+.tier-card .body p{color:#ddd8cd;line-height:1.55;font-size:15.5px}
 
-.cta{background:var(--blue);border-radius:var(--r);padding:clamp(22px,2.8vw,28px);color:#fff;margin-top:18px}
-.cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(24px,3.2vw,31px);
-  letter-spacing:-.025em;line-height:1.02;color:#fff;text-wrap:balance}
-.cta h2 em.serif{color:#FFB39E}
-.cta p{color:rgba(255,255,255,.82);margin:11px 0 18px;max-width:46ch}
-.cta p:last-child{margin-bottom:0}
-.cta a.pill{background:#fff;border-color:#fff;color:var(--blue)}
-.cta a.pill:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+/* dimension bars */
+.bars{background:#fff;border:2px solid var(--line);border-radius:8px;padding:22px 22px 24px;margin-bottom:22px}
+.bars h3{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:12px;color:#807a70;margin-bottom:16px}
+.brow{margin-bottom:15px}
+.brow:last-child{margin-bottom:0}
+.brow .bl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.brow .name{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;font-size:14px;color:var(--black)}
+.brow .val{font-family:"Bebas Neue",sans-serif;font-size:18px;color:#807a70;letter-spacing:.03em}
+.brow .track{height:9px;background:var(--bone-2);border-radius:99px;overflow:hidden}
+.brow .fill{height:100%;width:0;border-radius:99px;background:var(--gold);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.brow.low .fill{background:var(--react)}
+.brow.low .name{color:var(--react)}
+.brow.low .name::after{content:" ◂ focus here";color:var(--react);font-size:11px;letter-spacing:.06em}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
-  .entry{opacity:1;transform:none}}
+/* growth area */
+.growth{background:#fff;border:2px solid var(--line);border-radius:8px;padding:24px 24px 26px;margin-bottom:24px}
+.growth .lbl{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:6px}
+.growth h3{font-family:"Bebas Neue",sans-serif;font-size:clamp(30px,8vw,42px);color:var(--black);
+  line-height:.95;letter-spacing:.01em;margin-bottom:12px}
+.growth p{color:#4a463f;line-height:1.55;font-size:15.5px}
+.fix{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.fix .lbl{color:var(--gold)}
+.fix .mods{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--black);font-size:14px;margin-top:6px}
+
+.cta-block{text-align:center;padding:6px 0 0}
+.cta-block .punch{font-family:"Bebas Neue",sans-serif;font-size:clamp(28px,8vw,40px);color:var(--black);
+  line-height:.95;margin-bottom:16px}
+.restart{background:none;border:none;color:#8a857b;font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:13px;cursor:pointer;
+  margin-top:18px;text-decoration:underline;text-underline-offset:3px}
+.restart:hover{color:var(--gold)}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<header>
-  <div class="wrap nav">
-    <div class="wordmark">LUCHAFIT<sup>THE ROOM</sup></div>
-    <div class="pips" id="pips" aria-label="Progress"></div>
-  </div>
-</header>
+  <!-- INTRO -->
+  <section class="screen intro active" id="screen-intro">
+    <div class="intro-tag"><span class="kicker">The Unstuck Wrestler</span><span class="rule"></span></div>
+    <h1 class="display">Where's Your<br>Mental Game<br><span class="acc">Really At?</span></h1>
+    <p class="lede">Two wrestlers can put in the same work and get different results. The difference is almost never physical. In two minutes, find out whether you're a <b>Reactive Competitor</b>, an <b>Intentional Performer</b>, or a <b>Flow-State Competitor</b> — and the one thing holding you back.</p>
+    <div class="honesty"><b>Be honest with yourself.</b> Don't answer to impress anyone. We're here to find the weak spots — every athlete has them. Naming yours is where real progress starts.</div>
+    <div class="meta">
+      <div><b>15</b>Questions</div>
+      <div><b>2 min</b>To Finish</div>
+      <div><b>1</b>Honest Result</div>
+    </div>
+    <button class="btn gold" onclick="start()">Start the Assessment →</button>
+    <p class="byline">Built by <b>Coach Katherine Shai</b> — 7x National Team, 2x Olympic Team Alternate.</p>
+  </section>
 
-<main class="wrap">
+  <!-- QUIZ -->
+  <section class="screen" id="screen-quiz">
+    <div class="progress">
+      <div class="count"><span id="p-label">Question 1 of 15</span><span id="p-pct">0%</span></div>
+      <div class="bar"><i id="p-fill"></i></div>
+    </div>
+    <div id="q-mount"></div>
+  </section>
 
-  <section id="view-post">
-    <div class="lead">
-      <div class="eyebrow" id="eyebrow"></div>
-      <h1 id="title"><span id="titleIn"></span></h1>
-      <p class="sub" id="lede"></p>
+  <!-- GATE -->
+  <section class="screen gate" id="screen-gate">
+    <div class="lock">◆ Your result is ready</div>
+    <h2 class="display">Where should we<br>send your breakdown?</h2>
+    <p class="lede">Enter your email to unlock your competitor tier, your full breakdown, and the exact path forward. No spam — just real tools from LuchaFit.</p>
+    <div class="field">
+      <label for="f-name">First name</label>
+      <input id="f-name" type="text" autocomplete="given-name" placeholder="Your first name">
+    </div>
+    <div class="field">
+      <label for="f-email">Email</label>
+      <input id="f-email" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com">
+    </div>
+    <div class="field">
+      <label for="f-year">Year in school <span class="opt-tag">(optional)</span></label>
+      <select id="f-year">
+        <option value="">Select…</option>
+        <option>Middle School (6th–8th)</option>
+        <option>HS Freshman</option><option>HS Sophomore</option>
+        <option>HS Junior</option><option>HS Senior</option>
+        <option>College Freshman</option><option>College Sophomore</option>
+        <option>College Junior</option><option>College Senior</option>
+        <option>Graduate</option><option>Other</option>
+      </select>
+    </div>
+    <div class="err" id="gate-err"></div>
+    <button class="btn gold" id="reveal-btn" onclick="reveal()">Reveal My Result →</button>
+    <p class="fineprint">You'll join the LuchaFit list and can unsubscribe anytime.</p>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen result" id="screen-result">
+    <span class="badge">Your Unstuck Profile</span>
+    <div class="tier-card" id="tier-card">
+      <div class="top">
+        <div class="youare">Right now, you're a…</div>
+        <div class="tier-name" id="r-tier">Intentional Performer</div>
+        <div class="score-pill"><b id="r-score">7.4</b><span>/ 10 mental performance</span></div>
+      </div>
+      <div class="body"><p id="r-tier-desc"></p></div>
     </div>
 
-    <div class="card">
-      <div class="anon">
-        <span class="dot"></span>
-        <span>
-          <b>Anonymous</b>
-          <span>No name, no username, no email. Nothing you write here is connected to you,
-          and there is no way for anyone to work out who wrote what.</span>
-        </span>
+    <div class="bars">
+      <h3>Your Five Dimensions</h3>
+      <div id="bars-mount"></div>
+    </div>
+
+    <div class="growth">
+      <div class="lbl">Your #1 growth area</div>
+      <h3 id="r-growth">Pressure &amp; Routine</h3>
+      <p id="r-growth-desc"></p>
+      <div class="fix">
+        <div class="lbl">The Way Forward</div>
+        <p id="r-fix"></p>
+        <div class="mods" id="r-mods"></div>
       </div>
+    </div>
 
-      <p class="ask" id="ask"></p>
-      <p class="note" id="note"></p>
-      <details class="eg hidden" id="eg"><summary>See an example</summary><p id="egText"></p></details>
-
-      <div id="fields"></div>
-
-      <div class="meter"><span id="hint"></span><span id="chars"></span></div>
-      <button class="pill solid block" id="send">Add mine to the wall</button>
-      <div class="err hidden" id="err"></div>
-      <p class="foot-note">
-        Every entry is read by a person before it goes on the wall.<br>
-        You can change yours afterwards.
-      </p>
+    <div class="cta-block">
+      <div class="punch" id="r-punch">You don't need to<br>train harder. You need<br>to get unstuck.</div>
+      <a class="btn gold" id="cta-btn" href="#">Join the Unstuck Waitlist →</a>
+      <br>
+      <button class="restart" onclick="restart()">↻ Retake the assessment</button>
     </div>
   </section>
 
-  <section id="view-wall" class="hidden">
-    <div class="lead">
-      <div class="eyebrow" id="wEyebrow"></div>
-      <h1 id="wCount"><span id="wCountIn"></span></h1>
-      <p class="sub" id="wLede"></p>
-    </div>
-
-    <div class="card yours hidden" id="yoursCard">
-      <div class="yours-head">
-        <span class="tag">Yours</span>
-        <span class="tag wait hidden" id="yoursState"></span>
-        <span class="sp"></span>
-        <button class="pill sm" id="editBtn">Edit</button>
-      </div>
-      <p id="yoursText"></p>
-      <div class="hidden" id="editBox" style="margin-top:16px">
-        <textarea id="editText" rows="8"></textarea>
-        <div class="meter"><span>Edits go back for a read before they reappear</span><span id="editChars"></span></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="pill solid" id="saveEdit">Save changes</button>
-          <button class="pill" id="cancelEdit">Cancel</button>
-        </div>
-        <div class="err hidden" id="editErr"></div>
-      </div>
-    </div>
-
-    <div class="wall-head"><h2>The room</h2><span class="mono" id="wallMeta"></span></div>
-    <div id="entries"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
-    <button class="pill hidden" id="more" style="margin-top:6px">Show more</button>
-
-    <div class="card recap hidden" id="recap"></div>
-    <div class="cta" id="cta"></div>
-    <p class="foot-note" id="wFoot"></p>
-  </section>
-
-</main>
+</div>
 
 <script>
-const DAYS = {
-1:{
-  eyebrow:'Day 01 / Non-negotiables',
-  title:'The line you will not <em class="serif">cross</em>',
-  lede:'Nothing has happened yet. No record, no seed, no bad match to explain. This is the only week of the year where you get to decide what your season means before it means anything.',
-  ask:'Finish both halves.',
-  note:'The second blank is the one that matters. Anyone can name a value. Name the exact moment it is going to get tested.',
-  limit:240,
-  fields:[
-    {k:'a', pre:'I will not compromise on', ph:'my warmup', max:90, rows:2},
-    {k:'b', pre:'even when', ph:'we are running late and everyone else is skipping it', max:130, rows:2}
-  ],
-  build:v => `I will not compromise on ${v.a}, even when ${v.b}.`,
-  wLede:'These are the lines wrestlers drew this week, before anyone stepped on a mat that counted.'
-},
-2:{
-  eyebrow:'Day 02 / The Letter',
-  title:'A letter from <em class="serif">March</em>',
-  lede:'It is March. The season is over and it went the way you needed it to. Your future self is writing to you today to tell you how it went.',
-  ask:'Write it as if it already happened.',
-  note:'Start with the thing you struggle with, then describe beating it in past tense, like you are remembering it. One or two paragraphs.',
-  example:'Today was so good. I had everything written out before I got to the room and I actually did it. Practice was brutal and there was a point in the third live match where I wanted to stop, and I just did not. I stopped negotiating with myself about it. That was the whole difference this year.',
-  limit:1800,
-  fields:[
-    {k:'letter', label:'Your letter', ph:'Today was so good...', max:1550, rows:10},
-    {k:'lesson', pre:'Finish with one line', ph:'I cannot wait for this season.', max:200, rows:2}
-  ],
-  build:v => `${v.letter}\n\n${v.lesson}`,
-  wLede:'Letters wrestlers wrote to themselves from the end of a season that has not happened yet.'
-},
-3:{
-  eyebrow:'Day 03 / The Controllables',
-  title:'What you actually <em class="serif">control</em>',
-  lede:'Referees. Brackets. The other guy. Your seed. The crowd. None of it moves when you push on it. What is left after you cross that list out is the whole job.',
-  ask:'Three of each, for competition day.',
-  note:'Be specific. "My attitude" is too big to hold onto at 7am in a cold gym.',
-  example:'Control: my warmup routine, how I respond to a bad call, what I eat the night before. Cannot: the referee, my bracket, who my opponent is.',
-  limit:760,
-  fields:[
-    {group:'In my control', k:'c1', ph:'my warmup routine', max:100, rows:2},
-    {k:'c2', ph:'how I respond to a bad call', max:100, rows:2},
-    {k:'c3', ph:'what time I go to bed the night before', max:100, rows:2},
-    {group:'Not in my control', k:'x1', ph:'the referee', max:100, rows:2},
-    {k:'x2', ph:'my bracket and who I draw', max:100, rows:2},
-    {k:'x3', ph:'how loud the other team is', max:100, rows:2}
-  ],
-  build:v => `IN MY CONTROL\n${v.c1}\n${v.c2}\n${v.c3}\n\nNOT IN MY CONTROL\n${v.x1}\n${v.x2}\n${v.x3}`,
-  wLede:'Hundreds of wrestlers, and the same short list keeps coming back. That is not a coincidence, that is the job.'
-},
-4:{
-  eyebrow:'Day 04 / Room Debt',
-  title:'Somebody gave you <em class="serif">something</em>',
-  lede:'You did not get here alone. A coach, a parent, a teammate. There are people whose work shows up in your matches, and most of them have no idea.',
-  ask:'Three things you get from someone that you could not get anywhere else.',
-  note:'No names. Describe what they do. Then go tell them in person, which is the actual assignment today.',
-  example:'A partner who never lets me take a lazy rep. A coach who fixes my setups when nobody else notices. A mom who drives four hours every weekend and never once complains about it.',
-  limit:560,
-  fields:[
-    {k:'a', ph:'a partner who never lets me take a lazy rep', max:170, rows:2},
-    {k:'b', ph:'a coach who fixes my setups when nobody else notices', max:170, rows:2},
-    {k:'c', ph:'someone who is there when a match goes badly', max:170, rows:2}
-  ],
-  build:v => `1. ${v.a}\n2. ${v.b}\n3. ${v.c}`,
-  wLede:'Every one of these is about somebody who does not know they are in it.'
-},
-5:{
-  eyebrow:'Day 05 / Five Whys',
-  title:'Ask why five <em class="serif">times</em>',
-  lede:'Something last season did not go how you wanted. The first reason you reach for is almost never the real one. Five whys is how you get underneath it.',
-  ask:'Start with what fell short. Then keep asking why.',
-  note:'Answer each why against the answer above it, not against the original problem. It gets uncomfortable around the third one. That is the point.',
-  example:'I did not score as much as I should have. → I was scared to shoot. → I got beat badly after a bad shot. → I do not know how to set up a shot. → Nobody taught me. → I never asked.',
-  limit:1300,
-  fields:[
-    {group:'What fell short', k:'p', ph:'I did not score as much as I should have.', max:190, rows:2},
-    {group:'Now five times', k:'w1', pre:'Why?', ph:'Because I was scared to shoot.', max:160, rows:2},
-    {k:'w2', pre:'Why?', ph:'Because I got beat badly after a bad shot and I did not want it to happen again.', max:160, rows:2},
-    {k:'w3', pre:'Why?', ph:'Because I do not know how to set up a shot.', max:160, rows:2},
-    {k:'w4', pre:'Why?', ph:'Because nobody taught me.', max:160, rows:2},
-    {k:'w5', pre:'Why?', ph:'Because I never asked.', max:160, rows:2},
-    {group:'Lesson learned', k:'lesson', pre:'What changes this season', ph:'I will be more proactive about asking questions and taking ownership.', max:230, rows:3}
-  ],
-  build:v => `${v.p}\n\n1. ${v.w1}\n2. ${v.w2}\n3. ${v.w3}\n4. ${v.w4}\n5. ${v.w5}\n\nThis season: ${v.lesson}`,
-  wLede:'Five days ago these were strangers. This is what the room found when it kept asking.'
-}
+/* =========================================================================
+   QUESTIONS — 15 scored items across 5 dimensions (3 each).
+   type "scale": 1–10. type "mc": each option carries a score 1–10.
+   ========================================================================= */
+const DIMENSIONS = {
+  drive:      { name:"Why & Drive",            mods:"Unstuck · Modules 1–2" },
+  ownership:  { name:"Ownership & Reflection",  mods:"Unstuck · Module 3" },
+  confidence: { name:"Confidence & Self-Talk",  mods:"Unstuck · Modules 4–5" },
+  pressure:   { name:"Pressure & Routine",      mods:"Unstuck · Modules 6–7" },
+  resilience: { name:"Resilience & Release",    mods:"Unstuck · Modules 8–9" },
+};
+const DIM_ORDER = ["drive","ownership","confidence","pressure","resilience"];
+
+const QUESTIONS = [
+  // WHY & DRIVE
+  { dim:"drive", section:"Why & Drive", type:"scale", q:"I find genuine joy in my training.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"drive", section:"Why & Drive", type:"scale", q:"I find joy in competing under pressure.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"drive", section:"Why & Drive", type:"scale", q:"I have a clear reason I choose to wrestle.",
+    lo:"No idea", hi:"Crystal clear" },
+
+  // OWNERSHIP & REFLECTION
+  { dim:"ownership", section:"Ownership & Reflection", type:"scale", q:"I regularly review match footage to find progress.",
+    lo:"Never", hi:"Every time" },
+  { dim:"ownership", section:"Ownership & Reflection", type:"scale", q:"I reflect on practices and competitions to pull out lessons.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"ownership", section:"Ownership & Reflection", type:"scale", q:"I can pinpoint one specific focus for each practice or match.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+
+  // CONFIDENCE & SELF-TALK
+  { dim:"confidence", section:"Confidence & Self-Talk", type:"scale", q:"I believe in my ability to perform.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"confidence", section:"Confidence & Self-Talk", type:"scale", q:"I can manage negative self-talk in training and competition.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"confidence", section:"Confidence & Self-Talk", type:"scale", q:"When I step on the mat, I feel composed and ready for the challenge.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+
+  // PRESSURE & ROUTINE
+  { dim:"pressure", section:"Pressure & Routine", type:"scale", q:"I use a pre-match routine that calms and centers me.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"pressure", section:"Pressure & Routine", type:"scale", q:"If a major competition were tomorrow, how ready would you feel mentally?",
+    lo:"Not ready", hi:"Fully ready" },
+  { dim:"pressure", section:"Pressure & Routine", type:"mc", q:"How do you typically respond to high-pressure situations and close matches?",
+    o:[
+      {t:"I embrace it and view it as an opportunity.", s:10},
+      {t:"I stay composed and keep my focus.", s:9},
+      {t:"I lean on belief in my abilities to push through.", s:7},
+      {t:"I struggle to stay calm and tend to make mistakes.", s:4},
+      {t:"I feel defeated and lose confidence.", s:2},
+    ]},
+
+  // RESILIENCE & RELEASE
+  { dim:"resilience", section:"Resilience & Release", type:"scale", q:"I can refocus quickly when things aren't going my way.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"resilience", section:"Resilience & Release", type:"scale", q:"I can recover quickly after mistakes during competition.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+  { dim:"resilience", section:"Resilience & Release", type:"scale", q:"I have good coping mechanisms for my everyday stress.",
+    lo:"Strongly disagree", hi:"Strongly agree" },
+];
+
+const TIERS = {
+  flow:{ key:"flow", name:"Flow-State Competitor", cls:"t-flow",
+    desc:"Calm, confident, composed — and self-directed. You don't need anyone to hype you up; you thrive on the challenge itself. This is rare air, the place most wrestlers never reach. The work now isn't getting here — it's making it repeatable and bulletproof, so flow shows up on demand instead of by accident.",
+    punch:"Flow isn't luck.<br>Learn to summon it<br>on command." },
+  intent:{ key:"intent", name:"Intentional Performer", cls:"t-intent",
+    desc:"Reflective and motivated — you've already got real self-awareness and you're building consistency under pressure. You're not running on emotion anymore, but the results still wobble in the big moments. You're one layer of mental skill away from flow. This is the most exciting place to be, because the gap is small and completely closable.",
+    punch:"You're one layer<br>away from flow.<br>Go close the gap." },
+  react:{ key:"react", name:"Reactive Competitor", cls:"t-react",
+    desc:"Right now your performance rides your emotions — when confidence is high you're dangerous, and when it dips, so do the results. That's not a talent problem; it's the most coachable thing in the entire sport. You have the most runway of anyone here. With structure and the right mental tools, the swing flattens out fast — and that's exactly what Unstuck is built to do.",
+    punch:"Your talent is real.<br>Let's stop letting<br>emotion decide." },
 };
 
-const params = new URLSearchParams(location.search);
-let day = parseInt(params.get('d'), 10);
-if (!DAYS[day]) day = 1;
-const D = DAYS[day];
-const KEY = 'theroom.d' + day;
-
-// Declared above anything that can call load(). A returning visitor triggers
-// showWall() on the first pass, and a `let` below that call site is still in
-// its temporal dead zone.
-let offset = 0;
-const PAGE = 25;
-let saved = null;
-try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { saved = null; }
-
-const $ = id => document.getElementById(id);
-
-// Scale the headline so it fills the column on one line. Binary search beats a
-// hardcoded clamp because the five titles are different lengths, and it keeps
-// working for any wording you swap in later.
-const MIN_TITLE = 30, MAX_TITLE = 86;
-function fitTitle(h, inner){
-  if (!h || !inner || !inner.textContent.trim()) return;
-  h.classList.remove('wrapped');
-  const avail = h.clientWidth;
-  if (!avail) return;
-  let lo = MIN_TITLE, hi = MAX_TITLE;
-  for (let i = 0; i < 22; i++){
-    const mid = (lo + hi) / 2;
-    h.style.fontSize = mid + 'px';
-    if (inner.offsetWidth <= avail) lo = mid; else hi = mid;
-  }
-  h.style.fontSize = lo.toFixed(1) + 'px';
-  // Too long even at the floor: let it wrap rather than overflow.
-  if (inner.offsetWidth > avail) h.classList.add('wrapped');
-}
-function fitAll(){
-  fitTitle($('title'), $('titleIn'));
-  fitTitle($('wCount'), $('wCountIn'));
-}
-let fitT;
-window.addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(fitAll, 120); });
-// Webfonts change the measurement, so size again once they land.
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-$('pips').innerHTML = [1,2,3,4,5].map(n => {
-  const cls = n === day ? 'now' : (localStorage.getItem('theroom.d'+n) ? 'done' : '');
-  return `<span class="pip ${cls}">${n}</span>`;
-}).join('');
-
-$('eyebrow').textContent = D.eyebrow;
-$('titleIn').innerHTML = D.title;
-fitTitle($('title'), $('titleIn'));
-$('lede').textContent = D.lede;
-$('ask').textContent = D.ask;
-$('note').textContent = D.note;
-if (D.example){ $('egText').textContent = D.example; $('eg').classList.remove('hidden'); }
-
-// ---------- build the day's fields ----------
-$('fields').innerHTML = D.fields.map(f => `
-  ${f.group ? `<div class="fgroup">${esc(f.group)}</div>` : ''}
-  <div class="f">
-    ${f.pre ? `<span class="pre">${esc(f.pre)}</span>` : ''}
-    ${f.label ? `<span class="lbl">${esc(f.label)}</span>` : ''}
-    <textarea id="f_${f.k}" rows="${f.rows||2}" maxlength="${f.max + 40}"
-      placeholder="${esc(f.ph)}"></textarea>
-    <div class="cnt" id="c_${f.k}">0 / ${f.max}</div>
-  </div>`).join('');
-
-const val = k => ($('f_' + k).value || '').trim();
-const assemble = () => {
-  const v = {};
-  D.fields.forEach(f => v[f.k] = val(f.k));
-  return D.build(v);
+const GROWTH = {
+  drive:{ name:"Why & Drive",
+    desc:"You're putting in work, but the *why* underneath it has gone quiet. Without a reason that genuinely pulls you, motivation becomes something you have to manufacture every day — and that tank runs dry right when you need it most.",
+    fix:"You don't need more discipline; you need a mission that makes the discipline automatic. This is the first thing Unstuck rebuilds — your north star and the core values you wrestle from." },
+  ownership:{ name:"Ownership & Reflection",
+    desc:"You're not yet turning your matches into fuel for progress. When you don't own the film, the reflection, and the next specific focus, every result becomes something that just *happens to you* instead of something you learn from.",
+    fix:"The way forward is ownership — taking back control of what's actually yours. Unstuck calls it the Accountability Ladder, and it changes how you turn every practice and loss into a step forward." },
+  confidence:{ name:"Confidence & Self-Talk",
+    desc:"You walk onto the mat carrying weight that isn't helping you wrestle — doubt, old self-talk, a quiet voice that's sure you'll fall short. Your body knows the moves; your head keeps adding load.",
+    fix:"You have to set the baggage down before you compete, not during. Unstuck walks you through releasing what doesn't serve you and rewiring the mind-body connection so pressure stops hijacking you." },
+  pressure:{ name:"Pressure & Routine",
+    desc:"In the room you're a different athlete — sharp and free. Then the lights come up and some of it leaks out. The gap between practice-you and match-you is the single most expensive thing in your wrestling right now.",
+    fix:"This is a routine problem, not a talent problem. Unstuck builds you a repeatable pre-competition ritual and a real competition plan, so the version of you in the room is the version on the mat." },
+  resilience:{ name:"Resilience & Release",
+    desc:"One bad call, one mistake, one tight moment — and you have trouble getting back. When you can't reset fast, a single rough exchange can quietly decide the whole match before it's actually over.",
+    fix:"The skill is letting go and resetting on demand. Unstuck closes with the hardest, most freeing tools in the sport — gratitude as a reset and trusting the work — so you bounce back instead of spiraling." },
 };
-const complete = () => D.fields.every(f => val(f.k).length >= 2 && val(f.k).length <= f.max);
 
-function refresh(){
-  let anyOver = false;
-  D.fields.forEach(f => {
-    const n = val(f.k).length;
-    const c = $('c_' + f.k);
-    c.textContent = n + ' / ' + f.max;
-    c.className = 'cnt' + (n > f.max ? ' over' : '');
-    if (n > f.max) anyOver = true;
-  });
-  const total = assemble().length;
-  $('chars').textContent = total + ' / ' + D.limit;
-  $('chars').className = total > D.limit ? 'over' : '';
-  const done = complete() && total <= D.limit && !anyOver;
-  $('hint').textContent = done ? 'Ready' : 'Fill in every box';
-  $('send').disabled = !done;
+/* =========================================================================
+   STATE + FLOW
+   ========================================================================= */
+let idx = 0;
+let scores = [];          // raw 1-10 per question, index-aligned to QUESTIONS
+let result = { tier:null, overall:0, dims:{}, growth:null };
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0});
 }
-function grow(el){ el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px'; }
-D.fields.forEach(f => {
-  const el = $('f_' + f.k);
-  el.addEventListener('input', () => { grow(el); refresh(); });
-  grow(el);
-});
-refresh();
 
-$('send').addEventListener('click', async () => {
-  const text = assemble();
-  $('send').disabled = true; $('send').textContent = 'Adding it';
-  $('err').classList.add('hidden');
-  try {
-    const r = await fetch('/.netlify/functions/submit', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ day, text })
-    });
-    const j = await r.json();
-    if (!r.ok || !j.ok) throw new Error(j.message || 'Something went wrong on our end. Try again in a moment.');
-    saved = { text, id: j.id, token: j.token, at: Date.now() };
-    localStorage.setItem(KEY, JSON.stringify(saved));
-    showWall(true);
-  } catch(e) {
-    $('err').textContent = e.message;
-    $('err').classList.remove('hidden');
-    $('send').disabled = false; $('send').textContent = 'Add mine to the wall';
+function start(){
+  idx=0; scores=new Array(QUESTIONS.length).fill(null);
+  show("screen-quiz"); renderQ();
+}
+
+function renderQ(){
+  const item=QUESTIONS[idx], total=QUESTIONS.length;
+  const pct=Math.round((idx/total)*100);
+  document.getElementById("p-label").textContent=`Question ${idx+1} of ${total}`;
+  document.getElementById("p-pct").textContent=`${pct}%`;
+  document.getElementById("p-fill").style.width=`${pct}%`;
+
+  const mount=document.getElementById("q-mount");
+  let inner="";
+  if(item.type==="scale"){
+    inner=`
+      <div class="scale-anchors"><span>${item.lo}</span><span>${item.hi}</span></div>
+      <div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="dot" data-v="${n}">${n}</button>`).join("")}</div>`;
+  } else {
+    inner=`<div class="options">${item.o.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join("")}</div>`;
   }
-});
+  mount.innerHTML=`
+    <div class="fade">
+      <div class="q-section">${item.section}</div>
+      <div class="q-text">${item.q}</div>
+      ${inner}
+    </div>`;
 
-// ---------- editing ----------
-$('editBtn').addEventListener('click', () => {
-  const open = !$('editBox').classList.contains('hidden');
-  $('editBox').classList.toggle('hidden', open);
-  $('editBtn').textContent = open ? 'Edit' : 'Close';
-  if (!open){
-    const t = $('editText');
-    t.value = saved.text; editMeter();
-    t.style.height = 'auto'; t.style.height = (t.scrollHeight + 2) + 'px';
-    t.focus();
+  if(item.type==="scale"){
+    mount.querySelectorAll(".dot").forEach(b=>b.addEventListener("click",()=>pick(b,+b.dataset.v)));
+  } else {
+    mount.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>pick(b,item.o[+b.dataset.i].s)));
   }
-});
-$('cancelEdit').addEventListener('click', () => {
-  $('editBox').classList.add('hidden'); $('editBtn').textContent = 'Edit';
-});
-function editMeter(){
-  const n = $('editText').value.trim().length;
-  $('editChars').textContent = n + ' / ' + D.limit;
-  $('editChars').className = n > D.limit ? 'over' : '';
-  $('saveEdit').disabled = n < 8 || n > D.limit;
-}
-$('editText').addEventListener('input', e => {
-  e.target.style.height = 'auto'; e.target.style.height = (e.target.scrollHeight + 2) + 'px';
-  editMeter();
-});
-
-$('saveEdit').addEventListener('click', async () => {
-  const text = $('editText').value.trim();
-  $('saveEdit').disabled = true; $('saveEdit').textContent = 'Saving';
-  $('editErr').classList.add('hidden');
-  try {
-    const r = await fetch('/.netlify/functions/revise', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ id: saved.id, token: saved.token, text })
-    });
-    const j = await r.json();
-    if (!r.ok || !j.ok) throw new Error(j.message || 'Could not save that change.');
-    saved.text = text;
-    localStorage.setItem(KEY, JSON.stringify(saved));
-    $('yoursText').textContent = text;
-    $('editBox').classList.add('hidden'); $('editBtn').textContent = 'Edit';
-    setState('pending');
-    offset = 0; load();
-  } catch(e){
-    $('editErr').textContent = e.message; $('editErr').classList.remove('hidden');
-  } finally {
-    $('saveEdit').disabled = false; $('saveEdit').textContent = 'Save changes';
-  }
-});
-
-function setState(s){
-  const el = $('yoursState');
-  if (s === 'live'){ el.classList.add('hidden'); return; }
-  el.classList.remove('hidden');
-  el.textContent = 'Going up soon';
 }
 
-// ---------- wall ----------
-if (saved) showWall(false);
-
-function showWall(justSent){
-  $('view-post').classList.add('hidden');
-  $('view-wall').classList.remove('hidden');
-  window.scrollTo(0,0);
-  $('wEyebrow').textContent = D.eyebrow;
-  $('wLede').textContent = justSent
-    ? 'Yours is read before it goes up, so give it a few hours. In the meantime, here is the room.'
-    : D.wLede;
-  $('yoursText').textContent = saved.text;
-  $('yoursCard').classList.remove('hidden');
-  setState(justSent ? 'pending' : 'live');
-  $('wFoot').textContent = 'No names anywhere on this page. Every entry is read by a person before it goes up.';
-  $('cta').innerHTML = day < 5
-    ? `<h2>Day ${day+1} lands in your inbox <em class="serif">tomorrow</em></h2>
-       <p>Five days. Five prompts. One room.</p>`
-    : `<h2>That was <em class="serif">five days</em></h2>
-       <p>The Unstuck Wrestler is the full version of what you just did. Nine modules on
-          closing the gap between the room and the mat, built by a seven time national team member.</p>
-       <a class="pill" href="https://luchafit.com/unstuck">See The Unstuck Wrestler</a>`;
-  if (day === 5) buildRecap();
-  load();
-}
-
-function buildRecap(){
-  const rows = [];
-  for (let d = 1; d <= 5; d++){
-    let e = null;
-    try { e = JSON.parse(localStorage.getItem('theroom.d'+d) || 'null'); } catch {}
-    if (!e || !e.text) continue;
-    rows.push(`<div class="rday">
-      <div class="lbl">${esc(DAYS[d].eyebrow)}</div>
-      <div class="t">${esc(e.text)}</div>
-    </div>`);
-  }
-  if (rows.length < 2) return;
-  $('recap').innerHTML =
-    `<div class="mono" style="margin-bottom:10px">YOUR WEEK &nbsp;/&nbsp; PUT TOGETHER ON THIS DEVICE</div>
-     <h2 style="margin-bottom:14px">Everything you wrote</h2>
-     ${rows.join('')}`;
-  $('recap').classList.remove('hidden');
-}
-
-async function load(){
-  try{
-    const q = `day=${day}&offset=${offset}&limit=${PAGE}` + (saved?.id ? `&id=${encodeURIComponent(saved.id)}` : '');
-    const r = await fetch('/.netlify/functions/wall?' + q);
-    if (!r.ok) throw new Error('wall returned ' + r.status);
-    const j = await r.json();
-    if (!j || !Array.isArray(j.entries)) throw new Error('unexpected response shape');
-    if (j.mine) setState(j.mine === 'live' ? 'live' : 'pending');
-
-    if (offset === 0){
-      $('entries').innerHTML = '';
-      // Anything above a handful reads as a room. Below that a real number is worse
-      // than no number, so fall back to the early state.
-      $('wCountIn').innerHTML = j.total >= 6
-        ? `You are one of <em class="serif">${j.total.toLocaleString()}</em> in the room today.`
-        : `You got here <em class="serif">early</em>.`;
-      fitTitle($('wCount'), $('wCountIn'));
-      $('wallMeta').textContent = j.shown ? j.shown.toLocaleString() + ' up so far' : '';
-      if (!j.entries.length)
-        $('wLede').textContent = 'You are one of the first in today. Check back this afternoon and the wall will have filled in.';
+function pick(btn,value){
+  btn.classList.add("sel");
+  scores[idx]=value;
+  setTimeout(()=>{
+    idx++;
+    if(idx<QUESTIONS.length){ renderQ(); }
+    else{
+      document.getElementById("p-fill").style.width="100%";
+      document.getElementById("p-pct").textContent="100%";
+      show("screen-gate");
     }
-
-    j.entries.forEach((e,i) => {
-      const el = document.createElement('div');
-      el.className = 'entry';
-      el.style.animationDelay = (i * 32) + 'ms';
-      const long = e.text.length > 260 || (e.text.match(/\n/g) || []).length > 6;
-      el.innerHTML = `<span class="n">${String(offset+i+1).padStart(3,'0')}</span>
-        <div class="body"><p class="${long?'clamp':''}"></p>${long?'<button class="rm">Read more</button>':''}</div>`;
-      el.querySelector('p').textContent = e.text;
-      if (long){
-        const btn = el.querySelector('.rm'), p = el.querySelector('p');
-        btn.addEventListener('click', () => {
-          const on = p.classList.toggle('clamp');
-          btn.textContent = on ? 'Read more' : 'Show less';
-        });
-      }
-      $('entries').appendChild(el);
-    });
-    offset += j.entries.length;
-    $('more').classList.toggle('hidden', offset >= j.shown || j.entries.length === 0);
-  } catch(e){
-    console.error('[the room] wall failed:', e);
-    $('entries').innerHTML =
-      '<p class="note">The wall would not load. Refresh to try again.<br>' +
-      '<span class="mono">' + esc(String(e && e.message || e)) + '</span></p>';
-  }
+  },220);
 }
-$('more').addEventListener('click', load);
+
+function compute(){
+  const sum={}, cnt={};
+  DIM_ORDER.forEach(d=>{sum[d]=0;cnt[d]=0;});
+  QUESTIONS.forEach((item,i)=>{ sum[item.dim]+=scores[i]; cnt[item.dim]++; });
+  const dims={};
+  DIM_ORDER.forEach(d=> dims[d]=+(sum[d]/cnt[d]).toFixed(1));
+  const overall=+(QUESTIONS.reduce((a,_,i)=>a+scores[i],0)/QUESTIONS.length).toFixed(1);
+
+  // lowest dimension = growth area (ties broken by course order, foundation first)
+  let growth=DIM_ORDER[0];
+  DIM_ORDER.forEach(d=>{ if(dims[d]<dims[growth]) growth=d; });
+
+  let tier="react";
+  if(overall>=8.5) tier="flow"; else if(overall>=6.0) tier="intent";
+
+  result={tier,overall,dims,growth};
+}
+
+/* =========================================================================
+   GATE + SUBMIT
+   ========================================================================= */
+function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+async function reveal(){
+  const name=document.getElementById("f-name").value.trim();
+  const email=document.getElementById("f-email").value.trim();
+  const year=document.getElementById("f-year").value;
+  const err=document.getElementById("gate-err");
+  const btn=document.getElementById("reveal-btn");
+  err.textContent="";
+  if(!validEmail(email)){ err.textContent="Please enter a valid email so we can show your result."; return; }
+
+  compute();
+  btn.disabled=true; btn.textContent="Unlocking…";
+
+  const payload={
+    firstName:name, email, year,
+    tier:TIERS[result.tier].name, tierKey:result.tier,
+    overallScore:result.overall,
+    growthArea:DIMENSIONS[result.growth].name, growthKey:result.growth,
+    dimensions:result.dims,
+    timestamp:new Date().toISOString(), source:"unstuck-assessment"
+  };
+
+  try{
+    if(ENDPOINT_URL && !ENDPOINT_URL.startsWith("PASTE")){
+      await fetch(ENDPOINT_URL,{method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(payload)});
+    }
+  }catch(e){ console.error("Submit failed (showing result anyway):",e); }
+
+  renderResult();
+  show("screen-result");
+}
+
+function renderResult(){
+  const t=TIERS[result.tier];
+  const card=document.getElementById("tier-card");
+  card.className="tier-card "+t.cls;
+  document.getElementById("r-tier").textContent=t.name;
+  document.getElementById("r-score").textContent=result.overall.toFixed(1);
+  document.getElementById("r-tier-desc").textContent=t.desc;
+  document.getElementById("r-punch").innerHTML=t.punch;
+
+  // bars
+  const bm=document.getElementById("bars-mount");
+  bm.innerHTML=DIM_ORDER.map(d=>{
+    const v=result.dims[d], low=(d===result.growth);
+    return `<div class="brow ${low?'low':''}">
+      <div class="bl"><span class="name">${DIMENSIONS[d].name}</span><span class="val">${v.toFixed(1)}</span></div>
+      <div class="track"><div class="fill" data-w="${v*10}"></div></div>
+    </div>`;
+  }).join("");
+  // animate fills
+  requestAnimationFrame(()=>{ setTimeout(()=>{
+    bm.querySelectorAll(".fill").forEach(f=>f.style.width=f.dataset.w+"%");
+  },60); });
+
+  const g=GROWTH[result.growth];
+  document.getElementById("r-growth").textContent=g.name;
+  document.getElementById("r-growth-desc").innerHTML=g.desc.replace(/\*(.+?)\*/g,"<em>$1</em>");
+  document.getElementById("r-fix").textContent=g.fix;
+  document.getElementById("r-mods").textContent=DIMENSIONS[result.growth].mods;
+  document.getElementById("cta-btn").href=WAITLIST_URL;
+}
+
+function restart(){
+  ["f-name","f-email"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("f-year").value="";
+  const btn=document.getElementById("reveal-btn");
+  btn.disabled=false; btn.textContent="Reveal My Result →";
+  show("screen-intro");
+}
+
+document.getElementById("f-email").addEventListener("keydown",e=>{ if(e.key==="Enter") reveal(); });
 </script>
 </body>
 </html>
