@@ -62,7 +62,11 @@ export default async (req) => {
 
   try {
     if (body.action === 'stats') {
-      const out = { pending: {}, priority: 0 };
+      const meta = await s.get('meta/open', { type: 'json' }).catch(() => null);
+      const out = {
+        pending: {}, priority: 0,
+        openDays: Array.isArray(meta && meta.days) ? meta.days : [1, 2, 3, 4, 5]
+      };
       for (let d = 1; d <= 5; d++) {
         const { blobs } = await s.list({ prefix: `pending/d${d}/` });
         out.pending[d] = blobs.length;
@@ -177,6 +181,15 @@ export default async (req) => {
 
     // Bulk insert. Used for seeding the wall before launch so the first wrestler
     // through the door sees a room instead of a blank page.
+    // Which days wrestlers can reach. Nothing to do with how many entries exist.
+    if (body.action === 'setOpen') {
+      const days = (body.days || [])
+        .map(Number).filter(d => d >= 1 && d <= 5)
+        .filter((d, i, a) => a.indexOf(d) === i).sort();
+      await s.setJSON('meta/open', { days, updated_at: new Date().toISOString() });
+      return json({ ok: true, openDays: days });
+    }
+
     if (body.action === 'seed') {
       const day = parseInt(body.day, 10);
       if (!(day >= 1 && day <= 5)) return json({ ok: false, message: 'Pick a day' }, 400);

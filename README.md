@@ -129,6 +129,21 @@ queue is a `list` call that never reads a single blob body.
 function. Comfortable to roughly 5,000 entries per day. Past that it wants sharding into
 pages, which is a twenty minute change you will probably never need.
 
+## Which days are open
+
+The review console has a **Days open** strip at the top. Toggling a day closed makes
+`/day/N` show a holding screen instead of the prompt, so nobody can work ahead of your
+emails.
+
+This is a switch you set, not something derived from how many entries a day has. An
+earlier version inferred it from entry counts and deadlocked: a day could not open until
+it had entries, and could not get entries while it was closed. If the setting is missing
+or unreadable, **every day is open** — the failure mode of a day being open early is
+someone seeing a prompt sooner than planned, while the failure mode of a day being closed
+is nobody being able to take part at all.
+
+Before launch: close days 2 to 5, leave day 1 open. Each morning, open the next one.
+
 ## Editing
 
 Anyone can change their own entry from the wall screen. There are no accounts, so

@@ -85,6 +85,20 @@ main{padding-top:clamp(28px,3.4vw,44px);padding-bottom:clamp(72px,8vw,120px)}
 .bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:clamp(24px,3vw,40px)}
 .seg{display:flex;gap:5px} .grow{flex:1}
 
+/* open days */
+.opencard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:clamp(16px,1.8vw,22px);margin-bottom:clamp(16px,2vw,22px);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.opencard .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-2)}
+.opencard .note{font-family:var(--mono);font-size:10.5px;color:rgba(12,13,15,.4);flex:1;min-width:180px}
+.daytog{display:flex;gap:6px}
+.daytog button{font-family:var(--mono);font-size:11px;border:1.5px solid var(--line);
+  border-radius:999px;padding:7px 14px;background:var(--card);transition:all .18s}
+.daytog button.on{background:var(--green);border-color:var(--green);color:#fff}
+.daytog button:hover{border-color:var(--ink)}
+.daytog button.on:hover{background:var(--ink);border-color:var(--ink)}
+
 /* seed */
 .seed{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
   padding:clamp(22px,3vw,44px);margin-bottom:clamp(20px,2.4vw,32px)}
@@ -153,6 +167,12 @@ main{padding-top:clamp(28px,3.4vw,44px);padding-bottom:clamp(72px,8vw,120px)}
   </header>
 
   <main class="wrap">
+    <div class="opencard">
+      <span class="lbl">Days open</span>
+      <div class="daytog" id="daytog"></div>
+      <span class="note" id="openNote">Closed days show a holding screen instead of the prompt.</span>
+    </div>
+
     <div class="bar">
       <div class="seg" id="days"></div>
       <div class="seg" id="tabs"></div>
@@ -228,10 +248,30 @@ function boot(){
   loadStats(); load();
 }
 
+let openDays = [1,2,3,4,5];
+function renderOpen(){
+  $('daytog').innerHTML = [1,2,3,4,5].map(d =>
+    `<button data-open="${d}" class="${openDays.includes(d)?'on':''}">Day ${d}</button>`).join('');
+}
+$('daytog').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-open]'); if (!b) return;
+  const d = +b.dataset.open;
+  const next = openDays.includes(d) ? openDays.filter(x => x !== d) : [...openDays, d].sort();
+  $('openNote').textContent = 'Saving';
+  try{
+    const r = await api({action:'setOpen', days: next});
+    openDays = r.openDays || next; renderOpen();
+    $('openNote').textContent = openDays.length
+      ? 'Open: ' + openDays.map(n => 'Day ' + n).join(', ')
+      : 'Every day is closed. Nobody can post.';
+  }catch(err){ $('openNote').textContent = err.message; }
+});
+
 async function loadStats(){
   try{
     const r = await api({action:'stats'});
     const s = r.stats; let h = '';
+    if (Array.isArray(s.openDays)){ openDays = s.openDays; renderOpen(); }
     for (let d=1; d<=5; d++) h += `<div class="stat"><b>${s.pending[d]}</b><span>DAY ${d}</span></div>`;
     if (s.priority) h += `<div class="stat hot"><b>${s.priority}</b><span>READ FIRST</span></div>`;
     $('stats').innerHTML = h;

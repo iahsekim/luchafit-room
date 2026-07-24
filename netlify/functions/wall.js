@@ -35,21 +35,19 @@ export default async (req) => {
            : 'gone';
     }
 
-    // A day is open once anything has been approved on it. Metadata only, so this
-    // is five cheap existence checks rather than five blob reads. The prompt for a
-    // closed day is never shown, which stops anyone browsing ahead of the emails.
-    const openDays = [];
-    for (let d = 1; d <= 5; d++) {
-      if (d === day) { if (wall.length) openDays.push(d); continue; }
-      const meta = await s.getMetadata(`wall/d${d}`).catch(() => null);
-      if (meta) openDays.push(d);
-    }
+    // Which days are open is an explicit setting, not something inferred from
+    // entry counts. Deriving it was circular: a day could not open until it had
+    // entries, and it could not get entries while it was closed.
+    // Missing setting means everything is open, so a bad read can never lock
+    // every wrestler out of the challenge.
+    const meta = await s.get('meta/open', { type: 'json' }).catch(() => null);
+    const openDays = Array.isArray(meta && meta.days) ? meta.days.filter(d => d >= 1 && d <= 5) : [1, 2, 3, 4, 5];
 
     return json({
       entries: wall.slice(offset, offset + limit).map(e => ({ text: e.text })),
       shown: wall.length,
       total: wall.length + pending,
-      open: wall.length > 0,
+      open: openDays.includes(day),
       openDays,
       mine
     }, 200, 'no-store');
